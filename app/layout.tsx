@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import PlausibleProvider from 'next-plausible';
 
 import { Navigation } from 'components/navigation';
 
@@ -46,6 +47,9 @@ export default function RootLayout({
       lang="en"
       className={cn(craftworksGrotesk.variable, craftworkSans.variable)}
     >
+      <head>
+        <PlausibleProvider domain="mislavjc.com" trackOutboundLinks />
+      </head>
       <body className="bg-neutral-50">
         <Navigation />
         {children}
