@@ -74,9 +74,9 @@ const MainContent = ({ imageSrc }: { imageSrc: string }) => (
 );
 
 export default async function GET() {
-  const m = await fetch(
-    new URL('../public/images/black/m.png', import.meta.url),
-  ).then((res) => res.arrayBuffer());
+  const m = await fetch(new URL('../public/m.png', import.meta.url)).then(
+    (res) => res.arrayBuffer(),
+  );
 
   const craftworkGrotesk = await fetch(
     new URL('../public/fonts/CraftworkGrotesk-Medium.ttf', import.meta.url),
