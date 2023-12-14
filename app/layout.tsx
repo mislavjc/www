@@ -1,9 +1,32 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+
+import { cn } from 'lib/utils';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const craftworksGrotesk = localFont({
+  src: [
+    {
+      path: '../public/fonts/CraftworkGrotesk-Heavy.ttf',
+      weight: '900',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/CraftworkGrotesk-Medium.ttf',
+      weight: '500',
+      style: 'normal',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-craftwork-grotesk',
+});
+
+const craftworkSans = localFont({
+  src: '../public/fonts/CraftworkSans.ttf',
+  display: 'swap',
+  variable: '--font-craftwork-sans',
+});
 
 export const metadata: Metadata = {
   title: 'Mislav | Frontend Engineer',
@@ -15,8 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html
+      lang="en"
+      className={cn(craftworksGrotesk.variable, craftworkSans.variable)}
+    >
+      <body>{children}</body>
     </html>
   );
 }
