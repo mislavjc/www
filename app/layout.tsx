@@ -42,7 +42,7 @@ export default function RootLayout({
       lang="en"
       className={cn(craftworksGrotesk.variable, craftworkSans.variable)}
     >
-      <body>{children}</body>
+      <body className="bg-neutral-50">{children}</body>
     </html>
   );
 }
