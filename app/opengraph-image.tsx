@@ -54,7 +54,7 @@ const Footer = () => (
   </div>
 );
 
-const MainContent = ({ imageSrc }) => (
+const MainContent = ({ imageSrc }: { imageSrc: string }) => (
   <div
     style={{
       display: 'flex',
