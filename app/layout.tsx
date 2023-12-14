@@ -32,6 +32,7 @@ const craftworkSans = localFont({
 
 export const metadata: Metadata = {
   title: 'Mislav | Frontend Engineer',
+  metadataBase: new URL('https://mislavjc.com'),
 };
 
 export default function RootLayout({
