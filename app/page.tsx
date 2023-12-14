@@ -1,5 +1,6 @@
 import { Experience } from 'components/@index/experience';
 import { Hero } from 'components/@index/hero';
+import { Projects } from 'components/@index/projects';
 import { Section } from 'components/section';
 
 const HomePage = () => {
@@ -10,6 +11,9 @@ const HomePage = () => {
       </Section>
       <Section>
         <Experience />
+      </Section>
+      <Section>
+        <Projects />
       </Section>
     </main>
   );
