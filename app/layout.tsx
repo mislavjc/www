@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import { Navigation } from 'components/navigation';
+
 import { cn } from 'lib/utils';
 
 import './globals.css';
@@ -42,7 +44,10 @@ export default function RootLayout({
       lang="en"
       className={cn(craftworksGrotesk.variable, craftworkSans.variable)}
     >
-      <body className="bg-neutral-50">{children}</body>
+      <body className="bg-neutral-50">
+        <Navigation />
+        {children}
+      </body>
     </html>
   );
 }

@@ -30,7 +30,10 @@ const workExperiences = [
 export const Experience = () => {
   return (
     <div>
-      <h2 className="mb-8 font-grotesk text-4xl text-neutral-900">
+      <h2
+        className="mb-8 font-grotesk text-4xl text-neutral-900"
+        id="experience"
+      >
         Experience
       </h2>
       <div className="space-y-8">
