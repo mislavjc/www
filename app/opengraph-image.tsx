@@ -37,7 +37,7 @@ const Footer = () => (
       justifyContent: 'space-between',
       width: '100%',
       borderTop: '2px solid #171717',
-      padding: '0 32px',
+      padding: '0 64px',
       position: 'absolute',
       bottom: 0,
     }}
