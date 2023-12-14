@@ -3,8 +3,8 @@ import { InflatedWord } from 'components/word';
 
 export const Hero = () => {
   return (
-    <div className="mx-8 flex flex-col items-center justify-center md:mx-16">
-      <h1 className="max-w-screen-md font-grotesk text-5xl lg:text-7xl">
+    <div>
+      <h1 className="font-grotesk text-5xl text-neutral-900 lg:text-7xl">
         Hi, I&apos;m <InflatedWord word="Mislav" />, crafting{' '}
         <i>
           interacive experiences <Shape shape="2" />
