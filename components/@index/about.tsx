@@ -13,7 +13,7 @@ export const About = () => {
         for all of my side projects. Other than Web technologies, I&apos;m also
         enthusiastic about UI/UX design and have enrolled in a Master&apos;s
         degree in Design and Multimedia. AI has also been a topic I took
-        interset in, so in my free time I work on side projects experimenting
+        interest in, so in my free time I work on side projects experimenting
         with it.
       </p>
       <Marquee />
