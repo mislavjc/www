@@ -5,7 +5,7 @@ export const About = () => {
   return (
     <div id="about" className="relative">
       <SectionTitle>About</SectionTitle>
-      <p className="text-neutral-500">
+      <p className="text-neutral-600">
         I&apos;m a Frontend Engineer with over 3 years of industry experience! I
         fell in love with Frontend back in September 2020 when I began my
         Bachelor&apos;s degree because of an HTML/CSS class that got me hooked.

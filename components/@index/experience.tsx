@@ -53,7 +53,7 @@ export const Experience = () => {
                 {experience.company}
               </h3>
               <h3 className="text-lg text-neutral-700">{experience.role}</h3>
-              <p className="text-neutral-500">{experience.description}</p>
+              <p className="text-neutral-600">{experience.description}</p>
             </div>
           </div>
         ))}

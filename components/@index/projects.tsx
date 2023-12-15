@@ -82,7 +82,7 @@ export const Projects = () => {
                 </h3>
               </div>
               <div className="relative md:w-2/3">
-                <h3 className=" text-neutral-500">{project.description}</h3>
+                <h3 className=" text-neutral-600">{project.description}</h3>
                 {project.url && (
                   <Image
                     src={MoveUpRightSvg}
