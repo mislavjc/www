@@ -30,7 +30,7 @@ const projects = [
   {
     name: 'Qwiz',
     description:
-      'Platform for creation, organization & discovery of pub quizzes.',
+      'Platform for creation, organization & discovery of pub quizzes built for a student coding competition.',
     icon: QwizSvg,
     url: 'https://github.com/qwiz-app/qwiz',
   },
