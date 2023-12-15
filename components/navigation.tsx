@@ -4,7 +4,7 @@ import { InflatedWord } from './word';
 
 export const Navigation = () => {
   return (
-    <nav className="sticky top-2 w-full px-4">
+    <nav className="sticky top-2 z-10 w-full px-4">
       <div className="mx-auto my-8 flex max-w-screen-md items-center justify-between rounded-full bg-neutral-100 px-4 py-2">
         <Link href="/">
           <InflatedWord word="M" size="small" />
