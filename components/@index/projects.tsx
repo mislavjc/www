@@ -11,6 +11,7 @@ import FinSvg from 'public/fin.svg';
 import LogokodPng from 'public/logokod.png';
 import MoveUpRightSvg from 'public/move-up-right.svg';
 import QwizSvg from 'public/qwiz.svg';
+import SpotichatSvg from 'public/spotichat.svg';
 import SpotistatsSvg from 'public/spotistats.svg';
 
 const projects = [
@@ -20,6 +21,13 @@ const projects = [
       "A prototype for A/B testing content generation utilizing AI. This project was developed as part of my bachelor's thesis.",
     icon: CopylotSvg,
     url: 'https://github.com/mislavjc/copylot',
+  },
+  {
+    name: 'Spotichat',
+    description:
+      'A playground for testing out OpenAI function calling using the Spotify API to create a message-like interface for getting user stats.',
+    icon: SpotichatSvg,
+    url: 'https://github.com/mislavjc/spotichat',
   },
   {
     name: 'Logokod d.o.o.',
