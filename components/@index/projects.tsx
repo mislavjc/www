@@ -75,7 +75,8 @@ export const Projects = () => {
                   <Image
                     src={project.icon}
                     alt={project.name}
-                    className="mr-2 inline-block h-8 w-8 rounded align-middle"
+                    height={20}
+                    className="mr-3 inline-block w-5"
                   />
                   {project.name}
                 </h3>
