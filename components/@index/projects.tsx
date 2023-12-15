@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { SectionTitle } from 'components/section-title';
+
 import { cn } from 'lib/utils';
 
 import AcjLogoSvg from 'public/acj-logo.svg';
@@ -57,9 +59,7 @@ const projects = [
 export const Projects = () => {
   return (
     <div>
-      <h2 className="mb-8 font-grotesk text-4xl text-neutral-900" id="projects">
-        Projects
-      </h2>
+      <SectionTitle>Projects</SectionTitle>
       <div className="flex flex-col gap-4">
         {projects.map((project, index) => (
           <Link

@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { SectionTitle } from 'components/section-title';
+
 const workExperiences = [
   {
     date: 'Oct 2022 - Dec 2023',
@@ -30,12 +32,7 @@ const workExperiences = [
 export const Experience = () => {
   return (
     <div>
-      <h2
-        className="mb-8 font-grotesk text-4xl text-neutral-900"
-        id="experience"
-      >
-        Experience
-      </h2>
+      <SectionTitle>Experience</SectionTitle>
       <div className="space-y-8">
         {workExperiences.map((experience, index) => (
           <div className="flex flex-row " key={index}>
