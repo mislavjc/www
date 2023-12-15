@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 type ShapeProps = {
-  shape: '2';
+  shape: '2' | '16';
 };
 
 export const Shape = ({ shape }: ShapeProps) => {

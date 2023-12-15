@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import PlausibleProvider from 'next-plausible';
 
+import { Footer } from 'components/footer';
 import { Navigation } from 'components/navigation';
 
 import { cn } from 'lib/utils';
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body className="bg-neutral-50">
         <Navigation />
         {children}
+        <Footer />
       </body>
     </html>
   );
