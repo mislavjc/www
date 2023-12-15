@@ -31,7 +31,7 @@ const workExperiences = [
 
 export const Experience = () => {
   return (
-    <div>
+    <div id="experience">
       <SectionTitle>Experience</SectionTitle>
       <div className="space-y-8">
         {workExperiences.map((experience, index) => (

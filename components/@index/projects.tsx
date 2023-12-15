@@ -58,7 +58,7 @@ const projects = [
 
 export const Projects = () => {
   return (
-    <div>
+    <div id="projects">
       <SectionTitle>Projects</SectionTitle>
       <div className="flex flex-col gap-4">
         {projects.map((project, index) => (

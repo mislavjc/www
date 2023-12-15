@@ -11,13 +11,13 @@ export const Navigation = () => {
         </Link>
         <ul className="flex gap-4 text-neutral-900">
           <li>
+            <Link href="/#about">About</Link>
+          </li>
+          <li>
             <Link href="/#experience">Experience</Link>
           </li>
           <li>
             <Link href="/#projects">Projects</Link>
-          </li>
-          <li>
-            <Link href="/#contact">Contact</Link>
           </li>
         </ul>
       </div>
