@@ -12,7 +12,7 @@ export const Shape = ({ shape }: ShapeProps) => {
         alt="shape"
         width={64}
         height={64}
-        className="h-10 w-10 lg:h-16 lg:w-16"
+        className="size-10 lg:size-16"
       />
     </span>
   );
