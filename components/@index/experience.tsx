@@ -4,6 +4,12 @@ import { SectionTitle } from 'components/section-title';
 
 const workExperiences = [
   {
+    date: 'Jan 2024 - Present',
+    company: 'CoreLine',
+    role: 'Frontend Engineer',
+    img: '/coreline.png',
+  },
+  {
     date: 'Oct 2022 - Dec 2023',
     company: 'Glassnode',
     role: 'Frontend Engineer',
