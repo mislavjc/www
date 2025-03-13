@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 import { SectionTitle } from 'components/section-title';
@@ -10,11 +10,26 @@ import CopylotSvg from 'public/copylot.svg';
 import FinSvg from 'public/fin.svg';
 import LogokodPng from 'public/logokod.png';
 import MoveUpRightSvg from 'public/move-up-right.svg';
+import PlaninoPng from 'public/planino.png';
 import QwizSvg from 'public/qwiz.svg';
 import SpotichatSvg from 'public/spotichat.svg';
 import SpotistatsSvg from 'public/spotistats.svg';
 
+type Project = {
+  name: string;
+  description: string;
+  icon: StaticImageData | string;
+  url?: string;
+};
+
 const projects = [
+  {
+    name: 'Planino',
+    description:
+      'A platform for startups and SMEs to create business plans, calculate breakeven points, and manage financial data. Built with Next.js, Tailwind CSS, and PostgreSQL.',
+    icon: PlaninoPng,
+    url: 'https://github.com/mislavjc/planino',
+  },
   {
     name: 'Copylot',
     description:
@@ -62,7 +77,7 @@ const projects = [
     icon: FinSvg,
     url: 'https://github.com/mislavjc/next-fin',
   },
-];
+] satisfies Project[];
 
 export const Projects = () => {
   return (
