@@ -2,12 +2,34 @@ import Image from 'next/image';
 
 import { SectionTitle } from 'components/section-title';
 
+type Experience = {
+  date: string;
+  company: string;
+  role: string;
+  description?: string;
+  img: string;
+};
+
 const workExperiences = [
   {
-    date: 'Jan 2024 - Present',
+    date: 'Feb 2025 - Present',
+    company: 'Steel',
+    role: 'Founding Applied AI Engineer',
+    img: '/steel.png',
+  },
+  {
+    date: 'Sep 2024 - Feb 2025',
+    company: 'Rubric Labs',
+    role: 'Applied AI Engineer',
+    img: '/rubric.png',
+  },
+  {
+    date: 'Jan 2024 - Sep 2024',
     company: 'CoreLine',
     role: 'Frontend Engineer',
     img: '/coreline.png',
+    description:
+      'Built a custom content management system for a web shop, making it super easy to manage and update content on the fly.',
   },
   {
     date: 'Oct 2022 - Dec 2023',
@@ -33,7 +55,7 @@ const workExperiences = [
       'Worked on the implementation of GraphQL endpoints and improvement of the functionality of the CoreEvent application.',
     img: '/coreline.png',
   },
-];
+] satisfies Experience[];
 
 export const Experience = () => {
   return (
