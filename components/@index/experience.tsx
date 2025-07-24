@@ -12,7 +12,7 @@ type Experience = {
 
 const workExperiences = [
   {
-    date: 'Feb 2025 - Present',
+    date: 'Feb 2025 - Jun 2025',
     company: 'Steel',
     role: 'Founding Applied AI Engineer',
     img: '/steel.png',
