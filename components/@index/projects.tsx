@@ -8,7 +8,9 @@ import { cn } from 'lib/utils';
 import AcjLogoSvg from 'public/acj-logo.svg';
 import CopylotSvg from 'public/copylot.svg';
 import FinSvg from 'public/fin.svg';
+import NodejsSvg from 'public/icons/nodejs.svg';
 import LogokodPng from 'public/logokod.png';
+import MPng from 'public/m.png';
 import MoveUpRightSvg from 'public/move-up-right.svg';
 import PlaninoPng from 'public/planino.png';
 import QwizSvg from 'public/qwiz.svg';
@@ -23,6 +25,20 @@ type Project = {
 };
 
 const projects = [
+  {
+    name: 'Photography Portfolio',
+    description:
+      'A personal photography portfolio featuring photos from my travels. Built with Next.js, Tailwind CSS, Cloudflare R2 for image storage, and Effect.',
+    icon: MPng,
+    url: 'https://photography.mislavjc.com',
+  },
+  {
+    name: 'Constellator',
+    description:
+      'An AI-powered CLI tool that transforms GitHub stars into organized, categorized markdown Awesome lists using Vercel AI Gateway and multi-pass processing.',
+    icon: NodejsSvg,
+    url: 'https://github.com/mislavjc/constellator',
+  },
   {
     name: 'Planino',
     description:
