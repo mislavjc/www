@@ -9,7 +9,6 @@ import AcjLogoSvg from 'public/acj-logo.svg';
 import CadroPng from 'public/cadro.png';
 import CopylotSvg from 'public/copylot.svg';
 import FinSvg from 'public/fin.svg';
-import NodejsSvg from 'public/icons/nodejs.svg';
 import LogokodPng from 'public/logokod.png';
 import MPng from 'public/m.png';
 import MoveUpRightSvg from 'public/move-up-right.svg';

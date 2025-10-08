@@ -1,9 +1,15 @@
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
-import nextPlugin from '@next/eslint-plugin-next';
+import { FlatCompat } from '@eslint/eslintrc';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-plugin-prettier';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+
+const compat = new FlatCompat({
+  baseDirectory: path.dirname(fileURLToPath(import.meta.url)),
+});
 
 const eslintConfig = [
   {
@@ -15,6 +21,8 @@ const eslintConfig = [
       'next-env.d.ts',
     ],
   },
+  // Add Next.js plugin config via FlatCompat (avoids eslint-config-next legacy path)
+  ...compat.extends('plugin:@next/next/core-web-vitals'),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -26,15 +34,12 @@ const eslintConfig = [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
-      '@next/next': nextPlugin,
       'react-hooks': reactHooksPlugin,
       prettier: prettierPlugin,
       'simple-import-sort': simpleImportSortPlugin,
     },
     rules: {
       ...(tsPlugin.configs?.recommended?.rules ?? {}),
-      ...(nextPlugin.configs?.recommended?.rules ?? {}),
-      ...(nextPlugin.configs?.['core-web-vitals']?.rules ?? {}),
       ...(reactHooksPlugin.configs?.recommended?.rules ?? {
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
