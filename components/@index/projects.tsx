@@ -17,6 +17,7 @@ import PlaninoPng from 'public/planino.png';
 import QwizSvg from 'public/qwiz.svg';
 import SpotichatSvg from 'public/spotichat.svg';
 import SpotistatsSvg from 'public/spotistats.svg';
+import StarPng from 'public/star.png';
 
 type Project = {
   name: string;
@@ -37,7 +38,7 @@ const projects = [
     name: 'Constellator',
     description:
       'An AI-powered CLI tool that transforms GitHub stars into organized, categorized markdown Awesome lists using Vercel AI Gateway and multi-pass processing.',
-    icon: NodejsSvg,
+    icon: StarPng,
     url: 'https://github.com/mislavjc/constellator',
   },
   {
