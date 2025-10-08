@@ -6,6 +6,7 @@ import { SectionTitle } from 'components/section-title';
 import { cn } from 'lib/utils';
 
 import AcjLogoSvg from 'public/acj-logo.svg';
+import CadroPng from 'public/cadro.png';
 import CopylotSvg from 'public/copylot.svg';
 import FinSvg from 'public/fin.svg';
 import NodejsSvg from 'public/icons/nodejs.svg';
@@ -38,6 +39,13 @@ const projects = [
       'An AI-powered CLI tool that transforms GitHub stars into organized, categorized markdown Awesome lists using Vercel AI Gateway and multi-pass processing.',
     icon: NodejsSvg,
     url: 'https://github.com/mislavjc/constellator',
+  },
+  {
+    name: 'Cadro',
+    description:
+      'Add clean borders to images with precise controls and live preview. Drag-and-drop input and one-click export to crisp PNG — all in the browser.',
+    icon: CadroPng,
+    url: 'https://cadro.us',
   },
   {
     name: 'Planino',
