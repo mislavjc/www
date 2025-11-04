@@ -1,4 +1,5 @@
 import { Marquee } from 'components/@index/logos';
+import { SpotifyNowPlaying } from 'components/@index/spotify-now-playing';
 import { SectionTitle } from 'components/section-title';
 
 export const About = () => {
@@ -16,6 +17,7 @@ export const About = () => {
         interest in, so in my free time I work on side projects experimenting
         with it.
       </p>
+      <SpotifyNowPlaying />
       <Marquee />
     </div>
   );
