@@ -1,24 +1,22 @@
-import { About } from 'components/@index/about';
 import { Experience } from 'components/@index/experience';
 import { Hero } from 'components/@index/hero';
-import { Projects } from 'components/@index/projects';
-import { Section } from 'components/section';
+import { Music } from 'components/@index/music';
+import { Photography } from 'components/@index/photography';
 
 const HomePage = () => {
   return (
-    <main className="mx-auto mt-16 max-w-screen-md px-6">
-      <Section>
-        <Hero />
-      </Section>
-      <Section>
-        <About />
-      </Section>
-      <Section>
-        <Experience />
-      </Section>
-      <Section>
-        <Projects />
-      </Section>
+    <main className="mx-auto max-w-3xl overflow-x-hidden px-6">
+      <Hero />
+      <Music />
+      <Photography />
+      <Experience />
+      <section id="travel" className="py-24">
+        <div className="mb-4 flex items-baseline gap-3">
+          <span className="font-serif text-sm text-stone-400">4</span>
+          <h2 className="font-serif text-3xl text-stone-900">Travel</h2>
+        </div>
+        <p className="text-stone-500">Coming soon.</p>
+      </section>
     </main>
   );
 };
