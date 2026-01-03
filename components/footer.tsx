@@ -1,65 +1,46 @@
-import Image from 'next/image';
-
-import MoveUpRightSvg from 'public/move-up-right.svg';
-
-import { Shape } from './shape';
-
-type FooterLinkProps = {
-  href: string;
-  name: string;
-  isEmail?: boolean;
-};
-
-const FooterLink = ({ href, name, isEmail }: FooterLinkProps) => {
-  if (isEmail) {
-    return (
-      <li>
-        <a href={`mailto:${href}`} className="underline">
-          {name}
-        </a>
-      </li>
-    );
-  }
-  return (
-    <li>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-1"
-      >
-        {name} <Image src={MoveUpRightSvg} alt="arrow" width={12} height={12} />
-      </a>
-    </li>
-  );
-};
+import Link from 'next/link';
 
 const links = [
-  { href: 'https://github.com/mislavjc', name: 'GitHub' },
-  { href: 'https://www.linkedin.com/in/mislavjc/', name: 'LinkedIn' },
-  { href: 'https://x.com/mislavjc', name: 'X' },
-  { href: 'https://instagram.com/mislavjc', name: 'Instagram' },
-  { href: 'mislavjc@gmail.com', name: 'mislavjc@gmail.com', isEmail: true },
+  { href: 'https://github.com/mislavjc', label: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/mislavjc/', label: 'LinkedIn' },
+  { href: 'https://x.com/mislavjc', label: 'X' },
+  { href: 'https://instagram.com/mislavjc', label: 'Instagram' },
 ];
 
 export const Footer = () => {
   return (
-    <footer className="bg-neutral-100">
-      <div className="mx-auto flex max-w-screen-md justify-between p-8">
-        <ul>
-          {links.map((link) => (
-            <FooterLink key={link.href} {...link} />
-          ))}
-        </ul>
-        <Shape shape="16" />
+    <footer className="border-t border-stone-200 py-16">
+      <div className="mx-auto max-w-3xl px-6">
+        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
+          <div>
+            <p className="font-serif text-lg text-stone-900">Mislav</p>
+            <p className="mt-1 text-sm text-stone-500">
+              <a
+                href="mailto:mislavjc@gmail.com"
+                className="hover:text-stone-900"
+              >
+                mislavjc@gmail.com
+              </a>
+            </p>
+          </div>
+          <nav>
+            <ul className="flex gap-6">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-stone-500 hover:text-stone-900"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
       </div>
-      <div className="h-4 w-full bg-neutral-200" />
-      <div className="h-4 w-full bg-neutral-400" />
-      <div className="h-4 w-full bg-neutral-500" />
-      <div className="h-4 w-full bg-neutral-600" />
-      <div className="h-4 w-full bg-neutral-700" />
-      <div className="h-4 w-full bg-neutral-800" />
-      <div className="h-4 w-full bg-neutral-900" />
     </footer>
   );
 };
