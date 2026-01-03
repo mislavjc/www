@@ -8,6 +8,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.scdn.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'r2.photography.mislavjc.com',
+      },
     ],
   },
 };
