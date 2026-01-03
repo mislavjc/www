@@ -285,151 +285,101 @@ const BrowserWindow = () => {
   const isGitHub = activeProject.url.includes('github.com');
 
   return (
-    <div className="aspect-[16/10] w-full overflow-hidden rounded-xl border border-stone-300 bg-white shadow-xl">
-      {/* Title bar */}
-      <div className="flex items-center gap-2 border-b border-stone-200 bg-gradient-to-b from-stone-100 to-stone-50 px-4 py-2.5">
+    <div className="aspect-[16/10] w-full overflow-hidden rounded-lg border border-stone-200 bg-stone-100">
+      {/* Window chrome */}
+      <div className="flex h-10 items-center gap-3 border-b border-stone-200 bg-stone-50 px-4">
         {/* Traffic lights */}
-        <div className="flex gap-2">
-          <div className="h-3 w-3 rounded-full bg-[#FF5F57] shadow-inner" />
-          <div className="h-3 w-3 rounded-full bg-[#FFBD2E] shadow-inner" />
-          <div className="h-3 w-3 rounded-full bg-[#28CA41] shadow-inner" />
+        <div className="flex gap-1.5">
+          <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
+          <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
+          <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
         </div>
 
-        {/* Tabs */}
-        <div className="ml-6 flex flex-1 items-end gap-1 overflow-x-auto">
-          {projects.map((project, index) => (
-            <button
-              key={project.name}
-              type="button"
-              onClick={() => setActiveTab(index)}
-              className={`flex items-center gap-2 rounded-t-lg border-x border-t px-4 py-2 font-mono text-xs transition-all ${
-                activeTab === index
-                  ? 'border-stone-200 bg-white text-stone-900'
-                  : 'border-transparent bg-transparent text-stone-400 hover:bg-stone-100 hover:text-stone-600'
-              }`}
-            >
-              <span>{project.favicon}</span>
-              <span className="hidden md:inline">{project.name}</span>
-            </button>
-          ))}
+        {/* URL bar */}
+        <div className="flex flex-1 items-center justify-center">
+          <div className="flex items-center gap-2 rounded-md bg-white px-3 py-1 text-xs text-stone-500">
+            <span className="hidden sm:inline">
+              {activeProject.url.replace('https://', '')}
+            </span>
+            <span className="sm:hidden">{activeProject.name}</span>
+          </div>
         </div>
+
+        <div className="w-[52px]" />
       </div>
 
-      {/* URL bar */}
-      <div className="flex items-center gap-3 border-b border-stone-200 bg-white px-4 py-2">
-        {/* Navigation buttons */}
-        <div className="flex gap-2 text-stone-300">
-          <span>‹</span>
-          <span>›</span>
-        </div>
-
-        {/* URL input */}
-        <div className="flex flex-1 items-center gap-2 rounded-lg bg-stone-100 px-3 py-1.5 font-mono text-xs">
-          {isGitHub ? (
-            <svg
-              className="h-3.5 w-3.5 text-stone-500"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-            </svg>
-          ) : (
-            <svg
-              className="h-3.5 w-3.5 text-green-500"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-            </svg>
-          )}
-          <span className="text-stone-500">
-            {activeProject.url.replace('https://', '')}
-          </span>
-        </div>
+      {/* Tabs */}
+      <div className="flex border-b border-stone-200 bg-stone-50">
+        {projects.map((project, index) => (
+          <button
+            key={project.name}
+            type="button"
+            onClick={() => setActiveTab(index)}
+            className={`flex items-center gap-2 border-r border-stone-200 px-4 py-2 text-xs transition-colors ${
+              activeTab === index
+                ? 'bg-white text-stone-900'
+                : 'text-stone-400 hover:bg-stone-100 hover:text-stone-600'
+            }`}
+          >
+            <span>{project.favicon}</span>
+            <span className="hidden md:inline">{project.name}</span>
+          </button>
+        ))}
       </div>
 
-      {/* Content area */}
-      <div className="flex h-[calc(100%-88px)] flex-col bg-stone-50 p-8">
-        {isGitHub ? (
-          /* GitHub repo style */
-          <div className="flex flex-1 flex-col">
-            <div className="mb-6 flex items-center gap-3">
-              <span className="text-3xl">{activeProject.favicon}</span>
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-semibold text-stone-900">
+      {/* Content */}
+      <div className="h-[calc(100%-80px)] overflow-auto bg-white p-6 md:p-8">
+        <div className="mx-auto max-w-lg">
+          {/* Header */}
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <div className="mb-1 flex items-center gap-2">
+                <span className="text-2xl">{activeProject.favicon}</span>
+                <h3 className="text-xl font-semibold text-stone-900">
                   {activeProject.name}
-                  {activeProject.spotify && (
-                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                      Spotify API
-                    </span>
-                  )}
-                </h4>
-                <p className="mt-1 text-sm text-stone-500">Public repository</p>
+                </h3>
               </div>
+              <p className="text-xs text-stone-400">
+                {isGitHub ? 'GitHub Repository' : 'Website'}
+              </p>
             </div>
-
-            <div className="rounded-lg border border-stone-200 bg-white p-5">
-              <p className="text-stone-700">{activeProject.description}</p>
-            </div>
-
-            <div className="mt-auto pt-6">
-              <Link
-                href={activeProject.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50"
-              >
-                <svg
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                View on GitHub
-              </Link>
-            </div>
+            {activeProject.highlight && (
+              <span className="rounded bg-stone-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-stone-500">
+                New
+              </span>
+            )}
           </div>
-        ) : (
-          /* Website style */
-          <div className="flex flex-1 flex-col">
-            <div className="mb-6 flex items-center gap-3">
-              <span className="text-3xl">{activeProject.favicon}</span>
-              <div>
-                <h4 className="flex items-center gap-2 text-xl font-semibold text-stone-900">
-                  {activeProject.name}
-                  {activeProject.highlight && (
-                    <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700">
-                      New
-                    </span>
-                  )}
-                </h4>
-                <p className="mt-1 text-sm text-stone-500">
-                  {activeProject.url.replace('https://', '')}
-                </p>
-              </div>
-            </div>
 
-            <div className="flex-1 rounded-lg border border-stone-200 bg-white p-5">
-              <p className="text-stone-700">{activeProject.description}</p>
-            </div>
+          {/* Description */}
+          <p className="mb-6 leading-relaxed text-stone-600">
+            {activeProject.description}
+          </p>
 
-            <div className="mt-auto pt-6">
-              <Link
-                href={activeProject.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md bg-stone-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-stone-800"
-              >
-                Visit Website
-                <span>↗</span>
-              </Link>
-            </div>
+          {/* Tags */}
+          <div className="mb-6 flex flex-wrap gap-2">
+            {activeProject.spotify && (
+              <span className="rounded bg-green-50 px-2 py-1 text-xs text-green-700">
+                Spotify API
+              </span>
+            )}
+            {isGitHub && (
+              <span className="rounded bg-stone-100 px-2 py-1 text-xs text-stone-600">
+                Open Source
+              </span>
+            )}
           </div>
-        )}
+
+          {/* Action */}
+          <Link
+            href={activeProject.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-stone-900 underline underline-offset-4 transition-colors hover:text-stone-600"
+          >
+            {isGitHub ? 'View on GitHub' : 'Visit website'}
+            <span>↗</span>
+          </Link>
+        </div>
       </div>
     </div>
   );
