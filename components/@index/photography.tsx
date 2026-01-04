@@ -1,8 +1,11 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { getPhotos } from 'lib/photography';
 import { PhotoSphere } from './photo-sphere';
+
+const FAVORITE_PHOTO_UUID = '00000000-0000-761f-bbe1-9603a1134c4e';
 
 const gear = [
   { name: 'Fuji X100VI', type: 'camera', acquired: '07/24' },
@@ -174,13 +177,43 @@ export const Photography = () => {
         <h2 className="font-serif text-3xl text-stone-900">Lens</h2>
       </div>
 
-      <p className="mb-12 max-w-xl text-stone-600">
-        I&apos;ve always gravitated towards photography. Back in middle school,
-        I was already obsessed with image quality. In high school, I&apos;d
-        flash custom ROMs on my Xiaomi Mi 9 and use Google Camera APKs just to
-        squeeze out better photos. Then I finally said fuck it and bought the
-        X100VI—best purchase of my life.
+      <p className="mb-8 max-w-xl text-stone-600">
+        I was going to a conference in SF so I stopped over in NYC for 8 days.
+        Ended up way more excited about the stopover than the actual trip. First
+        time with my camera, running around Central Park like a kid. I don't
+        plan shots, I just shoot. Framing something good brings instant
+        dopamine. Headphones in, music on, just walking and looking.
       </p>
+
+      <p className="mb-12 max-w-xl text-stone-600">
+        I mostly shoot architecture and street. People stress me out. It's the
+        pressure of getting it right, you know? I'd love to get into portraits
+        eventually but not there yet.
+      </p>
+
+      {/* Favorite photo with story */}
+      <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
+        <div className="relative w-full md:w-1/2">
+          <Image
+            src={`https://r2.photography.mislavjc.com/variants/grid/avif/640/${FAVORITE_PHOTO_UUID}.avif`}
+            alt="Rio de Janeiro at sunset"
+            width={640}
+            height={960}
+            className="h-auto w-full"
+          />
+        </div>
+        <div className="flex-1">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-400">
+            Favorite shot
+          </p>
+          <p className="text-stone-600">
+            Rio, January 2025. I only stayed one night because I was scared of
+            being there alone. My friend stayed in Paraguay and I flew back
+            solo. Immediately regretted it. Turned out Rio is amazing and I
+            should've stayed longer. Would love to go back.
+          </p>
+        </div>
+      </div>
 
       {/* Photo Sphere */}
       <div className="mb-8">
