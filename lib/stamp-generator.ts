@@ -59,7 +59,7 @@ const imgEl = (
 ) =>
   `<g clip-path="url(#${id})" opacity="0.5"><image href="${img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/></g>`;
 
-// Text helper
+// Text helper - use sans-serif as fallback since Arial may not be available on Linux/Vercel
 const txt = (
   x: number,
   y: number,
@@ -68,7 +68,7 @@ const txt = (
   text: string,
   bold = false,
 ) =>
-  `<text x="${x}" y="${y}" fill="${color}" font-family="Arial" font-size="${size}" ${bold ? 'font-weight="bold"' : ''} text-anchor="middle">${text}</text>`;
+  `<text x="${x}" y="${y}" fill="${color}" font-family="DejaVu Sans, Liberation Sans, Arial, sans-serif" font-size="${size}" ${bold ? 'font-weight="bold"' : ''} text-anchor="middle">${text}</text>`;
 
 // SVG wrapper
 const svg = (w: number, h: number, content: string) =>
@@ -157,7 +157,7 @@ const generators: Generator[] = [
     return svg(
       s,
       s,
-      `<defs><path id="arc" d="${arc}"/></defs>${clip}<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${d.color}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${r - 5}" fill="none" stroke="${d.color}" stroke-width="1"/><text fill="${d.color}" font-family="Arial" font-size="${s * 0.055}" font-weight="bold"><textPath href="#arc" startOffset="50%" text-anchor="middle">${d.country.toUpperCase()}</textPath></text>${txt(cx, cx + 5, s * 0.07, d.color, d.date, true)}`,
+      `<defs><path id="arc" d="${arc}"/></defs>${clip}<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${d.color}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${r - 5}" fill="none" stroke="${d.color}" stroke-width="1"/><text fill="${d.color}" font-family="DejaVu Sans, Liberation Sans, Arial, sans-serif" font-size="${s * 0.055}" font-weight="bold"><textPath href="#arc" startOffset="50%" text-anchor="middle">${d.country.toUpperCase()}</textPath></text>${txt(cx, cx + 5, s * 0.07, d.color, d.date, true)}`,
     );
   },
   // 5. Square
