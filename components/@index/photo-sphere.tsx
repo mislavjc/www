@@ -80,298 +80,299 @@ const tempMatrix = new THREE.Matrix4();
 const tempQuat = new THREE.Quaternion();
 const tempEuler = new THREE.Euler();
 
-const PhotoPlane = React.memo(
-  ({ photo, position, rotation, index }: PhotoPlaneProps) => {
-    const groupRef = useRef<THREE.Group>(null);
-    const innerGroupRef = useRef<THREE.Group>(null);
-    const materialRef = useRef<THREE.MeshBasicMaterial>(null);
-    const [hovered, setHovered] = useState(false);
-    const [loaded, setLoaded] = useState(false);
-    const textureRef = useRef<THREE.Texture | null>(null);
-    const { selected, setSelected, cameraRef, isFlipped, setIsFlipped } =
-      React.useContext(selectedPhotoContext);
+const PhotoPlane = React.memo(function PhotoPlane({
+  photo,
+  position,
+  rotation,
+  index,
+}: PhotoPlaneProps) {
+  const groupRef = useRef<THREE.Group>(null);
+  const innerGroupRef = useRef<THREE.Group>(null);
+  const materialRef = useRef<THREE.MeshBasicMaterial>(null);
+  const [hovered, setHovered] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const textureRef = useRef<THREE.Texture | null>(null);
+  const { selected, setSelected, cameraRef, isFlipped, setIsFlipped } =
+    React.useContext(selectedPhotoContext);
 
-    // Memoize dimensions
-    const { width, height } = useMemo(() => {
-      const isPortrait = photo.h > photo.w;
-      const aspectRatio = photo.w / photo.h;
-      const baseSize = 5;
-      return {
-        width: isPortrait ? baseSize * aspectRatio : baseSize,
-        height: isPortrait ? baseSize : baseSize / aspectRatio,
-      };
-    }, [photo.w, photo.h]);
+  // Memoize dimensions
+  const { width, height } = useMemo(() => {
+    const isPortrait = photo.h > photo.w;
+    const aspectRatio = photo.w / photo.h;
+    const baseSize = 5;
+    return {
+      width: isPortrait ? baseSize * aspectRatio : baseSize,
+      height: isPortrait ? baseSize : baseSize / aspectRatio,
+    };
+  }, [photo.w, photo.h]);
 
-    // Get cached geometry
-    const geometry = useMemo(
-      () => getPlaneGeometry(width, height),
-      [width, height],
-    );
+  // Get cached geometry
+  const geometry = useMemo(
+    () => getPlaneGeometry(width, height),
+    [width, height],
+  );
 
-    const isSelected = selected?.photo.uuid === photo.uuid;
+  const isSelected = selected?.photo.uuid === photo.uuid;
 
-    // Load texture with staggered delay based on index
-    useEffect(() => {
-      const delay = index * 50; // Reduced delay for faster loading
-      let objectUrl: string | null = null;
-      let cancelled = false;
+  // Load texture with staggered delay based on index
+  useEffect(() => {
+    const delay = index * 50; // Reduced delay for faster loading
+    let objectUrl: string | null = null;
+    let cancelled = false;
 
-      const timer = setTimeout(() => {
-        const r2Url = `https://r2.photography.mislavjc.com/variants/grid/jpeg/640/${photo.uuid}.jpeg`;
-        const url = `/_next/image?url=${encodeURIComponent(r2Url)}&w=640&q=75`;
+    const timer = setTimeout(() => {
+      const r2Url = `https://r2.photography.mislavjc.com/variants/grid/jpeg/640/${photo.uuid}.jpeg`;
+      const url = `/_next/image?url=${encodeURIComponent(r2Url)}&w=640&q=75`;
 
-        fetch(url)
-          .then((res) => res.blob())
-          .then((blob) => {
-            if (cancelled) return;
-            objectUrl = URL.createObjectURL(blob);
-            const img = new window.Image();
-            img.onload = () => {
-              if (cancelled) {
-                if (objectUrl) URL.revokeObjectURL(objectUrl);
-                return;
-              }
-              const tex = new THREE.Texture(img);
-              tex.needsUpdate = true;
-              tex.colorSpace = THREE.SRGBColorSpace;
-              tex.minFilter = THREE.LinearFilter;
-              tex.generateMipmaps = false;
-              textureRef.current = tex;
-
-              if (materialRef.current) {
-                materialRef.current.map = tex;
-                materialRef.current.needsUpdate = true;
-                setLoaded(true);
-              }
+      fetch(url)
+        .then((res) => res.blob())
+        .then((blob) => {
+          if (cancelled) return;
+          objectUrl = URL.createObjectURL(blob);
+          const img = new window.Image();
+          img.onload = () => {
+            if (cancelled) {
               if (objectUrl) URL.revokeObjectURL(objectUrl);
-              objectUrl = null;
-            };
-            img.src = objectUrl;
-          })
-          .catch(() => {});
-      }, delay);
+              return;
+            }
+            const tex = new THREE.Texture(img);
+            tex.needsUpdate = true;
+            tex.colorSpace = THREE.SRGBColorSpace;
+            tex.minFilter = THREE.LinearFilter;
+            tex.generateMipmaps = false;
+            textureRef.current = tex;
 
-      return () => {
-        cancelled = true;
-        clearTimeout(timer);
-        if (objectUrl) URL.revokeObjectURL(objectUrl);
-        if (textureRef.current) {
-          textureRef.current.dispose();
-        }
-      };
-    }, [photo.uuid, index]);
+            if (materialRef.current) {
+              materialRef.current.map = tex;
+              materialRef.current.needsUpdate = true;
+              setLoaded(true);
+            }
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+            objectUrl = null;
+          };
+          img.src = objectUrl;
+        })
+        .catch(() => {});
+    }, delay);
 
-    // Store original position/rotation as refs to avoid recreating objects
-    const originalPos = useRef(new THREE.Vector3(...position));
-    const originalRot = useRef(new THREE.Euler(...rotation));
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      if (textureRef.current) {
+        textureRef.current.dispose();
+      }
+    };
+  }, [photo.uuid, index]);
 
-    // Target flip rotation - flip shows back (postcard)
-    const targetFlipY = isSelected && isFlipped ? Math.PI : 0;
+  // Store original position/rotation as refs to avoid recreating objects
+  const originalPos = useRef(new THREE.Vector3(...position));
+  const originalRot = useRef(new THREE.Euler(...rotation));
 
-    const targetScale = isSelected ? 1 : hovered ? 1.05 : 1;
+  // Target flip rotation - flip shows back (postcard)
+  const targetFlipY = isSelected && isFlipped ? Math.PI : 0;
 
-    const currentFlipRef = useRef(0);
+  const targetScale = isSelected ? 1 : hovered ? 1.05 : 1;
 
-    useFrame((state) => {
-      if (!groupRef.current) return;
+  const currentFlipRef = useRef(0);
 
-      let targetPos: THREE.Vector3;
-      let targetRot: THREE.Euler;
+  useFrame((state) => {
+    if (!groupRef.current) return;
 
-      if (isSelected && cameraRef?.current) {
-        const camera = cameraRef.current;
-        tempVec3.set(0, 0, -1).applyQuaternion(camera.quaternion);
-        targetPos = tempVec3.clone().multiplyScalar(5).add(camera.position);
+    let targetPos: THREE.Vector3;
+    let targetRot: THREE.Euler;
 
-        tempMatrix.lookAt(camera.position, targetPos, camera.up);
-        tempQuat.setFromRotationMatrix(tempMatrix);
-        targetRot = tempEuler.setFromQuaternion(tempQuat);
+    if (isSelected && cameraRef?.current) {
+      const camera = cameraRef.current;
+      tempVec3.set(0, 0, -1).applyQuaternion(camera.quaternion);
+      targetPos = tempVec3.clone().multiplyScalar(5).add(camera.position);
+
+      tempMatrix.lookAt(camera.position, targetPos, camera.up);
+      tempQuat.setFromRotationMatrix(tempMatrix);
+      targetRot = tempEuler.setFromQuaternion(tempQuat);
+    } else {
+      targetPos = originalPos.current;
+      targetRot = originalRot.current;
+    }
+
+    groupRef.current.position.lerp(targetPos, 0.08);
+
+    if (!isSelected) {
+      groupRef.current.position.y +=
+        Math.sin(state.clock.elapsedTime * 0.5 + index) * 0.015;
+    }
+
+    groupRef.current.rotation.x +=
+      (targetRot.x - groupRef.current.rotation.x) * 0.08;
+    groupRef.current.rotation.y +=
+      (targetRot.y - groupRef.current.rotation.y) * 0.08;
+    groupRef.current.rotation.z +=
+      (targetRot.z - groupRef.current.rotation.z) * 0.08;
+
+    tempScale.set(targetScale, targetScale, targetScale);
+    groupRef.current.scale.lerp(tempScale, 0.1);
+
+    // Animate flip on inner group
+    if (innerGroupRef.current) {
+      currentFlipRef.current += (targetFlipY - currentFlipRef.current) * 0.1;
+      innerGroupRef.current.rotation.y = currentFlipRef.current;
+    }
+  });
+
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (isSelected) {
+        setIsFlipped(!isFlipped);
       } else {
-        targetPos = originalPos.current;
-        targetRot = originalRot.current;
+        setIsFlipped(false);
+        setSelected({ photo, position, rotation });
       }
+    },
+    [
+      isSelected,
+      isFlipped,
+      setIsFlipped,
+      setSelected,
+      photo,
+      position,
+      rotation,
+    ],
+  );
 
-      groupRef.current.position.lerp(targetPos, 0.08);
+  return (
+    <group
+      ref={groupRef}
+      position={position}
+      rotation={rotation}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onClick={handleClick}
+      renderOrder={isSelected ? 1 : 0}
+    >
+      {/* Inner group for flip animation */}
+      <group ref={innerGroupRef}>
+        {/* Front - Photo */}
+        <mesh renderOrder={isSelected ? 10 : 0} geometry={geometry}>
+          <meshBasicMaterial
+            ref={materialRef}
+            color={loaded ? '#ffffff' : '#44403c'}
+            side={THREE.FrontSide}
+            transparent
+            depthTest={!isSelected}
+            depthWrite={!isSelected}
+          />
+        </mesh>
 
-      if (!isSelected) {
-        groupRef.current.position.y +=
-          Math.sin(state.clock.elapsedTime * 0.5 + index) * 0.015;
-      }
+        {/* Back - Postcard paper */}
+        <mesh renderOrder={isSelected ? 10 : 0} geometry={geometry}>
+          <meshBasicMaterial
+            color="#f5f2eb"
+            side={THREE.BackSide}
+            transparent
+            depthTest={!isSelected}
+            depthWrite={!isSelected}
+          />
+        </mesh>
 
-      groupRef.current.rotation.x +=
-        (targetRot.x - groupRef.current.rotation.x) * 0.08;
-      groupRef.current.rotation.y +=
-        (targetRot.y - groupRef.current.rotation.y) * 0.08;
-      groupRef.current.rotation.z +=
-        (targetRot.z - groupRef.current.rotation.z) * 0.08;
-
-      tempScale.set(targetScale, targetScale, targetScale);
-      groupRef.current.scale.lerp(tempScale, 0.1);
-
-      // Animate flip on inner group
-      if (innerGroupRef.current) {
-        currentFlipRef.current += (targetFlipY - currentFlipRef.current) * 0.1;
-        innerGroupRef.current.rotation.y = currentFlipRef.current;
-      }
-    });
-
-    const handleClick = useCallback(
-      (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (isSelected) {
-          setIsFlipped(!isFlipped);
-        } else {
-          setIsFlipped(false);
-          setSelected({ photo, position, rotation });
-        }
-      },
-      [
-        isSelected,
-        isFlipped,
-        setIsFlipped,
-        setSelected,
-        photo,
-        position,
-        rotation,
-      ],
-    );
-
-    return (
-      <group
-        ref={groupRef}
-        position={position}
-        rotation={rotation}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        onClick={handleClick}
-        renderOrder={isSelected ? 1 : 0}
-      >
-        {/* Inner group for flip animation */}
-        <group ref={innerGroupRef}>
-          {/* Front - Photo */}
-          <mesh renderOrder={isSelected ? 10 : 0} geometry={geometry}>
-            <meshBasicMaterial
-              ref={materialRef}
-              color={loaded ? '#ffffff' : '#44403c'}
-              side={THREE.FrontSide}
-              transparent
-              depthTest={!isSelected}
-              depthWrite={!isSelected}
-            />
-          </mesh>
-
-          {/* Back - Postcard paper */}
-          <mesh renderOrder={isSelected ? 10 : 0} geometry={geometry}>
-            <meshBasicMaterial
-              color="#f5f2eb"
-              side={THREE.BackSide}
-              transparent
-              depthTest={!isSelected}
-              depthWrite={!isSelected}
-            />
-          </mesh>
-
-          {/* Metadata on back - only visible when flipped */}
-          {isSelected && isFlipped && photo.exif && (
-            <Html
-              position={[0, 0, 0.01]}
-              transform
-              scale={0.4}
+        {/* Metadata on back - only visible when flipped */}
+        {isSelected && isFlipped && photo.exif && (
+          <Html
+            position={[0, 0, 0.01]}
+            transform
+            scale={0.4}
+            style={{
+              pointerEvents: 'none',
+              width: '1px',
+              height: '1px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            zIndexRange={[100, 0]}
+          >
+            <div
+              className="font-mono text-stone-700"
               style={{
-                pointerEvents: 'none',
-                width: '1px',
-                height: '1px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                transform: 'rotateY(180deg) translate(-20%, 35%)',
+                width: '480px',
               }}
-              zIndexRange={[100, 0]}
             >
-              <div
-                className="font-mono text-stone-700"
-                style={{
-                  transform: 'rotateY(180deg) translate(-20%, 35%)',
-                  width: '480px',
-                }}
-              >
-                {/* Postcard layout */}
-                <div className="flex gap-5">
-                  {/* Left side - message area */}
-                  <div className="flex-1 border-r border-stone-300 pr-5">
-                    <div className="mb-4 text-xs uppercase tracking-widest text-stone-400">
-                      Photo Data
+              {/* Postcard layout */}
+              <div className="flex gap-5">
+                {/* Left side - message area */}
+                <div className="flex-1 border-r border-stone-300 pr-5">
+                  <div className="mb-4 text-xs uppercase tracking-widest text-stone-400">
+                    Photo Data
+                  </div>
+                  {photo.exif.camera && (
+                    <div className="text-stone-700 text-sm mb-1">
+                      {photo.exif.camera}
                     </div>
-                    {photo.exif.camera && (
-                      <div className="text-stone-700 text-sm mb-1">
-                        {photo.exif.camera}
-                      </div>
-                    )}
-                    {photo.exif.lens && (
-                      <div className="text-stone-500 text-sm mb-3">
-                        {photo.exif.lens}
-                      </div>
-                    )}
-                    {(photo.exif.focalLength ||
-                      photo.exif.aperture ||
-                      photo.exif.shutterSpeed) && (
-                      <div className="text-stone-500 text-xs">
-                        {[
-                          photo.exif.focalLength,
-                          photo.exif.aperture,
-                          photo.exif.shutterSpeed,
-                        ]
-                          .filter(Boolean)
-                          .join(' · ')}
-                      </div>
-                    )}
-                    {photo.exif.iso && (
-                      <div className="text-stone-500 text-xs">
-                        ISO {photo.exif.iso}
-                      </div>
-                    )}
+                  )}
+                  {photo.exif.lens && (
+                    <div className="text-stone-500 text-sm mb-3">
+                      {photo.exif.lens}
+                    </div>
+                  )}
+                  {(photo.exif.focalLength ||
+                    photo.exif.aperture ||
+                    photo.exif.shutterSpeed) && (
+                    <div className="text-stone-500 text-xs">
+                      {[
+                        photo.exif.focalLength,
+                        photo.exif.aperture,
+                        photo.exif.shutterSpeed,
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </div>
+                  )}
+                  {photo.exif.iso && (
+                    <div className="text-stone-500 text-xs">
+                      ISO {photo.exif.iso}
+                    </div>
+                  )}
+                </div>
+
+                {/* Right side - stamp & address area */}
+                <div className="flex-1 pl-3">
+                  {/* Stamp area */}
+                  <div className="flex justify-end mb-4">
+                    <div className="w-14 h-16 border-2 border-dashed border-stone-300 flex items-center justify-center">
+                      <span className="text-[10px] text-stone-400">STAMP</span>
+                    </div>
                   </div>
 
-                  {/* Right side - stamp & address area */}
-                  <div className="flex-1 pl-3">
-                    {/* Stamp area */}
-                    <div className="flex justify-end mb-4">
-                      <div className="w-14 h-16 border-2 border-dashed border-stone-300 flex items-center justify-center">
-                        <span className="text-[10px] text-stone-400">
-                          STAMP
-                        </span>
+                  {/* Date as "address" */}
+                  {photo.exif.dateTime && (
+                    <div className="space-y-2">
+                      <div className="border-b border-stone-300 pb-1 text-sm text-stone-600">
+                        {new Date(photo.exif.dateTime).toLocaleDateString(
+                          'en-US',
+                          {
+                            month: 'long',
+                            day: 'numeric',
+                          },
+                        )}
+                      </div>
+                      <div className="border-b border-stone-300 pb-1 text-sm text-stone-600">
+                        {new Date(photo.exif.dateTime).getFullYear()}
+                      </div>
+                      <div className="border-b border-stone-300 pb-1 text-xs text-stone-400">
+                        &nbsp;
                       </div>
                     </div>
-
-                    {/* Date as "address" */}
-                    {photo.exif.dateTime && (
-                      <div className="space-y-2">
-                        <div className="border-b border-stone-300 pb-1 text-sm text-stone-600">
-                          {new Date(photo.exif.dateTime).toLocaleDateString(
-                            'en-US',
-                            {
-                              month: 'long',
-                              day: 'numeric',
-                            },
-                          )}
-                        </div>
-                        <div className="border-b border-stone-300 pb-1 text-sm text-stone-600">
-                          {new Date(photo.exif.dateTime).getFullYear()}
-                        </div>
-                        <div className="border-b border-stone-300 pb-1 text-xs text-stone-400">
-                          &nbsp;
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
-            </Html>
-          )}
-        </group>
+            </div>
+          </Html>
+        )}
       </group>
-    );
-  },
-);
+    </group>
+  );
+});
 
 interface SceneProps {
   photos: PhotoData[];
@@ -393,7 +394,9 @@ const Scene = ({
 
   // Set up fog
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
     scene.fog = new THREE.Fog('#1c1917', 8, 35);
+
     scene.background = new THREE.Color('#1c1917');
   }, [scene]);
 

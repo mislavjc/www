@@ -181,15 +181,15 @@ export const Photography = () => {
       <p className="mb-8 max-w-xl text-stone-600">
         I was going to a conference in SF so I stopped over in NYC for 8 days.
         Ended up way more excited about the stopover than the actual trip. First
-        time with my camera, running around Central Park like a kid. I don't
-        plan shots, I just shoot. Framing something good brings instant
-        dopamine. Headphones in, music on, just walking and looking.
+        time with my camera, running around Central Park like a kid. I
+        don&apos;t plan shots, I just shoot. Framing something good brings
+        instant dopamine. Headphones in, music on, just walking and looking.
       </p>
 
       <p className="mb-12 max-w-xl text-stone-600">
-        I mostly shoot architecture and street. People stress me out. It's the
-        pressure of getting it right, you know? I'd love to get into portraits
-        eventually but not there yet.
+        I mostly shoot architecture and street. People stress me out. It&apos;s
+        the pressure of getting it right, you know? I&apos;d love to get into
+        portraits eventually but not there yet.
       </p>
 
       {/* Favorite photo with story */}
@@ -212,7 +212,7 @@ export const Photography = () => {
             Rio, January 2025. I only stayed one night because I was scared of
             being there alone. My friend stayed in Paraguay and I flew back
             solo. Immediately regretted it. Turned out Rio is amazing and I
-            should've stayed longer. Would love to go back.
+            should&apos;ve stayed longer. Would love to go back.
           </p>
         </div>
       </div>

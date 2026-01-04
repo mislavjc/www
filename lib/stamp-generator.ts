@@ -1,4 +1,5 @@
 import sharp from 'sharp';
+
 import { VISITED_COUNTRIES } from './countries';
 
 const CACHE_VERSION = 7;

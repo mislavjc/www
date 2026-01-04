@@ -483,8 +483,8 @@ export const Experience = () => {
         Udemy courses, building barebones CRUD apps with Express and EJS. Two
         people I owe my career to: my professor who introduced me to it, and
         Colt Steele whose course got me through those early days. Now coding is
-        my craft, my safe place. Half my side projects are Spotify-based. I'm
-        not a musician but making things with music is what I love.
+        my craft, my safe place. Half my side projects are Spotify-based.
+        I&apos;m not a musician but making things with music is what I love.
         stamped.today is the current one: you collect stamps of artists you
         love, frozen with their monthly listener count at that moment. Proof you
         were a day 1 before they blew up.

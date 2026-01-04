@@ -1,9 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 import { Map as MapComponent, MapControls, useMap } from 'components/ui/map';
+
 import { VISITED_COUNTRY_CODES, VISITED_COUNTRY_COUNT } from 'lib/countries';
 
 const VISITED_SET = new Set(VISITED_COUNTRY_CODES);
