@@ -20,9 +20,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.18
         version: 4.1.18
-      chafa-wasm:
-        specifier: ^0.3.1
-        version: 0.3.1
+      '@types/sharp':
+        specifier: ^0.32.0
+        version: 0.32.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -90,9 +90,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.7)
-      '@types/sharp':
-        specifier: ^0.32.0
-        version: 0.32.0
       '@types/three':
         specifier: ^0.182.0
         version: 0.182.0
@@ -1072,9 +1069,6 @@ packages:
 
   caniuse-lite@1.0.30001747:
     resolution: {integrity: sha512-mzFa2DGIhuc5490Nd/G31xN1pnBnYMadtkyTjefPI7wzypqgCEpeWu9bJr0OnDsyKrW75zA9ZAt7pbQFmwLsQg==}
-
-  chafa-wasm@0.3.1:
-    resolution: {integrity: sha512-3sD52VK5mPQd6WAwv8sabTEV0hJ3Fsm4Ot81Mct0d3hkMqJswG1gCLNZlcTeYba9GaJ1IGAtzKWE9cmUDwT4nw==}
 
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -3841,8 +3835,6 @@ snapshots:
       three: 0.182.0
 
   caniuse-lite@1.0.30001747: {}
-
-  chafa-wasm@0.3.1: {}
 
   chalk@4.1.2:
     dependencies:
