@@ -302,7 +302,7 @@ const PhotoPlane = React.memo(function PhotoPlane({
               <div className="flex gap-5">
                 {/* Left side - message area */}
                 <div className="flex-1 border-r border-stone-300 pr-5">
-                  <div className="mb-4 text-xs uppercase tracking-widest text-stone-400">
+                  <div className="mb-4 text-xs uppercase tracking-widest text-stone-500">
                     Photo Data
                   </div>
                   {photo.exif.camera && (
@@ -311,14 +311,14 @@ const PhotoPlane = React.memo(function PhotoPlane({
                     </div>
                   )}
                   {photo.exif.lens && (
-                    <div className="text-stone-500 text-sm mb-3">
+                    <div className="text-stone-600 text-sm mb-3">
                       {photo.exif.lens}
                     </div>
                   )}
                   {(photo.exif.focalLength ||
                     photo.exif.aperture ||
                     photo.exif.shutterSpeed) && (
-                    <div className="text-stone-500 text-xs">
+                    <div className="text-stone-600 text-xs">
                       {[
                         photo.exif.focalLength,
                         photo.exif.aperture,
@@ -329,7 +329,7 @@ const PhotoPlane = React.memo(function PhotoPlane({
                     </div>
                   )}
                   {photo.exif.iso && (
-                    <div className="text-stone-500 text-xs">
+                    <div className="text-stone-600 text-xs">
                       ISO {photo.exif.iso}
                     </div>
                   )}
@@ -340,7 +340,7 @@ const PhotoPlane = React.memo(function PhotoPlane({
                   {/* Stamp area */}
                   <div className="flex justify-end mb-4">
                     <div className="w-14 h-16 border-2 border-dashed border-stone-300 flex items-center justify-center">
-                      <span className="text-[10px] text-stone-400">STAMP</span>
+                      <span className="text-[10px] text-stone-500">STAMP</span>
                     </div>
                   </div>
 
@@ -359,7 +359,7 @@ const PhotoPlane = React.memo(function PhotoPlane({
                       <div className="border-b border-stone-300 pb-1 text-sm text-stone-600">
                         {new Date(photo.exif.dateTime).getFullYear()}
                       </div>
-                      <div className="border-b border-stone-300 pb-1 text-xs text-stone-400">
+                      <div className="border-b border-stone-300 pb-1 text-xs text-stone-500">
                         &nbsp;
                       </div>
                     </div>

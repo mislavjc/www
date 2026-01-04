@@ -24,16 +24,16 @@ const barcodeHeights = [
 
 const PhotoSphereLoading = () => (
   <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-900 md:aspect-[4/3]">
-    <div className="font-mono text-xs text-stone-500">Loading sphere...</div>
+    <div className="font-mono text-xs text-stone-400">Loading sphere...</div>
   </div>
 );
 
-const PhotoSphereContent = async () => {
+async function getPhotoSphereData() {
   try {
     const allPhotos = await getPhotos();
 
-    // Get photos sorted by date (newest first), take 100 for the sphere
-    const photos = allPhotos
+    // Get photos sorted by date (newest first), take 80 for the sphere
+    return allPhotos
       .filter((p) => p.exif.dateTime)
       .sort(
         (a, b) =>
@@ -47,20 +47,27 @@ const PhotoSphereContent = async () => {
         h: p.h,
         exif: p.exif,
       }));
-
-    return <PhotoSphereWrapper photos={photos} />;
   } catch {
-    // Graceful fallback when photos can't be fetched
+    return null;
+  }
+}
+
+const PhotoSphereContent = async () => {
+  const photos = await getPhotoSphereData();
+
+  if (!photos) {
     return (
       <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-100 md:aspect-[4/3]">
         <div className="text-center">
-          <div className="font-mono text-xs text-stone-500">
+          <div className="font-mono text-xs text-stone-600">
             Photos unavailable
           </div>
         </div>
       </div>
     );
   }
+
+  return <PhotoSphereWrapper photos={photos} />;
 };
 
 // Camera Store Receipt - worn and crumpled
@@ -97,19 +104,19 @@ const GearReceipt = () => {
           >
             CAMERA SHOP
           </div>
-          <div className="mt-1 text-[10px] text-stone-400">EST. 2024</div>
-          <div className="mt-2 text-[10px] leading-relaxed text-stone-400">
+          <div className="mt-1 text-[10px] text-stone-600">EST. 2024</div>
+          <div className="mt-2 text-[10px] leading-relaxed text-stone-600">
             123 FUJI STREET
             <br />
             TOKYO, JAPAN
           </div>
-          <div className="mt-2 text-[10px] text-stone-400">
+          <div className="mt-2 text-[10px] text-stone-600">
             TEL: 03-XXXX-XXXX
           </div>
         </div>
 
         {/* Date/time */}
-        <div className="mb-3 flex justify-between text-[10px] text-stone-400">
+        <div className="mb-3 flex justify-between text-[10px] text-stone-600">
           <span>DATE: 12/25/25</span>
           <span>14:32</span>
         </div>
@@ -122,12 +129,12 @@ const GearReceipt = () => {
               className="flex justify-between gap-2 text-stone-600"
             >
               <div className="flex-1 truncate">{item.name}</div>
-              <div className="shrink-0 text-stone-400">{item.acquired}</div>
+              <div className="shrink-0 text-stone-500">{item.acquired}</div>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-dashed border-stone-300/70 pt-2 text-stone-400">
+        <div className="border-t border-dashed border-stone-300/70 pt-2 text-stone-600">
           <div className="flex justify-between">
             <span>ITEMS:</span>
             <span>{gear.length}</span>
@@ -136,10 +143,10 @@ const GearReceipt = () => {
 
         {/* Footer */}
         <div className="mt-4 border-t border-dashed border-stone-300/70 pt-4 text-center">
-          <div className="text-[10px] text-stone-400">
+          <div className="text-[10px] text-stone-600">
             THANK YOU FOR YOUR PURCHASE
           </div>
-          <div className="mt-0.5 text-[10px] text-stone-400">
+          <div className="mt-0.5 text-[10px] text-stone-600">
             NO REFUNDS ON USED GEAR
           </div>
 
@@ -155,7 +162,7 @@ const GearReceipt = () => {
               ),
             )}
           </div>
-          <div className="mt-1 text-[8px] tracking-widest text-stone-400">
+          <div className="mt-1 text-[8px] tracking-widest text-stone-600">
             0247 8392 1056
           </div>
         </div>
@@ -187,7 +194,7 @@ export const Photography = () => {
   return (
     <section id="photography" className="py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-500">2</span>
+        <span className="font-serif text-sm text-stone-600">2</span>
         <h2 className="font-serif text-3xl text-stone-900">Lens</h2>
       </div>
 
@@ -218,7 +225,7 @@ export const Photography = () => {
           />
         </div>
         <div className="flex-1">
-          <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-500">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
             Favorite shot
           </p>
           <p className="text-stone-600">
@@ -240,7 +247,7 @@ export const Photography = () => {
             href="https://photography.mislavjc.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs text-stone-500 underline underline-offset-4 hover:text-stone-700"
+            className="font-mono text-xs text-stone-600 underline underline-offset-4 hover:text-stone-700"
           >
             VIEW FULL GALLERY →
           </Link>
@@ -249,7 +256,7 @@ export const Photography = () => {
 
       {/* Process note - styled like film canister label */}
       <div className="mb-12 border border-stone-200 bg-stone-50 p-4">
-        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-500">
+        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
           Process Notes
         </div>
         <p className="text-sm text-stone-600">

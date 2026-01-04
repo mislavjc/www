@@ -252,7 +252,7 @@ const PinnedTicket = ({
               <span className="font-grotesk text-sm font-black uppercase leading-tight tracking-tight text-stone-900 md:text-base">
                 {concert.artist}
               </span>
-              <span className="mt-0.5 font-serif text-[0.65rem] italic text-stone-500 md:text-xs">
+              <span className="mt-0.5 font-serif text-[0.65rem] italic text-stone-600 md:text-xs">
                 {concert.location}
               </span>
             </div>
@@ -273,8 +273,8 @@ const PinnedTicket = ({
             </div>
           </div>
 
-          <div className="mt-1.5 flex items-center justify-between border-t border-stone-200 pt-1 font-mono text-[0.45rem] uppercase tracking-widest text-stone-400 md:mt-2 md:pt-1.5 md:text-[0.5rem]">
-            <span className="font-bold text-stone-500">Admit One</span>
+          <div className="mt-1.5 flex items-center justify-between border-t border-stone-200 pt-1 font-mono text-[0.45rem] uppercase tracking-widest text-stone-600 md:mt-2 md:pt-1.5 md:text-[0.5rem]">
+            <span className="font-bold text-stone-700">Admit One</span>
             <span className="hidden sm:inline">
               Sec {String.fromCharCode(65 + (index % 5))} / Row {index + 1}
             </span>
@@ -466,7 +466,7 @@ const PosterArtist = ({
           ({artist.genres?.[0]?.slice(0, 3).toUpperCase() || 'INT'})
         </sup>
       </Link>
-      <span className="mx-1.5 inline-block select-none text-lg font-light text-stone-400">
+      <span className="mx-1.5 inline-block select-none text-lg font-light text-stone-500">
         /
       </span>
     </span>
@@ -585,7 +585,7 @@ export const Music = ({ topArtists }: MusicProps) => {
   return (
     <section id="music" className="overflow-x-clip py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-500">1</span>
+        <span className="font-serif text-sm text-stone-600">1</span>
         <h2 className="font-serif text-3xl text-stone-900">Music</h2>
       </div>
 
@@ -610,7 +610,7 @@ export const Music = ({ topArtists }: MusicProps) => {
       <div>
         <h3
           id="concerts"
-          className="mb-4 scroll-mt-24 text-sm uppercase tracking-widest text-stone-500"
+          className="mb-4 scroll-mt-24 text-sm uppercase tracking-widest text-stone-600"
         >
           Recent Concerts
         </h3>

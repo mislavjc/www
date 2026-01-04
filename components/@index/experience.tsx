@@ -186,7 +186,7 @@ const ExperienceGraph = () => {
         {MONTH_NAMES.map((month) => (
           <div
             key={month}
-            className="flex-1 text-[10px] text-stone-500 sm:text-xs"
+            className="flex-1 text-[10px] text-stone-600 sm:text-xs"
           >
             {month}
           </div>
@@ -198,7 +198,7 @@ const ExperienceGraph = () => {
         {yearData.map(({ year, weeks }) => (
           <div key={year} className="flex items-center gap-2 sm:gap-3">
             {/* Year label */}
-            <div className="w-6 shrink-0 text-right text-[10px] text-stone-500 sm:w-9 sm:text-xs">
+            <div className="w-6 shrink-0 text-right text-[10px] text-stone-600 sm:w-9 sm:text-xs">
               <span className="sm:hidden">&apos;{String(year).slice(-2)}</span>
               <span className="hidden sm:inline">{year}</span>
             </div>
@@ -244,11 +244,11 @@ const ExperienceGraph = () => {
           ))}
           <div className="flex items-center gap-1 sm:gap-1.5">
             <div className="h-2.5 w-2.5 rounded-sm bg-stone-100 sm:h-3 sm:w-3" />
-            <span className="text-[10px] text-stone-500 sm:text-xs">gap</span>
+            <span className="text-[10px] text-stone-600 sm:text-xs">gap</span>
           </div>
         </div>
-        <div className="text-[10px] text-stone-500 sm:text-xs">
-          <span className="text-stone-600">{totalYears}</span> years
+        <div className="text-[10px] text-stone-600 sm:text-xs">
+          <span className="text-stone-700">{totalYears}</span> years
         </div>
       </div>
     </div>
@@ -429,12 +429,12 @@ const BrowserWindow = () => {
                   {activeProject.name}
                 </h3>
               </div>
-              <p className="text-xs text-stone-400">
+              <p className="text-xs text-stone-600">
                 {isGitHub ? 'GitHub Repository' : 'Website'}
               </p>
             </div>
             {activeProject.highlight && (
-              <span className="rounded bg-stone-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-stone-500">
+              <span className="rounded bg-stone-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-stone-700">
                 New
               </span>
             )}
@@ -479,7 +479,7 @@ export const Experience = () => {
   return (
     <section id="code" className="py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-500">3</span>
+        <span className="font-serif text-sm text-stone-600">3</span>
         <h2 className="font-serif text-3xl text-stone-900">Code</h2>
       </div>
 
@@ -497,14 +497,14 @@ export const Experience = () => {
       </p>
 
       <div className="mb-16">
-        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-500">
+        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-600">
           Experience
         </h3>
         <ExperienceGraph />
       </div>
 
       <div>
-        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-500">
+        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-600">
           Projects
         </h3>
         <BrowserWindow />

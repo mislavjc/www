@@ -142,7 +142,7 @@ export const SpotifyIsland = () => {
         >
           <motion.span
             layout="position"
-            className="text-[10px] uppercase tracking-wider text-stone-500"
+            className="text-[10px] uppercase tracking-wider text-stone-400"
           >
             {data.isPlaying ? 'Now playing' : 'Last played'}
           </motion.span>
@@ -159,10 +159,10 @@ export const SpotifyIsland = () => {
               <span className="truncate text-sm font-medium leading-tight">
                 {data.title}
               </span>
-              <span className="truncate text-xs text-stone-400">
+              <span className="truncate text-xs text-stone-300">
                 {data.artist}
               </span>
-              <span className="truncate text-xs text-stone-500">
+              <span className="truncate text-xs text-stone-400">
                 {data.album}
               </span>
 
@@ -177,7 +177,7 @@ export const SpotifyIsland = () => {
                       transition={{ duration: 0.5, ease: 'easeOut' }}
                     />
                   </div>
-                  <div className="mt-1 flex justify-between text-[10px] text-stone-500">
+                  <div className="mt-1 flex justify-between text-[10px] text-stone-400">
                     <span>
                       {data.progress ? formatTime(data.progress) : '0:00'}
                     </span>
@@ -186,15 +186,17 @@ export const SpotifyIsland = () => {
                 </div>
               )}
 
-              <a
-                href={data.songUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="mt-1 text-[10px] uppercase tracking-wider text-green-500 transition-colors hover:text-green-400"
-              >
-                Open in Spotify
-              </a>
+              {data.songUrl && (
+                <a
+                  href={data.songUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="mt-1 text-[10px] uppercase tracking-wider text-green-500 transition-colors hover:text-green-400"
+                >
+                  Open in Spotify
+                </a>
+              )}
             </motion.div>
           ) : (
             <motion.span

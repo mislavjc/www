@@ -14,7 +14,7 @@ export const Footer = () => {
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
             <p className="font-serif text-lg text-stone-900">Mislav</p>
-            <p className="mt-1 text-sm text-stone-500">
+            <p className="mt-1 text-sm text-stone-600">
               <a
                 href="mailto:mislavjc@gmail.com"
                 className="hover:text-stone-900"
@@ -31,7 +31,7 @@ export const Footer = () => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-stone-500 hover:text-stone-900"
+                    className="text-sm text-stone-600 hover:text-stone-900"
                   >
                     {link.label}
                   </Link>

@@ -1,16 +1,35 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-import { Map as MapComponent, MapControls, useMap } from 'components/ui/map';
+import { useMap } from 'components/ui/map';
 
 import { VISITED_COUNTRY_CODES, VISITED_COUNTRY_COUNT } from 'lib/countries';
 
+// Loading placeholder for map
+const MapLoading = () => (
+  <div className="flex h-full w-full items-center justify-center bg-stone-100">
+    <div className="font-mono text-xs text-stone-600">Loading map...</div>
+  </div>
+);
+
+// Dynamically import Map to reduce initial bundle (~500KB maplibre-gl)
+const MapComponent = dynamic(
+  () => import('components/ui/map').then((mod) => mod.Map),
+  { ssr: false, loading: () => <MapLoading /> },
+);
+const MapControls = dynamic(
+  () => import('components/ui/map').then((mod) => mod.MapControls),
+  { ssr: false },
+);
+
 const VISITED_SET = new Set(VISITED_COUNTRY_CODES);
 
+// Use 110m resolution (~200KB) instead of 50m (~4MB) - sufficient for world map
 const COUNTRIES_GEOJSON_URL =
-  'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson';
+  'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_countries.geojson';
 
 const MAP_CONFIG = {
   center: [0, 20] as [number, number],
@@ -222,7 +241,7 @@ export const Travel = () => {
   return (
     <section id="travel" className="py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-500">4</span>
+        <span className="font-serif text-sm text-stone-600">4</span>
         <h2 className="font-serif text-3xl text-stone-900">Travel</h2>
       </div>
 
@@ -259,7 +278,7 @@ export const Travel = () => {
         </MapComponent>
       </div>
 
-      <div className="flex items-center gap-4 text-sm text-stone-500">
+      <div className="flex items-center gap-4 text-sm text-stone-600">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-stone-500/40 ring-1 ring-stone-600" />
           <span>Visited ({VISITED_COUNTRY_COUNT} countries)</span>
