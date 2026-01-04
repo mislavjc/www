@@ -1,28 +1,44 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+import opentype from 'opentype.js';
 import sharp from 'sharp';
 
 import { VISITED_COUNTRIES } from './countries';
 
-const CACHE_VERSION = 8;
+const CACHE_VERSION = 9;
 
-// Load and encode font for embedding in SVG
-let fontBase64: string | null = null;
-const getEmbeddedFont = () => {
-  if (!fontBase64) {
-    try {
-      const fontPath = join(
-        process.cwd(),
-        'public/fonts/CraftworkGrotesk-Medium.ttf',
-      );
-      fontBase64 = readFileSync(fontPath).toString('base64');
-    } catch {
-      fontBase64 = '';
-    }
+// Load font for text-to-path conversion
+let font: opentype.Font | null = null;
+const getFont = () => {
+  if (!font) {
+    const fontPath = join(
+      process.cwd(),
+      'public/fonts/CraftworkGrotesk-Medium.ttf',
+    );
+    font = opentype.loadSync(fontPath);
   }
-  return fontBase64;
+  return font;
 };
+
+// Convert text to SVG path (font-independent rendering)
+const textToPath = (
+  x: number,
+  y: number,
+  size: number,
+  color: string,
+  text: string,
+): string => {
+  const f = getFont();
+  const path = f.getPath(text, 0, 0, size);
+  const bbox = path.getBoundingBox();
+  const width = bbox.x2 - bbox.x1;
+  const offsetX = x - width / 2 - bbox.x1;
+  const offsetY = y;
+  const translatedPath = f.getPath(text, offsetX, offsetY, size);
+  return `<path d="${translatedPath.toPathData(2)}" fill="${color}"/>`;
+};
+
 const imageCache = new Map<string, string>();
 const COLORS = [
   '#1e3a5f',
@@ -79,28 +95,19 @@ const imgEl = (
 ) =>
   `<g clip-path="url(#${id})" opacity="0.5"><image href="${img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/></g>`;
 
-// Font family name for embedded font
-const FONT_FAMILY = 'CraftworkGrotesk';
-
-// Text helper
+// Text helper using path conversion
 const txt = (
   x: number,
   y: number,
   size: number,
   color: string,
   text: string,
-  bold = false,
-) =>
-  `<text x="${x}" y="${y}" fill="${color}" font-family="${FONT_FAMILY}, sans-serif" font-size="${size}" ${bold ? 'font-weight="bold"' : ''} text-anchor="middle">${text}</text>`;
+  _bold = false,
+) => textToPath(x, y, size, color, text);
 
-// SVG wrapper with embedded font
-const svg = (w: number, h: number, content: string) => {
-  const font = getEmbeddedFont();
-  const fontStyle = font
-    ? `<defs><style>@font-face { font-family: '${FONT_FAMILY}'; src: url('data:font/truetype;base64,${font}') format('truetype'); }</style></defs>`
-    : '';
-  return `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">${fontStyle}${content}</svg>`;
-};
+// SVG wrapper
+const svg = (w: number, h: number, content: string) =>
+  `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
 
 // Polygon points generator
 const polyPts = (
@@ -172,12 +179,11 @@ const generators: Generator[] = [
       `${clip}<rect x="${p}" y="${p}" width="${w - p * 2}" height="${h - p * 2}" fill="none" stroke="${d.color}" stroke-width="2"/>${txt(w / 2, h * 0.42, s * 0.1, d.color, d.country.toUpperCase(), true)}${txt(w / 2, h * 0.72, s * 0.06, d.color, d.date)}`,
     );
   },
-  // 4. Double circle
+  // 4. Double circle (simplified - no curved text path)
   (d, s) => {
     const cx = s / 2,
       r = s / 2 - 4,
       ir = r - 10;
-    const arc = `M ${cx - r + 8} ${cx} A ${r - 8} ${r - 8} 0 1 1 ${cx + r - 8} ${cx}`;
     const clip = d.img
       ? imgClip('d', `<circle cx="${cx}" cy="${cx}" r="${ir}"/>`) +
         imgEl('d', d.img, cx - ir, cx - ir, ir * 2, ir * 2)
@@ -185,7 +191,7 @@ const generators: Generator[] = [
     return svg(
       s,
       s,
-      `<defs><path id="arc" d="${arc}"/></defs>${clip}<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${d.color}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${r - 5}" fill="none" stroke="${d.color}" stroke-width="1"/><text fill="${d.color}" font-family="${FONT_FAMILY}, sans-serif" font-size="${s * 0.055}" font-weight="bold"><textPath href="#arc" startOffset="50%" text-anchor="middle">${d.country.toUpperCase()}</textPath></text>${txt(cx, cx + 5, s * 0.07, d.color, d.date, true)}`,
+      `${clip}<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${d.color}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${r - 5}" fill="none" stroke="${d.color}" stroke-width="1"/>${txt(cx, cx - 5, s * 0.08, d.color, d.country.toUpperCase(), true)}${txt(cx, cx + 8, s * 0.055, d.color, d.date)}`,
     );
   },
   // 5. Square
