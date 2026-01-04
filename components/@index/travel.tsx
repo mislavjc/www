@@ -1,44 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Map as MapComponent, MapControls, useMap } from 'components/ui/map';
+import { VISITED_COUNTRY_CODES, VISITED_COUNTRY_COUNT } from 'lib/countries';
 
-const VISITED_COUNTRIES = [
-  'AUT',
-  'BEL',
-  'BIH',
-  'CHE',
-  'CYP',
-  'CZE',
-  'DEU',
-  'DNK',
-  'ESP',
-  'FRA',
-  'GBR',
-  'GRC',
-  'HRV',
-  'HUN',
-  'IRL',
-  'ITA',
-  'LIE',
-  'MCO',
-  'MLT',
-  'NLD',
-  'NOR',
-  'POL',
-  'PRT',
-  'ROU',
-  'SMR',
-  'SRB',
-  'SVK',
-  'SVN',
-  'SWE',
-  'TUR',
-  'VAT',
-];
-
-const VISITED_SET = new Set(VISITED_COUNTRIES);
+const VISITED_SET = new Set(VISITED_COUNTRY_CODES);
 
 const COUNTRIES_GEOJSON_URL =
   'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson';
@@ -83,13 +51,13 @@ function VisitedCountriesLayer() {
           paint: {
             'fill-color': [
               'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRIES]],
+              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
               '#78716c',
               'transparent',
             ],
             'fill-opacity': [
               'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRIES]],
+              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
               0.4,
               0,
             ],
@@ -108,13 +76,13 @@ function VisitedCountriesLayer() {
           paint: {
             'line-color': [
               'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRIES]],
+              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
               '#57534e',
               'transparent',
             ],
             'line-width': [
               'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRIES]],
+              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
               1.5,
               0,
             ],
@@ -173,6 +141,55 @@ function VisitedCountriesLayer() {
   );
 }
 
+// Deterministic rotation based on country code
+function getStampRotation(code: string): number {
+  const hash = code.charCodeAt(0) + code.charCodeAt(1) * 2 + code.charCodeAt(2);
+  return ((hash % 20) - 10) * 1.2; // -12 to +12 degrees
+}
+
+function PassportPage({ countries }: { countries: string[] }) {
+  return (
+    <div
+      className="flex flex-wrap content-start bg-[#f5f1e8] p-2"
+      style={{ aspectRatio: '88 / 125' }}
+    >
+      {countries.map((country) => (
+        <div
+          key={country}
+          className="-m-1"
+          style={{ transform: `rotate(${getStampRotation(country)}deg)` }}
+        >
+          <Image
+            src={`/api/stamp/${country.toLowerCase()}?width=90`}
+            alt={`${country} stamp`}
+            width={90}
+            height={90}
+            className="h-auto w-[calc((100vw-2rem)/4.5)] max-w-[90px]"
+            unoptimized
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Passport() {
+  const midPoint = Math.ceil(VISITED_COUNTRY_CODES.length / 2);
+  const leftPage = VISITED_COUNTRY_CODES.slice(0, midPoint);
+  const rightPage = VISITED_COUNTRY_CODES.slice(midPoint);
+
+  return (
+    <div className="mt-10">
+      <div className="mx-auto max-w-3xl">
+        <div className="grid grid-cols-2">
+          <PassportPage countries={leftPage} />
+          <PassportPage countries={rightPage} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export const Travel = () => {
   return (
     <section id="travel" className="py-24">
@@ -182,9 +199,9 @@ export const Travel = () => {
       </div>
 
       <p className="mb-8 max-w-xl text-stone-600">
-        Countries I've visited across Europe. Started exploring more after
-        getting into photography - there's something about new places that makes
-        you see differently.
+        Countries I&apos;ve visited across Europe. Started exploring more after
+        getting into photography - there&apos;s something about new places that
+        makes makes you see differently.
       </p>
 
       <div className="relative mb-4 h-[400px] w-full overflow-hidden rounded-2xl border border-stone-200">
@@ -203,9 +220,11 @@ export const Travel = () => {
       <div className="flex items-center gap-4 text-sm text-stone-500">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-stone-500/40 ring-1 ring-stone-600" />
-          <span>Visited ({VISITED_COUNTRIES.length} countries)</span>
+          <span>Visited ({VISITED_COUNTRY_COUNT} countries)</span>
         </div>
       </div>
+
+      <Passport />
     </section>
   );
 };
