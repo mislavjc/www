@@ -95,6 +95,12 @@ const concerts = [
   },
 ];
 
+// Parse date string as local date (not UTC) to avoid timezone shift issues
+const parseLocalDate = (dateStr: string): Date => {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 // Vibrant, distinct colors for the stubs
 const TICKET_COLORS = [
   'bg-[#FF4D4D]', // Bright Red
@@ -203,7 +209,8 @@ const PinnedTicket = ({
   const shadowY = 4;
 
   // Format date to DD.MM.YY
-  const formattedDate = new Date(concert.date)
+  const date = parseLocalDate(concert.date);
+  const formattedDate = date
     .toLocaleDateString('en-GB', {
       day: '2-digit',
       month: '2-digit',
@@ -234,7 +241,7 @@ const PinnedTicket = ({
             {formattedDate.split('.')[0]}
           </span>
           <span className="font-mono text-[0.55rem] font-bold uppercase opacity-80 md:text-[0.65rem]">
-            {new Date(concert.date).toLocaleString('en-US', { month: 'short' })}
+            {date.toLocaleString('en-US', { month: 'short' })}
           </span>
           <span className="mt-0.5 font-mono text-[0.45rem] opacity-60 md:text-[0.5rem]">
             {formattedDate.split('.')[2]}
