@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -19,79 +19,79 @@ const concerts = [
     date: '2025-12-07',
     artist: 'Bladee',
     location: 'Vienna',
-    artistId: '2xvtxDNInKDV4AvGmBWetG',
+    spotifyUrl: 'https://open.spotify.com/artist/2xvtxDNInKDV4AvGmjw6d1',
   },
   {
     date: '2025-12-01',
     artist: 'Snow Strippers',
     location: 'Brussels',
-    artistId: '3kE3U3sGs4RVm2avqvEzNq',
+    spotifyUrl: 'https://open.spotify.com/artist/6TsAG8Ve1icEC8ydeHm3C8',
   },
   {
     date: '2025-08-05',
     artist: 'Röyksopp',
     location: 'Šibenik',
-    artistId: '2EcHDMlUfuFgXNVaXUyJGb',
+    spotifyUrl: 'https://open.spotify.com/artist/5nPOO9iTcrs9k6yFffPxjH',
   },
   {
     date: '2025-08-03',
     artist: 'The Hellp',
     location: 'Katowice',
-    artistId: null,
+    spotifyUrl: 'https://open.spotify.com/artist/5DslL3PUa3BcRlCCEP64A4',
   },
   {
     date: '2025-08-02',
     artist: 'Ecco2k / Have a Nice Life / Panchiko',
     location: 'Katowice',
-    artistId: null,
+    spotifyUrl: 'https://open.spotify.com/artist/6hG0VsXXlD10l60TqiIHIX',
   },
   {
     date: '2025-08-01',
     artist: 'Kraftwerk',
     location: 'Katowice',
-    artistId: null,
+    spotifyUrl: 'https://open.spotify.com/artist/0dmPX6ovclgOy8WWJaFEUU',
   },
   {
     date: '2025-05-22',
     artist: '2hollis',
     location: 'Dublin',
-    artistId: '5kHMfzgljJJCPiTDQzXKy9',
+    spotifyUrl: 'https://open.spotify.com/artist/72NhFAGG5Pt91VbheJeEPG',
   },
   {
     date: '2025-01-25',
     artist: 'Röyksopp',
     location: 'Milano',
-    artistId: '2EcHDMlUfuFgXNVaXUyJGb',
+    spotifyUrl: 'https://open.spotify.com/artist/5nPOO9iTcrs9k6yFffPxjH',
   },
   {
     date: '2025-01-22',
     artist: 'JPEGMAFIA',
     location: 'Milano',
-    artistId: '6yJ6QQ3Y5l0s0tn7b0arrO',
+    spotifyUrl: 'https://open.spotify.com/artist/6yJ6QQ3Y5l0s0tn7b0arrO',
   },
   {
     date: '2024-11-12',
     artist: 'Snow Strippers',
     location: 'Amsterdam',
-    artistId: '3kE3U3sGs4RVm2avqvEzNq',
+    spotifyUrl: 'https://open.spotify.com/artist/6TsAG8Ve1icEC8ydeHm3C8',
   },
   {
     date: '2024-10-21',
     artist: 'The Voidz',
     location: 'NYC',
-    artistId: '1jvAieRxVqQAXRDBxW8AXV',
+    spotifyUrl: 'https://open.spotify.com/artist/4nUBBtLtzqZGpdiynTJbYJ',
   },
   {
     date: '2024-10-17',
     artist: 'Bladee',
     location: 'NYC',
-    artistId: '2xvtxDNInKDV4AvGmBWetG',
+    spotifyUrl: 'https://open.spotify.com/artist/2xvtxDNInKDV4AvGmjw6d1',
   },
   {
     date: '2024-10-15',
     artist: 'Xiu Xiu',
     location: 'NYC',
-    artistId: '68fPEubPt6XDLrJKPp3lMh',
+    spotifyUrl: 'https://open.spotify.com/artist/5JLqvjW3Nyom2OsRUyFsS9',
   },
 ];
 
@@ -105,28 +105,102 @@ const TICKET_COLORS = [
   'bg-[#FFD700]', // Gold
 ];
 
-const ConcertItem = ({
+// Pin colors for the thumbtacks
+const PIN_COLORS = [
+  '#ef4444', // red
+  '#eab308', // yellow
+  '#3b82f6', // blue
+  '#22c55e', // green
+  '#f97316', // orange
+  '#ec4899', // pink
+];
+
+// Washi tape colors/patterns
+const WASHI_STYLES = [
+  { bg: 'bg-pink-300/80', pattern: 'stripes' },
+  { bg: 'bg-amber-300/80', pattern: 'dots' },
+  { bg: 'bg-sky-300/80', pattern: 'solid' },
+  { bg: 'bg-lime-300/80', pattern: 'stripes' },
+  { bg: 'bg-violet-300/80', pattern: 'dots' },
+  { bg: 'bg-rose-300/80', pattern: 'solid' },
+];
+
+const WashiTape = ({
+  styleIndex,
+  rotation,
+}: {
+  styleIndex: number;
+  rotation: number;
+}) => {
+  const style = WASHI_STYLES[styleIndex % WASHI_STYLES.length];
+
+  return (
+    <div
+      className={`absolute -top-3 left-1/2 z-10 h-6 w-16 -translate-x-1/2 ${style.bg}`}
+      style={{
+        transform: `translateX(-50%) rotate(${rotation}deg)`,
+        clipPath: 'polygon(2% 0%, 98% 0%, 100% 100%, 0% 100%)',
+      }}
+    >
+      {/* Tape pattern */}
+      {style.pattern === 'stripes' && (
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px)',
+          }}
+        />
+      )}
+      {style.pattern === 'dots' && (
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, rgba(0,0,0,0.2) 1px, transparent 1px)',
+            backgroundSize: '6px 6px',
+          }}
+        />
+      )}
+      {/* Torn edge effect */}
+      <div className="absolute inset-x-0 -top-px h-1 bg-gradient-to-b from-white/20 to-transparent" />
+    </div>
+  );
+};
+
+const Thumbtack = ({ color }: { color: string }) => (
+  <div
+    className="absolute -top-2 left-1/2 z-10 h-5 w-5 -translate-x-1/2 rounded-full shadow-md"
+    style={{
+      background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent 60%), ${color}`,
+    }}
+  >
+    <div className="absolute left-1 top-1 h-2 w-2 rounded-full bg-white/40" />
+  </div>
+);
+
+const PinnedTicket = ({
   concert,
   index,
-  totalCount,
-  onHover,
+  style,
+  spotifyUrl,
 }: {
   concert: (typeof concerts)[0];
   index: number;
-  totalCount: number;
-  onHover: (artistId: string | null) => void;
+  style: { left: string; top: number; rotate: number; zIndex: number };
+  spotifyUrl?: string;
 }) => {
-  // Cycle through colors based on index
   const stubColor = TICKET_COLORS[index % TICKET_COLORS.length];
-  // Determine text color for stub (mostly black for these brighter colors)
+  const pinColor = PIN_COLORS[index % PIN_COLORS.length];
   const stubTextColor = 'text-stone-900';
 
-  // Messy pile rotation - varies more dramatically
-  const rotationSeed = ((index * 7) % 11) - 5; // pseudo-random between -5 and 5
-  const rotation = rotationSeed * 1.2;
+  // Alternate between washi tape and thumbtacks
+  const useWashi = index % 3 === 0;
+  const washiRotation = ((index * 11) % 20) - 10;
 
-  // Slight horizontal offset for messiness
-  const xOffset = ((index * 13) % 21) - 10; // pseudo-random between -10 and 10
+  // Shadow direction based on rotation
+  const shadowX = style.rotate * 0.3;
+  const shadowY = 4;
 
   // Format date to DD.MM.YY
   const formattedDate = new Date(concert.date)
@@ -137,352 +211,209 @@ const ConcertItem = ({
     })
     .replace(/\//g, '.');
 
+  const TicketContent = (
+    <>
+      {/* Washi tape or thumbtack */}
+      {useWashi ? (
+        <WashiTape styleIndex={index} rotation={washiRotation} />
+      ) : (
+        <Thumbtack color={pinColor} />
+      )}
+
+      {/* The ticket */}
+      <div className="relative flex overflow-hidden rounded-sm">
+        {/* Ticket "Stub" (Left Side) - Colored */}
+        <div
+          className={`relative flex w-16 shrink-0 flex-col items-center justify-center border-r-2 border-dashed ${stubColor} ${stubTextColor} py-2 text-center md:w-20 md:py-3`}
+          style={{ borderColor: 'rgba(0,0,0,0.15)' }}
+        >
+          {/* Hole Punch Effect */}
+          <div className="absolute left-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-stone-900/20 shadow-inner md:left-1.5 md:h-2.5 md:w-2.5" />
+
+          <span className="font-grotesk text-lg font-black opacity-90 md:text-xl">
+            {formattedDate.split('.')[0]}
+          </span>
+          <span className="font-mono text-[0.55rem] font-bold uppercase opacity-80 md:text-[0.65rem]">
+            {new Date(concert.date).toLocaleString('en-US', { month: 'short' })}
+          </span>
+          <span className="mt-0.5 font-mono text-[0.45rem] opacity-60 md:text-[0.5rem]">
+            {formattedDate.split('.')[2]}
+          </span>
+
+          {/* Semi-circle cutout for stub effect */}
+          <div className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#F5F5F0] shadow-inner" />
+        </div>
+
+        {/* Ticket Body (Right Side) */}
+        <div className="relative flex flex-grow flex-col justify-between bg-[#F5F5F0] p-2 pl-4 md:p-3 md:pl-5">
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col pr-2">
+              <span className="font-grotesk text-sm font-black uppercase leading-tight tracking-tight text-stone-900 md:text-base">
+                {concert.artist}
+              </span>
+              <span className="mt-0.5 font-serif text-[0.65rem] italic text-stone-500 md:text-xs">
+                {concert.location}
+              </span>
+            </div>
+            {/* Vertical Barcode Strip */}
+            <div className="hidden h-6 w-8 shrink-0 opacity-80 mix-blend-multiply md:block">
+              <div
+                className="h-full w-full"
+                style={{
+                  backgroundImage: `repeating-linear-gradient(90deg, 
+                    #1c1917 0px, #1c1917 1px, 
+                    transparent 1px, transparent 3px, 
+                    #1c1917 3px, #1c1917 5px, 
+                    transparent 5px, transparent 6px, 
+                    #1c1917 6px, #1c1917 9px, 
+                    transparent 9px, transparent 11px)`,
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="mt-1.5 flex items-center justify-between border-t border-stone-200 pt-1 font-mono text-[0.45rem] uppercase tracking-widest text-stone-400 md:mt-2 md:pt-1.5 md:text-[0.5rem]">
+            <span className="font-bold text-stone-500">Admit One</span>
+            <span className="hidden sm:inline">
+              Sec {String.fromCharCode(65 + (index % 5))} / Row {index + 1}
+            </span>
+            <span>No {1000 + index * 42}</span>
+          </div>
+
+          {/* Paper Texture Overlay */}
+          <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        </div>
+      </div>
+    </>
+  );
+
   return (
-    <motion.li
-      layout
-      initial={{
-        y: 400,
-        opacity: 0,
-        scale: 0.4,
-        rotate: -30 + (index % 5) * 15,
-        x: (index % 2 === 0 ? -1 : 1) * 100,
-      }}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5, y: -50 }}
       animate={{
-        y: 0,
         opacity: 1,
         scale: 1,
-        rotate: rotation,
-        x: xOffset,
+        y: 0,
         transition: {
           type: 'spring',
-          damping: 18,
-          stiffness: 150,
-          delay: index * 0.05,
+          damping: 20,
+          stiffness: 200,
+          delay: index * 0.03,
         },
-      }}
-      exit={{
-        y: 300,
-        opacity: 0,
-        scale: 0.6,
-        transition: { duration: 0.25, delay: (totalCount - index) * 0.02 },
       }}
       whileHover={{
         scale: 1.05,
         rotate: 0,
-        x: 0,
+        y: -4,
         zIndex: 50,
         transition: { type: 'spring', damping: 20, stiffness: 300 },
       }}
-      className="group relative flex w-full list-none overflow-hidden rounded-sm shadow-lg"
-      onMouseEnter={() => onHover(concert.artistId)}
-      onMouseLeave={() => onHover(null)}
+      className="absolute w-[280px] md:w-[320px]"
       style={{
-        marginBottom: 12,
-        zIndex: totalCount - index,
-        transformOrigin: 'center center',
+        left: style.left,
+        top: style.top,
+        rotate: `${style.rotate}deg`,
+        zIndex: style.zIndex,
+        filter: `drop-shadow(${shadowX}px ${shadowY}px 6px rgba(0,0,0,0.15))`,
       }}
     >
-      {/* Ticket "Stub" (Left Side) - Colored */}
-      <div
-        className={`relative flex w-20 shrink-0 flex-col items-center justify-center border-r-2 border-dashed ${stubColor} ${stubTextColor} py-3 text-center md:w-24 md:p-4`}
-        style={{ borderColor: 'rgba(0,0,0,0.15)' }}
-      >
-        {/* Hole Punch Effect */}
-        <div className="absolute left-1.5 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-stone-900/20 shadow-inner md:left-2 md:h-3 md:w-3" />
-
-        <span className="font-grotesk text-xl font-black opacity-90 md:text-2xl">
-          {formattedDate.split('.')[0]}
-        </span>
-        <span className="font-mono text-[0.65rem] font-bold uppercase opacity-80 md:text-xs">
-          {new Date(concert.date).toLocaleString('en-US', { month: 'short' })}
-        </span>
-        <span className="mt-0.5 font-mono text-[0.5rem] opacity-60 md:mt-1 md:text-[0.6rem]">
-          {formattedDate.split('.')[2]}
-        </span>
-
-        {/* Semi-circle cutout for stub effect */}
-        <div className="absolute -right-2 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-[#F5F5F0] shadow-inner" />
-      </div>
-
-      {/* Ticket Body (Right Side) */}
-      <div className="relative flex flex-grow flex-col justify-between bg-[#F5F5F0] p-3 pl-5 md:p-4 md:pl-6">
-        <div className="flex items-start justify-between">
-          <div className="flex flex-col pr-2 md:pr-4">
-            <span className="font-grotesk text-base font-black uppercase leading-none tracking-tight text-stone-900 md:text-xl">
-              {concert.artist}
-            </span>
-            <span className="mt-1 font-serif text-xs italic text-stone-500 md:text-sm">
-              {concert.location}
-            </span>
-          </div>
-          {/* Vertical Barcode Strip */}
-          <div className="hidden h-8 w-10 shrink-0 opacity-80 mix-blend-multiply md:block md:w-12">
-            <div
-              className="h-full w-full"
-              style={{
-                backgroundImage: `repeating-linear-gradient(90deg, 
-                  #1c1917 0px, #1c1917 1px, 
-                  transparent 1px, transparent 3px, 
-                  #1c1917 3px, #1c1917 5px, 
-                  transparent 5px, transparent 6px, 
-                  #1c1917 6px, #1c1917 9px, 
-                  transparent 9px, transparent 11px)`,
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="mt-2 flex items-center justify-between border-t border-stone-200 pt-1.5 font-mono text-[0.5rem] uppercase tracking-widest text-stone-400 md:mt-3 md:pt-2 md:text-[0.6rem]">
-          <span className="font-bold text-stone-500">Admit One</span>
-          <span className="hidden sm:inline">
-            Sec {String.fromCharCode(65 + (index % 5))} / Row {index + 1}
-          </span>
-          <span>No {1000 + index * 42}</span>
-        </div>
-
-        {/* Paper Texture Overlay */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      </div>
-    </motion.li>
-  );
-};
-
-type ArtistPreviewProps = {
-  artistId: string | null;
-};
-
-type ArtistData = {
-  imageUrl: string;
-  name: string;
-} | null;
-
-const ArtistPreview = ({ artistId }: ArtistPreviewProps) => {
-  const [artistData, setArtistData] = useState<ArtistData>(null);
-
-  useEffect(() => {
-    if (!artistId) {
-      return;
-    }
-
-    let cancelled = false;
-
-    const fetchArtist = async () => {
-      try {
-        const response = await fetch(`/api/spotify/artist/${artistId}`);
-        if (response.ok && !cancelled) {
-          const data = await response.json();
-          setArtistData({ imageUrl: data.imageUrl, name: data.name });
-        }
-      } catch {
-        // Ignore errors
-      }
-    };
-
-    fetchArtist();
-
-    return () => {
-      cancelled = true;
-      setArtistData(null);
-    };
-  }, [artistId]);
-
-  if (!artistId || !artistData?.imageUrl) return null;
-
-  return (
-    <div className="fixed bottom-24 right-8 z-40 animate-in fade-in slide-in-from-bottom-4 duration-200">
-      <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
-        <Image
-          src={artistData.imageUrl}
-          alt={artistData.name || 'Artist'}
-          width={200}
-          height={200}
-          className="size-48 object-cover"
-        />
-      </div>
-    </div>
-  );
-};
-
-const ConcertEnvelope = ({
-  onClick,
-  isOpen,
-  count,
-}: {
-  onClick: () => void;
-  isOpen: boolean;
-  count: number;
-}) => {
-  const peekingStubs = TICKET_COLORS;
-
-  return (
-    <div className="relative mx-auto w-full max-w-md">
-      {/* Envelope Container */}
-      <div className="relative mx-auto" style={{ width: 300, height: 160 }}>
-        {/* Envelope Back/Inside - the opening */}
-        <div
-          className="absolute inset-x-0 top-0 h-[90px] rounded-t bg-stone-300"
-          style={{ zIndex: 1 }}
-        >
-          {/* Ticket stubs peeking out */}
-          <AnimatePresence>
-            {!isOpen && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { delay: 0.1 } }}
-                exit={{ opacity: 0, y: 30, transition: { duration: 0.12 } }}
-                className="absolute inset-x-0 bottom-0 flex items-end justify-center"
-              >
-                {peekingStubs.map((color, i) => {
-                  // Fan them out evenly from center
-                  const centerIndex = (peekingStubs.length - 1) / 2;
-                  const offset = i - centerIndex;
-                  const rotation = offset * 8;
-                  const xOffset = offset * 26;
-                  // Middle ones peek more
-                  const peekAmount = 75 + (centerIndex - Math.abs(offset)) * 12;
-
-                  return (
-                    <motion.div
-                      key={color}
-                      className={`absolute ${color} rounded-t-sm`}
-                      style={{
-                        width: 36,
-                        height: peekAmount,
-                        bottom: 0,
-                        left: '50%',
-                        marginLeft: xOffset - 18,
-                        transform: `rotate(${rotation}deg)`,
-                        transformOrigin: 'bottom center',
-                        zIndex: peekingStubs.length - Math.abs(offset),
-                      }}
-                      initial={{ y: 60, opacity: 0 }}
-                      animate={{
-                        y: 0,
-                        opacity: 1,
-                        transition: {
-                          delay: 0.15 + Math.abs(offset) * 0.04,
-                          type: 'spring',
-                          damping: 22,
-                          stiffness: 220,
-                        },
-                      }}
-                    >
-                      {/* Simple stub detail line */}
-                      <div className="absolute inset-x-1 top-2 h-0.5 rounded-full bg-white/50" />
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Envelope Front Flap */}
-        <motion.button
-          onClick={onClick}
-          disabled={isOpen}
-          className={`absolute inset-x-0 bottom-0 h-[110px] rounded bg-stone-200 transition-colors ${
-            isOpen ? 'cursor-default' : 'cursor-pointer hover:bg-stone-100'
-          }`}
-          style={{ zIndex: 15 }}
-        >
-          {/* Simple border line at top */}
-          <div className="absolute inset-x-0 top-0 h-px bg-stone-300" />
-
-          {/* Label */}
-          {!isOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex h-full flex-col items-center justify-center"
-            >
-              <h3 className="font-grotesk text-base font-black uppercase tracking-wide text-stone-400">
-                Concert Stubs
-              </h3>
-              <p className="mt-1 font-mono text-[0.55rem] font-medium text-stone-400">
-                Tap to open ({count})
-              </p>
-            </motion.div>
-          )}
-        </motion.button>
-      </div>
-
-      {/* Close button when open */}
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0, transition: { delay: 0.6 } }}
-          className="mt-6 text-center"
-        >
-          <button
-            type="button"
-            onClick={onClick}
-            className="font-mono text-xs font-bold uppercase tracking-widest text-stone-400 transition-colors hover:text-stone-900"
-          >
-            Put Back in Envelope
-          </button>
-        </motion.div>
+      {spotifyUrl ? (
+        <Link href={spotifyUrl} target="_blank" className="block">
+          {TicketContent}
+        </Link>
+      ) : (
+        TicketContent
       )}
-    </div>
+    </motion.div>
   );
 };
 
-const ConcertTimeline = () => {
-  const [hoveredArtist, setHoveredArtist] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const visibleConcerts = concerts;
-
-  const handleToggle = () => {
-    if (isOpen) {
-      setIsOpen(false);
-
-      setTimeout(() => {
-        document
-          .getElementById('concerts')
-          ?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
-    } else {
-      setIsOpen(true);
+const ConcertPinboard = () => {
+  const getTicketStyle = (index: number, isMobile: boolean) => {
+    if (isMobile) {
+      // Single column, centered
+      const rotation = ((index * 7) % 6) - 3;
+      return {
+        left: 'calc(50% - 140px)', // half of ticket width (280px)
+        top: index * 100 + 20,
+        rotate: rotation,
+        zIndex: concerts.length - index,
+      };
     }
+
+    // Desktop: 2 columns with proper spacing
+    const col = index % 2;
+    const row = Math.floor(index / 2);
+    const rotation = ((index * 7) % 10) - 5;
+
+    return {
+      left: col === 0 ? '5%' : '52%',
+      top: row * 110 + 20,
+      rotate: rotation,
+      zIndex: concerts.length - index,
+    };
   };
 
+  const mobileRows = concerts.length;
+  const desktopRows = Math.ceil(concerts.length / 2);
+
   return (
-    <div className="relative mx-auto w-full max-w-2xl">
-      <div className="flex w-full flex-col items-center">
-        {/* Tickets area - above envelope */}
-        <div className="relative min-h-[60px] w-full max-w-md px-4 pb-4">
-          <AnimatePresence mode="sync">
-            {isOpen && (
-              <motion.ul
-                className="flex flex-col items-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {visibleConcerts.map((concert, index) => (
-                  <ConcertItem
-                    key={`${concert.artist}-${concert.date}`}
-                    concert={concert}
-                    index={index}
-                    totalCount={visibleConcerts.length}
-                    onHover={setHoveredArtist}
-                  />
-                ))}
-              </motion.ul>
-            )}
-          </AnimatePresence>
+    <div className="relative mx-auto w-full max-w-3xl">
+      {/* Pinboard */}
+      <div className="relative mx-auto w-full overflow-hidden rounded-lg bg-stone-200">
+        {/* Mobile height */}
+        <div
+          className="block md:hidden"
+          style={{ height: mobileRows * 100 + 50 }}
+        />
+        {/* Desktop height */}
+        <div
+          className="hidden md:block"
+          style={{ height: desktopRows * 110 + 50 }}
+        />
+
+        {/* Simple dot pattern */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.15]"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, #78716c 1px, transparent 1px)',
+            backgroundSize: '16px 16px',
+          }}
+        />
+
+        {/* Mobile layout */}
+        <div className="absolute inset-0 md:hidden">
+          {concerts.map((concert, index) => {
+            const style = getTicketStyle(index, true);
+            return (
+              <PinnedTicket
+                key={`mobile-${concert.artist}-${concert.date}`}
+                concert={concert}
+                index={index}
+                style={style}
+                spotifyUrl={concert.spotifyUrl}
+              />
+            );
+          })}
         </div>
 
-        {/* Envelope - always at bottom */}
-        <ConcertEnvelope
-          onClick={handleToggle}
-          isOpen={isOpen}
-          count={concerts.length}
-        />
+        {/* Desktop layout */}
+        <div className="absolute inset-0 hidden md:block">
+          {concerts.map((concert, index) => {
+            const style = getTicketStyle(index, false);
+            return (
+              <PinnedTicket
+                key={`desktop-${concert.artist}-${concert.date}`}
+                concert={concert}
+                index={index}
+                style={style}
+                spotifyUrl={concert.spotifyUrl}
+              />
+            );
+          })}
+        </div>
       </div>
-
-      <ArtistPreview artistId={hoveredArtist} />
     </div>
   );
 };
@@ -682,7 +613,7 @@ export const Music = () => {
           in line. Headphones are in 24/7 when I'm outside anyway so concerts
           are just the natural extension of that I guess.
         </p>
-        <ConcertTimeline />
+        <ConcertPinboard />
       </div>
     </section>
   );
