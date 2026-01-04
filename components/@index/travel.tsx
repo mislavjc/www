@@ -1,161 +1,8 @@
-'use client';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-import { useMap } from 'components/ui/map';
+import { AsciiMap } from 'components/@index/ascii-map';
 
 import { VISITED_COUNTRY_CODES, VISITED_COUNTRY_COUNT } from 'lib/countries';
-
-// Loading placeholder for map
-const MapLoading = () => (
-  <div className="flex h-full w-full items-center justify-center bg-stone-100">
-    <div className="font-mono text-xs text-stone-600">Loading map...</div>
-  </div>
-);
-
-// Dynamically import Map to reduce initial bundle (~500KB maplibre-gl)
-const MapComponent = dynamic(
-  () => import('components/ui/map').then((mod) => mod.Map),
-  { ssr: false, loading: () => <MapLoading /> },
-);
-const MapControls = dynamic(
-  () => import('components/ui/map').then((mod) => mod.MapControls),
-  { ssr: false },
-);
-
-const VISITED_SET = new Set(VISITED_COUNTRY_CODES);
-
-// Use 110m resolution (~200KB) instead of 50m (~4MB) - sufficient for world map
-const COUNTRIES_GEOJSON_URL =
-  'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_0_countries.geojson';
-
-const MAP_CONFIG = {
-  center: [0, 20] as [number, number],
-  zoom: 1.5,
-  minZoom: 1,
-  maxZoom: 6,
-};
-
-function VisitedCountriesLayer() {
-  const { map, isLoaded } = useMap();
-  const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
-  const layersAddedRef = useRef(false);
-
-  const addCountryLayers = useCallback(() => {
-    if (!map || layersAddedRef.current) return;
-
-    if (!map.getSource('countries')) {
-      map.addSource('countries', {
-        type: 'geojson',
-        data: COUNTRIES_GEOJSON_URL,
-      });
-    }
-
-    const layers = map.getStyle()?.layers || [];
-    const labelLayer = layers.find(
-      (l) => l.type === 'symbol' && l.id.includes('label'),
-    );
-
-    if (!map.getLayer('visited-countries-fill')) {
-      map.addLayer(
-        {
-          id: 'visited-countries-fill',
-          type: 'fill',
-          source: 'countries',
-          paint: {
-            'fill-color': [
-              'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
-              '#78716c',
-              'transparent',
-            ],
-            'fill-opacity': [
-              'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
-              0.4,
-              0,
-            ],
-          },
-        },
-        labelLayer?.id,
-      );
-    }
-
-    if (!map.getLayer('visited-countries-outline')) {
-      map.addLayer(
-        {
-          id: 'visited-countries-outline',
-          type: 'line',
-          source: 'countries',
-          paint: {
-            'line-color': [
-              'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
-              '#57534e',
-              'transparent',
-            ],
-            'line-width': [
-              'case',
-              ['in', ['get', 'iso_a3'], ['literal', VISITED_COUNTRY_CODES]],
-              1.5,
-              0,
-            ],
-          },
-        },
-        labelLayer?.id,
-      );
-    }
-
-    layersAddedRef.current = true;
-  }, [map]);
-
-  useEffect(() => {
-    if (!map || !isLoaded) return;
-
-    if (map.isStyleLoaded()) {
-      addCountryLayers();
-    } else {
-      map.once('styledata', addCountryLayers);
-    }
-
-    const handleMouseMove = (e: maplibregl.MapMouseEvent) => {
-      if (!layersAddedRef.current) return;
-
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: ['visited-countries-fill'],
-      });
-
-      if (
-        features.length > 0 &&
-        VISITED_SET.has(features[0].properties?.iso_a3)
-      ) {
-        setHoveredCountry(features[0].properties?.name);
-        map.getCanvas().style.cursor = 'pointer';
-      } else {
-        setHoveredCountry(null);
-        map.getCanvas().style.cursor = '';
-      }
-    };
-
-    map.on('mousemove', handleMouseMove);
-
-    return () => {
-      map.off('mousemove', handleMouseMove);
-    };
-  }, [map, isLoaded, addCountryLayers]);
-
-  if (!hoveredCountry) return null;
-
-  return (
-    <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10 flex justify-center">
-      <div className="whitespace-nowrap rounded-full bg-black/50 px-4 py-2 text-center text-xs text-white/70 backdrop-blur-sm">
-        {hoveredCountry}
-      </div>
-    </div>
-  );
-}
 
 // Deterministic rotation based on country code
 function getStampRotation(code: string): number {
@@ -266,23 +113,10 @@ export const Travel = () => {
         year. 15 left, god bless Ryanair.
       </p>
 
-      <div className="relative mb-4 h-[400px] w-full overflow-hidden rounded-2xl border border-stone-200">
-        <MapComponent
-          center={MAP_CONFIG.center}
-          zoom={MAP_CONFIG.zoom}
-          minZoom={MAP_CONFIG.minZoom}
-          maxZoom={MAP_CONFIG.maxZoom}
-        >
-          <MapControls position="top-right" showZoom />
-          <VisitedCountriesLayer />
-        </MapComponent>
-      </div>
+      <AsciiMap />
 
-      <div className="flex items-center gap-4 text-sm text-stone-600">
-        <div className="flex items-center gap-2">
-          <div className="h-3 w-3 rounded-sm bg-stone-500/40 ring-1 ring-stone-600" />
-          <span>Visited ({VISITED_COUNTRY_COUNT} countries)</span>
-        </div>
+      <div className="mt-4 text-sm text-stone-600">
+        {VISITED_COUNTRY_COUNT} countries visited
       </div>
 
       <div className="mt-16">
