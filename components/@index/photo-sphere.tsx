@@ -113,6 +113,8 @@ const PhotoPlane = React.memo(
     // Load texture with staggered delay based on index
     useEffect(() => {
       const delay = index * 50; // Reduced delay for faster loading
+      let objectUrl: string | null = null;
+
       const timer = setTimeout(() => {
         const r2Url = `https://r2.photography.mislavjc.com/variants/grid/jpeg/640/${photo.uuid}.jpeg`;
         const url = `/_next/image?url=${encodeURIComponent(r2Url)}&w=640&q=75`;
@@ -120,7 +122,7 @@ const PhotoPlane = React.memo(
         fetch(url)
           .then((res) => res.blob())
           .then((blob) => {
-            const objectUrl = URL.createObjectURL(blob);
+            objectUrl = URL.createObjectURL(blob);
             const img = new window.Image();
             img.onload = () => {
               const tex = new THREE.Texture(img);
@@ -135,7 +137,8 @@ const PhotoPlane = React.memo(
                 materialRef.current.needsUpdate = true;
                 setLoaded(true);
               }
-              URL.revokeObjectURL(objectUrl);
+              if (objectUrl) URL.revokeObjectURL(objectUrl);
+              objectUrl = null;
             };
             img.src = objectUrl;
           })
@@ -144,6 +147,7 @@ const PhotoPlane = React.memo(
 
       return () => {
         clearTimeout(timer);
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
         if (textureRef.current) {
           textureRef.current.dispose();
         }
@@ -403,7 +407,7 @@ const Scene = ({
 
     photos.forEach((photo, i) => {
       const theta = (2 * Math.PI * i) / goldenRatio;
-      const yNorm = 1 - (i / (n - 1)) * 2;
+      const yNorm = n === 1 ? 0 : 1 - (i / (n - 1)) * 2;
       const yLimited = yNorm * 0.7;
       const radiusAtY = Math.sqrt(1 - yLimited * yLimited);
 
@@ -514,8 +518,8 @@ export const PhotoSphere = ({ photos }: PhotoSphereProps) => {
         />
       </Canvas>
 
-      <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2">
-        <div className="rounded-full bg-black/50 px-4 py-2 text-xs text-white/70 backdrop-blur-sm">
+      <div className="pointer-events-none absolute inset-x-4 bottom-4 flex justify-center">
+        <div className="whitespace-nowrap rounded-full bg-black/50 px-4 py-2 text-center text-xs text-white/70 backdrop-blur-sm">
           {selected
             ? 'Click photo to flip · Click elsewhere to close'
             : 'Drag to explore · Click photo to view'}

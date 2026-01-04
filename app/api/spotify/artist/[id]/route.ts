@@ -39,6 +39,12 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+
+    // Validate artist ID format (Spotify IDs are alphanumeric, 22 chars)
+    if (!/^[a-zA-Z0-9]{22}$/.test(id)) {
+      return Response.json({ error: 'Invalid artist ID' }, { status: 400 });
+    }
+
     const { access_token } = await getAccessToken();
 
     const response = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
