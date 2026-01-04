@@ -176,23 +176,29 @@ const ExperienceGraph = () => {
   return (
     <div className="w-full font-mono text-xs">
       {/* Month labels */}
-      <div className="mb-2 flex pl-12">
+      <div className="mb-2 flex pl-8 sm:pl-12">
         {MONTH_NAMES.map((month) => (
-          <div key={month} className="flex-1 text-stone-400">
+          <div
+            key={month}
+            className="flex-1 text-[10px] text-stone-400 sm:text-xs"
+          >
             {month}
           </div>
         ))}
       </div>
 
       {/* Year rows */}
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1">
         {yearData.map(({ year, weeks }) => (
-          <div key={year} className="flex items-center gap-3">
+          <div key={year} className="flex items-center gap-2 sm:gap-3">
             {/* Year label */}
-            <div className="w-9 shrink-0 text-right text-stone-500">{year}</div>
+            <div className="w-6 shrink-0 text-right text-[10px] text-stone-500 sm:w-9 sm:text-xs">
+              <span className="sm:hidden">&apos;{String(year).slice(-2)}</span>
+              <span className="hidden sm:inline">{year}</span>
+            </div>
 
             {/* Weeks grid */}
-            <div className="flex flex-1 gap-0.5">
+            <div className="flex flex-1 gap-px sm:gap-0.5">
               {weeks.map((week) => {
                 const companyColor = week.companyId
                   ? COMPANY_COLORS[week.companyId]?.bg
@@ -203,7 +209,7 @@ const ExperienceGraph = () => {
                 return (
                   <div
                     key={week.weekStart.toISOString()}
-                    className={`h-4 flex-1 rounded-sm ${isFuture ? 'bg-stone-100' : companyColor} transition-all ${!isFuture && 'hover:ring-1 hover:ring-stone-400'}`}
+                    className={`h-2.5 flex-1 rounded-[2px] sm:h-4 sm:rounded-sm ${isFuture ? 'bg-stone-100' : companyColor} transition-all ${!isFuture && 'hover:ring-1 hover:ring-stone-400'}`}
                     title={
                       isFuture
                         ? ''
@@ -218,20 +224,24 @@ const ExperienceGraph = () => {
       </div>
 
       {/* Legend and stats */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-x-4 gap-y-2">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 sm:mt-6 sm:gap-4">
+        <div className="flex flex-wrap gap-x-3 gap-y-1.5 sm:gap-x-4 sm:gap-y-2">
           {legendCompanies.map(({ id, name }) => (
-            <div key={id} className="flex items-center gap-1.5">
-              <div className={`h-3 w-3 rounded-sm ${COMPANY_COLORS[id].bg}`} />
-              <span className="text-stone-600">{name}</span>
+            <div key={id} className="flex items-center gap-1 sm:gap-1.5">
+              <div
+                className={`h-2.5 w-2.5 rounded-sm sm:h-3 sm:w-3 ${COMPANY_COLORS[id].bg}`}
+              />
+              <span className="text-[10px] text-stone-600 sm:text-xs">
+                {name}
+              </span>
             </div>
           ))}
-          <div className="flex items-center gap-1.5">
-            <div className="h-3 w-3 rounded-sm bg-stone-100" />
-            <span className="text-stone-400">gap</span>
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            <div className="h-2.5 w-2.5 rounded-sm bg-stone-100 sm:h-3 sm:w-3" />
+            <span className="text-[10px] text-stone-400 sm:text-xs">gap</span>
           </div>
         </div>
-        <div className="text-stone-400">
+        <div className="text-[10px] text-stone-400 sm:text-xs">
           <span className="text-stone-600">{totalYears}</span> years
         </div>
       </div>
@@ -285,9 +295,9 @@ const BrowserWindow = () => {
   const isGitHub = activeProject.url.includes('github.com');
 
   return (
-    <div className="aspect-[16/10] w-full overflow-hidden rounded-lg border border-stone-200 bg-stone-100">
-      {/* Window chrome */}
-      <div className="flex h-10 items-center gap-3 border-b border-stone-200 bg-stone-50 px-4">
+    <div className="w-full overflow-hidden rounded-lg border border-stone-200 bg-stone-100">
+      {/* Window chrome - hidden on mobile */}
+      <div className="hidden h-10 items-center gap-3 border-b border-stone-200 bg-stone-50 px-4 sm:flex">
         {/* Traffic lights */}
         <div className="flex gap-1.5">
           <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
@@ -298,44 +308,43 @@ const BrowserWindow = () => {
         {/* URL bar */}
         <div className="flex flex-1 items-center justify-center">
           <div className="flex items-center gap-2 rounded-md bg-white px-3 py-1 text-xs text-stone-500">
-            <span className="hidden sm:inline">
-              {activeProject.url.replace('https://', '')}
-            </span>
-            <span className="sm:hidden">{activeProject.name}</span>
+            {activeProject.url.replace('https://', '')}
           </div>
         </div>
 
         <div className="w-[52px]" />
       </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-stone-200 bg-stone-50">
+      {/* Tabs - scrollable on mobile */}
+      <div className="flex overflow-x-auto border-b border-stone-200 bg-stone-50 scrollbar-hide">
         {projects.map((project, index) => (
           <button
             key={project.name}
             type="button"
             onClick={() => setActiveTab(index)}
-            className={`flex items-center gap-2 border-r border-stone-200 px-4 py-2 text-xs transition-colors ${
+            className={`flex shrink-0 items-center gap-2 border-r border-stone-200 px-3 py-2.5 text-xs transition-colors sm:px-4 sm:py-2 ${
               activeTab === index
                 ? 'bg-white text-stone-900'
                 : 'text-stone-400 hover:bg-stone-100 hover:text-stone-600'
             }`}
           >
             <span>{project.favicon}</span>
-            <span className="hidden md:inline">{project.name}</span>
+            <span className="hidden sm:inline">{project.name}</span>
           </button>
         ))}
       </div>
 
       {/* Content */}
-      <div className="h-[calc(100%-80px)] overflow-auto bg-white p-6 md:p-8">
+      <div className="bg-white p-4 sm:p-6 md:p-8">
         <div className="mx-auto max-w-lg">
           {/* Header */}
-          <div className="mb-6 flex items-start justify-between">
+          <div className="mb-4 flex items-start justify-between sm:mb-6">
             <div>
               <div className="mb-1 flex items-center gap-2">
-                <span className="text-2xl">{activeProject.favicon}</span>
-                <h3 className="text-xl font-semibold text-stone-900">
+                <span className="text-xl sm:text-2xl">
+                  {activeProject.favicon}
+                </span>
+                <h3 className="text-lg font-semibold text-stone-900 sm:text-xl">
                   {activeProject.name}
                 </h3>
               </div>
@@ -351,12 +360,12 @@ const BrowserWindow = () => {
           </div>
 
           {/* Description */}
-          <p className="mb-6 leading-relaxed text-stone-600">
+          <p className="mb-4 text-sm leading-relaxed text-stone-600 sm:mb-6 sm:text-base">
             {activeProject.description}
           </p>
 
           {/* Tags */}
-          <div className="mb-6 flex flex-wrap gap-2">
+          <div className="mb-4 flex flex-wrap gap-2 sm:mb-6">
             {activeProject.spotify && (
               <span className="rounded bg-green-50 px-2 py-1 text-xs text-green-700">
                 Spotify API
@@ -394,10 +403,16 @@ export const Experience = () => {
       </div>
 
       <p className="mb-12 max-w-xl text-stone-600">
-        It&apos;s like art, and I&apos;m the artist—the canvas is code.
-        There&apos;s something magical about being able to think &quot;I want to
-        track my favorite artists&apos; growth&quot; and just... build it.
-        Nothing stopping you.
+        It started during lockdown. First HTML & CSS class on Microsoft Teams,
+        and something just clicked. I spent days locked in my room watching
+        Udemy courses, building barebones CRUD apps with Express and EJS. Two
+        people I owe my career to: my professor who introduced me to it, and
+        Colt Steele whose course got me through those early days. Now coding is
+        my craft, my safe place. Half my side projects are Spotify-based. I'm
+        not a musician but making things with music is what I love.
+        stamped.today is the current one: you collect stamps of artists you
+        love, frozen with their monthly listener count at that moment. Proof you
+        were a day 1 before they blew up.
       </p>
 
       <div className="mb-16">
