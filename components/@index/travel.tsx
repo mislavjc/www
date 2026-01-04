@@ -13,14 +13,10 @@ const COUNTRIES_GEOJSON_URL =
   'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson';
 
 const MAP_CONFIG = {
-  center: [15, 52] as [number, number],
-  zoom: 2.8,
-  minZoom: 2,
+  center: [0, 20] as [number, number],
+  zoom: 1.5,
+  minZoom: 1,
   maxZoom: 6,
-  bounds: [
-    [-15, 30],
-    [45, 72],
-  ] as [[number, number], [number, number]],
 };
 
 function VisitedCountriesLayer() {
@@ -255,7 +251,6 @@ export const Travel = () => {
         <MapComponent
           center={MAP_CONFIG.center}
           zoom={MAP_CONFIG.zoom}
-          maxBounds={MAP_CONFIG.bounds}
           minZoom={MAP_CONFIG.minZoom}
           maxZoom={MAP_CONFIG.maxZoom}
         >
