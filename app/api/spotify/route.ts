@@ -14,6 +14,7 @@ const RECENTLY_PLAYED_ENDPOINT =
 
 type SpotifyTrack = {
   name: string;
+  duration_ms: number;
   artists: { name: string }[];
   album: {
     name: string;
@@ -31,6 +32,8 @@ type SpotifyResponse = {
   album: string;
   albumImageUrl: string;
   songUrl: string;
+  duration?: number;
+  progress?: number;
 };
 
 const getAccessToken = async (): Promise<{ access_token: string }> => {
@@ -78,6 +81,8 @@ const getNowPlaying = async (): Promise<SpotifyResponse | null> => {
     album: track.album.name,
     albumImageUrl: track.album.images[0]?.url ?? '',
     songUrl: track.external_urls.spotify,
+    duration: track.duration_ms,
+    progress: data.progress_ms,
   };
 };
 
