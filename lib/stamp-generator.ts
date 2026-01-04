@@ -1,8 +1,28 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 import sharp from 'sharp';
 
 import { VISITED_COUNTRIES } from './countries';
 
-const CACHE_VERSION = 7;
+const CACHE_VERSION = 8;
+
+// Load and encode font for embedding in SVG
+let fontBase64: string | null = null;
+const getEmbeddedFont = () => {
+  if (!fontBase64) {
+    try {
+      const fontPath = join(
+        process.cwd(),
+        'public/fonts/CraftworkGrotesk-Medium.ttf',
+      );
+      fontBase64 = readFileSync(fontPath).toString('base64');
+    } catch {
+      fontBase64 = '';
+    }
+  }
+  return fontBase64;
+};
 const imageCache = new Map<string, string>();
 const COLORS = [
   '#1e3a5f',
@@ -59,7 +79,10 @@ const imgEl = (
 ) =>
   `<g clip-path="url(#${id})" opacity="0.5"><image href="${img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/></g>`;
 
-// Text helper - use sans-serif as fallback since Arial may not be available on Linux/Vercel
+// Font family name for embedded font
+const FONT_FAMILY = 'CraftworkGrotesk';
+
+// Text helper
 const txt = (
   x: number,
   y: number,
@@ -68,11 +91,16 @@ const txt = (
   text: string,
   bold = false,
 ) =>
-  `<text x="${x}" y="${y}" fill="${color}" font-family="DejaVu Sans, Liberation Sans, Arial, sans-serif" font-size="${size}" ${bold ? 'font-weight="bold"' : ''} text-anchor="middle">${text}</text>`;
+  `<text x="${x}" y="${y}" fill="${color}" font-family="${FONT_FAMILY}, sans-serif" font-size="${size}" ${bold ? 'font-weight="bold"' : ''} text-anchor="middle">${text}</text>`;
 
-// SVG wrapper
-const svg = (w: number, h: number, content: string) =>
-  `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">${content}</svg>`;
+// SVG wrapper with embedded font
+const svg = (w: number, h: number, content: string) => {
+  const font = getEmbeddedFont();
+  const fontStyle = font
+    ? `<defs><style>@font-face { font-family: '${FONT_FAMILY}'; src: url('data:font/truetype;base64,${font}') format('truetype'); }</style></defs>`
+    : '';
+  return `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">${fontStyle}${content}</svg>`;
+};
 
 // Polygon points generator
 const polyPts = (
@@ -157,7 +185,7 @@ const generators: Generator[] = [
     return svg(
       s,
       s,
-      `<defs><path id="arc" d="${arc}"/></defs>${clip}<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${d.color}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${r - 5}" fill="none" stroke="${d.color}" stroke-width="1"/><text fill="${d.color}" font-family="DejaVu Sans, Liberation Sans, Arial, sans-serif" font-size="${s * 0.055}" font-weight="bold"><textPath href="#arc" startOffset="50%" text-anchor="middle">${d.country.toUpperCase()}</textPath></text>${txt(cx, cx + 5, s * 0.07, d.color, d.date, true)}`,
+      `<defs><path id="arc" d="${arc}"/></defs>${clip}<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${d.color}" stroke-width="2"/><circle cx="${cx}" cy="${cx}" r="${r - 5}" fill="none" stroke="${d.color}" stroke-width="1"/><text fill="${d.color}" font-family="${FONT_FAMILY}, sans-serif" font-size="${s * 0.055}" font-weight="bold"><textPath href="#arc" startOffset="50%" text-anchor="middle">${d.country.toUpperCase()}</textPath></text>${txt(cx, cx + 5, s * 0.07, d.color, d.date, true)}`,
     );
   },
   // 5. Square
