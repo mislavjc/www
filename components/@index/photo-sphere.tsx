@@ -1,16 +1,16 @@
 'use client';
 
 import React, {
+  useCallback,
+  useEffect,
+  useMemo,
   useRef,
   useState,
-  useMemo,
-  useEffect,
-  useCallback,
 } from 'react';
+import { Html, OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Html } from '@react-three/drei';
-import * as THREE from 'three';
 import Image from 'next/image';
+import * as THREE from 'three';
 
 interface PhotoExif {
   camera: string | null;
@@ -481,6 +481,22 @@ export const PhotoSphere = ({ photos }: PhotoSphereProps) => {
   const [hasError, setHasError] = useState(false);
   const [selected, setSelected] = useState<SelectedPhoto | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Cleanup WebGL context lost listener
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      setHasError(true);
+    };
+
+    canvas.addEventListener('webglcontextlost', handleContextLost);
+    return () =>
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+  }, []);
 
   if (hasError) {
     return <PhotoGrid photos={photos} />;
@@ -498,10 +514,7 @@ export const PhotoSphere = ({ photos }: PhotoSphereProps) => {
         onCreated={({ gl }) => {
           const canvas = gl.getContext().canvas;
           if (canvas instanceof HTMLCanvasElement) {
-            canvas.addEventListener('webglcontextlost', (e) => {
-              e.preventDefault();
-              setHasError(true);
-            });
+            canvasRef.current = canvas;
           }
         }}
         gl={{

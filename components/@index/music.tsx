@@ -1,17 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type TopArtist = {
-  id: string;
-  name: string;
-  imageUrl: string;
-  spotifyUrl: string;
-  genres: string[];
-};
+import type { TopArtist } from 'lib/spotify';
 
 // Concert data sorted by date (newest first)
 const concerts = [
@@ -475,11 +469,18 @@ const PosterArtist = ({
 
 const TopArtists = ({ artists }: TopArtistsProps) => {
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const imagePreviewRef = useRef<HTMLDivElement>(null);
+
+  const handleHover = useCallback((url: string) => setHoveredImage(url), []);
+  const handleLeave = useCallback(() => setHoveredImage(null), []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
+      // Update position via DOM directly to avoid re-renders
+      if (imagePreviewRef.current) {
+        imagePreviewRef.current.style.left = `${e.clientX}px`;
+        imagePreviewRef.current.style.top = `${e.clientY}px`;
+      }
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -490,7 +491,7 @@ const TopArtists = ({ artists }: TopArtistsProps) => {
   return (
     <div className="relative isolate mx-auto w-full max-w-[340px] rotate-1 scale-100 transform-gpu backface-hidden transition-transform duration-300 will-change-transform hover:rotate-0 hover:scale-105">
       {/* Tape Effect */}
-      <div className="absolute -top-3 left-1/2 h-8 w-24 -translate-x-1/2 rotate-[-2deg] bg-yellow-100/80 shadow-sm backdrop-blur-[1px]"></div>
+      <div className="absolute -top-3 left-1/2 h-8 w-24 -translate-x-1/2 rotate-[-2deg] bg-yellow-100/80 shadow-sm"></div>
 
       {/* The Poster Container */}
       <div
@@ -524,8 +525,8 @@ const TopArtists = ({ artists }: TopArtistsProps) => {
                 key={artist.id}
                 artist={artist}
                 index={i}
-                onHover={setHoveredImage}
-                onLeave={() => setHoveredImage(null)}
+                onHover={handleHover}
+                onLeave={handleLeave}
               />
             ))}
           </div>
@@ -548,16 +549,14 @@ const TopArtists = ({ artists }: TopArtistsProps) => {
       {/* Floating Image Preview */}
       {hoveredImage && (
         <div
+          ref={imagePreviewRef}
           className="pointer-events-none fixed z-50 h-48 w-48 -translate-x-1/2 -translate-y-1/2 overflow-hidden border-4 border-white bg-stone-100 shadow-2xl"
-          style={{
-            left: cursorPos.x,
-            top: cursorPos.y,
-          }}
         >
           <Image
             src={hoveredImage}
             alt=""
             fill
+            sizes="192px"
             className="object-cover contrast-125 grayscale"
           />
         </div>
@@ -566,27 +565,15 @@ const TopArtists = ({ artists }: TopArtistsProps) => {
   );
 };
 
-export const Music = () => {
-  const [topArtists, setTopArtists] = useState<TopArtist[]>([]);
+type MusicProps = {
+  topArtists: TopArtist[];
+};
 
-  useEffect(() => {
-    const fetchTopArtists = async () => {
-      try {
-        const response = await fetch('/api/spotify/top-artists');
-        const data = await response.json();
-        setTopArtists(data);
-      } catch {
-        setTopArtists([]);
-      }
-    };
-
-    fetchTopArtists();
-  }, []);
-
+export const Music = ({ topArtists }: MusicProps) => {
   return (
     <section id="music" className="overflow-x-clip py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-400">1</span>
+        <span className="font-serif text-sm text-stone-500">1</span>
         <h2 className="font-serif text-3xl text-stone-900">Music</h2>
       </div>
 
@@ -610,7 +597,7 @@ export const Music = () => {
       <div>
         <h3
           id="concerts"
-          className="mb-4 scroll-mt-24 text-sm uppercase tracking-widest text-stone-400"
+          className="mb-4 scroll-mt-24 text-sm uppercase tracking-widest text-stone-500"
         >
           Recent Concerts
         </h3>

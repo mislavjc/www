@@ -180,7 +180,7 @@ const ExperienceGraph = () => {
         {MONTH_NAMES.map((month) => (
           <div
             key={month}
-            className="flex-1 text-[10px] text-stone-400 sm:text-xs"
+            className="flex-1 text-[10px] text-stone-500 sm:text-xs"
           >
             {month}
           </div>
@@ -238,10 +238,10 @@ const ExperienceGraph = () => {
           ))}
           <div className="flex items-center gap-1 sm:gap-1.5">
             <div className="h-2.5 w-2.5 rounded-sm bg-stone-100 sm:h-3 sm:w-3" />
-            <span className="text-[10px] text-stone-400 sm:text-xs">gap</span>
+            <span className="text-[10px] text-stone-500 sm:text-xs">gap</span>
           </div>
         </div>
-        <div className="text-[10px] text-stone-400 sm:text-xs">
+        <div className="text-[10px] text-stone-500 sm:text-xs">
           <span className="text-stone-600">{totalYears}</span> years
         </div>
       </div>
@@ -473,7 +473,7 @@ export const Experience = () => {
   return (
     <section id="code" className="py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-400">3</span>
+        <span className="font-serif text-sm text-stone-500">3</span>
         <h2 className="font-serif text-3xl text-stone-900">Code</h2>
       </div>
 
@@ -491,14 +491,14 @@ export const Experience = () => {
       </p>
 
       <div className="mb-16">
-        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-400">
+        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-500">
           Experience
         </h3>
         <ExperienceGraph />
       </div>
 
       <div>
-        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-400">
+        <h3 className="mb-6 text-sm uppercase tracking-widest text-stone-500">
           Projects
         </h3>
         <BrowserWindow />

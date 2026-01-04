@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
+import Image from 'next/image';
 
 type SpotifyData = {
   isPlaying: boolean;
@@ -26,25 +26,53 @@ export const SpotifyIsland = () => {
   const [data, setData] = useState<SpotifyData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const fetchSpotify = useCallback(async () => {
+    try {
+      const response = await fetch('/api/spotify');
+      const json = await response.json();
+      setData(json);
+    } catch {
+      setData(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchSpotify = async () => {
-      try {
-        const response = await fetch('/api/spotify');
-        const json = await response.json();
-        setData(json);
-      } catch {
-        setData(null);
-      } finally {
-        setIsLoading(false);
+    fetchSpotify();
+
+    const startPolling = () => {
+      if (!intervalRef.current) {
+        intervalRef.current = setInterval(fetchSpotify, 30000);
       }
     };
 
-    fetchSpotify();
+    const stopPolling = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
 
-    const interval = setInterval(fetchSpotify, 30000);
-    return () => clearInterval(interval);
-  }, []);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopPolling();
+      } else {
+        fetchSpotify(); // Fetch immediately when becoming visible
+        startPolling();
+      }
+    };
+
+    startPolling();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      stopPolling();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [fetchSpotify]);
 
   if (isLoading || !data?.title) {
     return null;
@@ -94,6 +122,7 @@ export const SpotifyIsland = () => {
               src={data.albumImageUrl}
               alt=""
               fill
+              sizes="96px"
               className="object-cover"
             />
           )}

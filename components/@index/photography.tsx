@@ -1,9 +1,10 @@
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 import { getPhotos } from 'lib/photography';
-import { PhotoSphere } from './photo-sphere';
+
+import { PhotoSphereWrapper } from './photo-sphere-wrapper';
 
 const FAVORITE_PHOTO_UUID = '00000000-0000-761f-bbe1-9603a1134c4e';
 
@@ -20,6 +21,12 @@ const barcodeHeights = [
   68, 81, 67, 61, 94, 82, 94, 96, 78, 74, 94, 82, 62, 69, 84, 80, 88, 90, 98,
   90,
 ];
+
+const PhotoSphereLoading = () => (
+  <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-900 md:aspect-[4/3]">
+    <div className="font-mono text-xs text-stone-500">Loading sphere...</div>
+  </div>
+);
 
 const PhotoSphereContent = async () => {
   const allPhotos = await getPhotos();
@@ -40,14 +47,8 @@ const PhotoSphereContent = async () => {
       exif: p.exif,
     }));
 
-  return <PhotoSphere photos={photos} />;
+  return <PhotoSphereWrapper photos={photos} />;
 };
-
-const PhotoSphereLoading = () => (
-  <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-900 md:aspect-[4/3]">
-    <div className="font-mono text-xs text-stone-500">Loading sphere...</div>
-  </div>
-);
 
 // Camera Store Receipt - worn and crumpled
 const GearReceipt = () => {
@@ -173,7 +174,7 @@ export const Photography = () => {
   return (
     <section id="photography" className="py-24">
       <div className="mb-4 flex items-baseline gap-3">
-        <span className="font-serif text-sm text-stone-400">2</span>
+        <span className="font-serif text-sm text-stone-500">2</span>
         <h2 className="font-serif text-3xl text-stone-900">Lens</h2>
       </div>
 
@@ -200,10 +201,11 @@ export const Photography = () => {
             width={640}
             height={960}
             className="h-auto w-full"
+            priority
           />
         </div>
         <div className="flex-1">
-          <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-400">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-500">
             Favorite shot
           </p>
           <p className="text-stone-600">
@@ -225,7 +227,7 @@ export const Photography = () => {
             href="https://photography.mislavjc.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs text-stone-400 underline underline-offset-4 hover:text-stone-600"
+            className="font-mono text-xs text-stone-500 underline underline-offset-4 hover:text-stone-700"
           >
             VIEW FULL GALLERY →
           </Link>
@@ -234,7 +236,7 @@ export const Photography = () => {
 
       {/* Process note - styled like film canister label */}
       <div className="mb-12 border border-stone-200 bg-stone-50 p-4">
-        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-400">
+        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-500">
           Process Notes
         </div>
         <p className="text-sm text-stone-600">

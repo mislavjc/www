@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Instrument_Sans, Instrument_Serif } from 'next/font/google';
+import { Instrument_Serif } from 'next/font/google';
 import localFont from 'next/font/local';
 import PlausibleProvider from 'next-plausible';
 
@@ -11,12 +11,6 @@ import { cn } from 'lib/utils';
 
 import './globals.css';
 
-const instrumentSans = Instrument_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-sans',
-});
-
 const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
   weight: '400',
@@ -26,7 +20,7 @@ const instrumentSerif = Instrument_Serif({
 
 const craftworkSans = localFont({
   src: '../public/fonts/CraftworkSans.ttf',
-  variable: '--font-craftwork-sans',
+  variable: '--font-sans',
   display: 'swap',
 });
 
@@ -63,7 +57,6 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        instrumentSans.variable,
         instrumentSerif.variable,
         craftworkSans.variable,
         craftworkGrotesk.variable,
@@ -71,6 +64,9 @@ export default function RootLayout({
     >
       <head>
         <PlausibleProvider domain="mislavjc.com" trackOutboundLinks />
+        {/* Preconnect to external image domains for faster loading */}
+        <link rel="preconnect" href="https://i.scdn.co" />
+        <link rel="preconnect" href="https://r2.photography.mislavjc.com" />
       </head>
       <body className="bg-stone-50 font-sans text-stone-900 antialiased">
         <Navigation />
