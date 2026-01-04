@@ -212,7 +212,7 @@ const ExperienceGraph = () => {
                     className={`h-2.5 flex-1 rounded-[2px] sm:h-4 sm:rounded-sm ${isFuture ? 'bg-stone-100' : companyColor} transition-all ${!isFuture && 'hover:ring-1 hover:ring-stone-400'}`}
                     title={
                       isFuture
-                        ? ''
+                        ? undefined
                         : `${week.weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}${week.companyId ? ` – ${experiences.find((e) => e.companyId === week.companyId)?.company}` : ' – gap'}`
                     }
                   />
@@ -295,48 +295,123 @@ const BrowserWindow = () => {
   const isGitHub = activeProject.url.includes('github.com');
 
   return (
-    <div className="w-full overflow-hidden rounded-lg border border-stone-200 bg-stone-100">
-      {/* Window chrome - hidden on mobile */}
-      <div className="hidden h-10 items-center gap-3 border-b border-stone-200 bg-stone-50 px-4 sm:flex">
-        {/* Traffic lights */}
-        <div className="flex gap-1.5">
-          <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
-          <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
-          <div className="h-2.5 w-2.5 rounded-full bg-stone-300" />
-        </div>
-
-        {/* URL bar */}
-        <div className="flex flex-1 items-center justify-center">
-          <div className="flex items-center gap-2 rounded-md bg-white px-3 py-1 text-xs text-stone-500">
-            {activeProject.url.replace('https://', '')}
-          </div>
-        </div>
-
-        <div className="w-[52px]" />
-      </div>
-
-      {/* Tabs - scrollable on mobile */}
-      <div className="flex overflow-x-auto border-b border-stone-200 bg-stone-50 scrollbar-hide">
+    <div className="w-full overflow-hidden rounded-lg border border-stone-300/50 bg-[#dee1e6] shadow-xl">
+      {/* Tab bar */}
+      <div className="flex items-end gap-0.5 bg-[#dee1e6] px-2 pt-2">
         {projects.map((project, index) => (
           <button
             key={project.name}
             type="button"
             onClick={() => setActiveTab(index)}
-            className={`flex shrink-0 items-center gap-2 border-r border-stone-200 px-3 py-2.5 text-xs transition-colors sm:px-4 sm:py-2 ${
+            className={`group relative flex shrink-0 items-center gap-2 rounded-t-lg px-3 py-2 text-xs transition-all sm:px-4 ${
               activeTab === index
-                ? 'bg-white text-stone-900'
-                : 'text-stone-400 hover:bg-stone-100 hover:text-stone-600'
+                ? 'bg-white text-stone-700'
+                : 'text-stone-500 hover:bg-stone-200/50'
             }`}
           >
-            <span>{project.favicon}</span>
-            <span className="hidden sm:inline">{project.name}</span>
+            <span className="text-sm">{project.favicon}</span>
+            <span className="hidden max-w-[100px] truncate sm:inline">
+              {project.name}
+            </span>
+            <span
+              className={`ml-1 hidden rounded-full p-0.5 text-stone-400 transition-colors hover:bg-stone-200 hover:text-stone-600 sm:inline ${
+                activeTab === index
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100'
+              }`}
+            >
+              <svg className="h-3 w-3" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                />
+              </svg>
+            </span>
           </button>
         ))}
+        {/* New tab button */}
+        <div className="mb-2 ml-1 flex h-6 w-6 items-center justify-center rounded text-stone-400 transition-colors hover:bg-stone-300/50">
+          <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* URL bar area */}
+      <div className="flex h-10 items-center gap-2 bg-white px-2 sm:gap-3 sm:px-3">
+        {/* Navigation buttons - hidden on mobile */}
+        <div className="hidden items-center gap-1 text-stone-400 sm:flex">
+          <button
+            type="button"
+            className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* URL bar */}
+        <div className="flex flex-1 items-center gap-2 rounded-full bg-stone-100 px-4 py-1.5 text-sm">
+          <svg
+            className="h-4 w-4 shrink-0 text-stone-400"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              fill="currentColor"
+              d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"
+            />
+          </svg>
+          <span className="truncate text-stone-600">
+            {activeProject.url.replace('https://', '')}
+          </span>
+        </div>
+
+        {/* Right side icons - hidden on mobile */}
+        <div className="hidden items-center gap-1 text-stone-400 sm:flex">
+          <button
+            type="button"
+            className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Content */}
       <div className="bg-white p-4 sm:p-6 md:p-8">
-        <div className="mx-auto max-w-lg">
+        <div className="mx-auto min-h-[200px] max-w-lg sm:min-h-[180px]">
           {/* Header */}
           <div className="mb-4 flex items-start justify-between sm:mb-6">
             <div>
