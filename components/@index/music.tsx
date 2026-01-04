@@ -381,8 +381,8 @@ const ConcertEnvelope = ({
         <motion.button
           onClick={onClick}
           disabled={isOpen}
-          className={`absolute inset-x-0 bottom-0 h-[110px] rounded bg-stone-100 transition-colors ${
-            isOpen ? 'cursor-default' : 'cursor-pointer hover:bg-stone-50'
+          className={`absolute inset-x-0 bottom-0 h-[110px] rounded bg-stone-200 transition-colors ${
+            isOpen ? 'cursor-default' : 'cursor-pointer hover:bg-stone-100'
           }`}
           style={{ zIndex: 15 }}
         >
@@ -653,9 +653,16 @@ export const Music = () => {
       </div>
 
       <p className="mb-12 max-w-xl text-stone-600">
-        Music is at the core of everything I do. From cloud rap to hyperpop to
-        experimental, I find myself drawn to artists who push boundaries and
-        create something entirely new.
+        What I love about concerts is that everyone there is like-minded. We're
+        all there to see an artist we love, even if our lives are completely
+        different outside of it. I can walk up to anyone in the queue and ask
+        "what song are you dying to hear tonight?" and suddenly we're friends.
+        Queue friendships are temporary but they're real. The show that changed
+        everything was seeing Bladee, Ecco2k, and Thaiboy together in Stockholm
+        for Rift Festival, September 2022. Old warehouse venue, perfect light
+        show, crowd energy was unreal. They opened with Western Union and I have
+        a video where you can see my camera fly around because the crowd went so
+        wild I couldn't hold my hand still.
       </p>
 
       <div className="mb-16 flex justify-center py-8">
@@ -665,10 +672,16 @@ export const Music = () => {
       <div>
         <h3
           id="concerts"
-          className="mb-6 scroll-mt-24 text-sm uppercase tracking-widest text-stone-400"
+          className="mb-4 scroll-mt-24 text-sm uppercase tracking-widest text-stone-400"
         >
-          Concerts
+          Recent Concerts
         </h3>
+        <p className="mb-8 max-w-xl text-stone-600">
+          Sometimes I go with friends, sometimes solo. Both are fun honestly.
+          When I'm alone I usually start chatting with someone right when I get
+          in line. Headphones are in 24/7 when I'm outside anyway so concerts
+          are just the natural extension of that I guess.
+        </p>
         <ConcertTimeline />
       </div>
     </section>
