@@ -3,6 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
+// Parse date string as local date (not UTC) to avoid timezone shift issues
+const parseLocalDate = (dateStr: string): Date => {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
 type Experience = {
   role: string;
   company: string;
@@ -17,7 +23,7 @@ const experiences: Experience[] = [
     role: 'Founding Engineer',
     company: 'Preview.io',
     companyId: 'preview',
-    startDate: new Date('2025-10-01'),
+    startDate: parseLocalDate('2025-10-01'),
     endDate: null,
     description: 'Building AI-powered video generation tools.',
   },
@@ -25,32 +31,32 @@ const experiences: Experience[] = [
     role: 'Founding Applied AI Engineer',
     company: 'Steel',
     companyId: 'steel',
-    startDate: new Date('2025-02-01'),
-    endDate: new Date('2025-06-30'),
+    startDate: parseLocalDate('2025-02-01'),
+    endDate: parseLocalDate('2025-06-30'),
     description: 'Built AI infrastructure and applications.',
   },
   {
     role: 'Applied AI Engineer',
     company: 'Rubric Labs',
     companyId: 'rubric',
-    startDate: new Date('2024-09-01'),
-    endDate: new Date('2025-02-28'),
+    startDate: parseLocalDate('2024-09-01'),
+    endDate: parseLocalDate('2025-02-28'),
     description: 'Worked on AI-powered applications.',
   },
   {
     role: 'Frontend Engineer',
     company: 'CoreLine',
     companyId: 'coreline',
-    startDate: new Date('2024-01-01'),
-    endDate: new Date('2024-09-30'),
+    startDate: parseLocalDate('2024-01-01'),
+    endDate: parseLocalDate('2024-09-30'),
     description: 'Built a custom CMS for a web shop.',
   },
   {
     role: 'Frontend Engineer',
     company: 'Glassnode / Accointing',
     companyId: 'glassnode',
-    startDate: new Date('2021-08-01'),
-    endDate: new Date('2023-12-31'),
+    startDate: parseLocalDate('2021-08-01'),
+    endDate: parseLocalDate('2023-12-31'),
     description:
       'Worked across both companies as they merged. Built crypto analytics and portfolio tracking interfaces.',
   },
@@ -58,8 +64,8 @@ const experiences: Experience[] = [
     role: 'Frontend Engineer',
     company: 'CoreLine',
     companyId: 'coreline',
-    startDate: new Date('2021-03-01'),
-    endDate: new Date('2021-08-31'),
+    startDate: parseLocalDate('2021-03-01'),
+    endDate: parseLocalDate('2021-08-31'),
     description: 'GraphQL endpoints and CoreEvent application improvements.',
   },
 ];

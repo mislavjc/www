@@ -24,8 +24,9 @@ export async function GET(
   try {
     // Get width from query params (default 150, height will be 4/3 of width)
     const { searchParams } = new URL(request.url);
+    const parsedWidth = parseInt(searchParams.get('width') || '150', 10);
     const width = Math.min(
-      Math.max(parseInt(searchParams.get('width') || '150'), 100),
+      Math.max(Number.isNaN(parsedWidth) ? 150 : parsedWidth, 100),
       400,
     );
 

@@ -29,25 +29,38 @@ const PhotoSphereLoading = () => (
 );
 
 const PhotoSphereContent = async () => {
-  const allPhotos = await getPhotos();
+  try {
+    const allPhotos = await getPhotos();
 
-  // Get photos sorted by date (newest first), take 100 for the sphere
-  const photos = allPhotos
-    .filter((p) => p.exif.dateTime)
-    .sort(
-      (a, b) =>
-        new Date(b.exif.dateTime!).getTime() -
-        new Date(a.exif.dateTime!).getTime(),
-    )
-    .slice(0, 80)
-    .map((p) => ({
-      uuid: p.uuid,
-      w: p.w,
-      h: p.h,
-      exif: p.exif,
-    }));
+    // Get photos sorted by date (newest first), take 100 for the sphere
+    const photos = allPhotos
+      .filter((p) => p.exif.dateTime)
+      .sort(
+        (a, b) =>
+          new Date(b.exif.dateTime!).getTime() -
+          new Date(a.exif.dateTime!).getTime(),
+      )
+      .slice(0, 80)
+      .map((p) => ({
+        uuid: p.uuid,
+        w: p.w,
+        h: p.h,
+        exif: p.exif,
+      }));
 
-  return <PhotoSphereWrapper photos={photos} />;
+    return <PhotoSphereWrapper photos={photos} />;
+  } catch {
+    // Graceful fallback when photos can't be fetched
+    return (
+      <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-100 md:aspect-[4/3]">
+        <div className="text-center">
+          <div className="font-mono text-xs text-stone-500">
+            Photos unavailable
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 // Camera Store Receipt - worn and crumpled

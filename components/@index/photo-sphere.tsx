@@ -486,20 +486,21 @@ export const PhotoSphere = ({ photos }: PhotoSphereProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Cleanup WebGL context lost listener
+  // Handle WebGL context lost - attach listener when canvas is set via onCreated
+  const handleContextLostRef = useRef((e: Event) => {
+    e.preventDefault();
+    setHasError(true);
+  });
+
+  // Attach/detach listener when canvasRef changes (runs on every render to catch when canvas is set)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const handleContextLost = (e: Event) => {
-      e.preventDefault();
-      setHasError(true);
-    };
-
-    canvas.addEventListener('webglcontextlost', handleContextLost);
-    return () =>
-      canvas.removeEventListener('webglcontextlost', handleContextLost);
-  }, []);
+    const handler = handleContextLostRef.current;
+    canvas.addEventListener('webglcontextlost', handler);
+    return () => canvas.removeEventListener('webglcontextlost', handler);
+  });
 
   if (hasError) {
     return <PhotoGrid photos={photos} />;
