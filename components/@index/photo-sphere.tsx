@@ -114,6 +114,7 @@ const PhotoPlane = React.memo(
     useEffect(() => {
       const delay = index * 50; // Reduced delay for faster loading
       let objectUrl: string | null = null;
+      let cancelled = false;
 
       const timer = setTimeout(() => {
         const r2Url = `https://r2.photography.mislavjc.com/variants/grid/jpeg/640/${photo.uuid}.jpeg`;
@@ -122,9 +123,14 @@ const PhotoPlane = React.memo(
         fetch(url)
           .then((res) => res.blob())
           .then((blob) => {
+            if (cancelled) return;
             objectUrl = URL.createObjectURL(blob);
             const img = new window.Image();
             img.onload = () => {
+              if (cancelled) {
+                if (objectUrl) URL.revokeObjectURL(objectUrl);
+                return;
+              }
               const tex = new THREE.Texture(img);
               tex.needsUpdate = true;
               tex.colorSpace = THREE.SRGBColorSpace;
@@ -146,6 +152,7 @@ const PhotoPlane = React.memo(
       }, delay);
 
       return () => {
+        cancelled = true;
         clearTimeout(timer);
         if (objectUrl) URL.revokeObjectURL(objectUrl);
         if (textureRef.current) {
