@@ -1,0 +1,235 @@
+// Visited countries with their landmarks for stamp generation
+export const VISITED_COUNTRIES: Record<
+  string,
+  {
+    name: string;
+    city: string;
+    landmark: string;
+    airport: string;
+    wikiTitle: string;
+  }
+> = {
+  AUT: {
+    name: 'Austria',
+    city: 'Vienna',
+    landmark: "St. Stephen's Cathedral",
+    airport: 'WIEN-SCHWECHAT',
+    wikiTitle: 'St._Stephen%27s_Cathedral%2C_Vienna',
+  },
+  BEL: {
+    name: 'Belgium',
+    city: 'Brussels',
+    landmark: 'Grand Place',
+    airport: 'ZAVENTEM',
+    wikiTitle: 'Grand-Place',
+  },
+  BIH: {
+    name: 'Bosnia',
+    city: 'Sarajevo',
+    landmark: 'Stari Most',
+    airport: 'SARAJEVO',
+    wikiTitle: 'Stari_Most',
+  },
+  CHE: {
+    name: 'Switzerland',
+    city: 'Zermatt',
+    landmark: 'Matterhorn',
+    airport: 'ZURICH',
+    wikiTitle: 'Matterhorn',
+  },
+  CYP: {
+    name: 'Cyprus',
+    city: 'Paphos',
+    landmark: 'Tombs of the Kings',
+    airport: 'LARNACA',
+    wikiTitle: 'Tombs_of_the_Kings_(Paphos)',
+  },
+  CZE: {
+    name: 'Czechia',
+    city: 'Prague',
+    landmark: 'Charles Bridge',
+    airport: 'PRAHA RUZYNE',
+    wikiTitle: 'Charles_Bridge',
+  },
+  DEU: {
+    name: 'Germany',
+    city: 'Berlin',
+    landmark: 'Brandenburg Gate',
+    airport: 'BERLIN-TEGEL',
+    wikiTitle: 'Brandenburg_Gate',
+  },
+  DNK: {
+    name: 'Denmark',
+    city: 'Copenhagen',
+    landmark: 'Nyhavn',
+    airport: 'KASTRUP',
+    wikiTitle: 'Nyhavn',
+  },
+  ESP: {
+    name: 'Spain',
+    city: 'Barcelona',
+    landmark: 'Sagrada Familia',
+    airport: 'EL PRAT',
+    wikiTitle: 'Sagrada_Fam%C3%ADlia',
+  },
+  FRA: {
+    name: 'France',
+    city: 'Paris',
+    landmark: 'Eiffel Tower',
+    airport: 'CHARLES DE GAULLE',
+    wikiTitle: 'Eiffel_Tower',
+  },
+  GBR: {
+    name: 'United Kingdom',
+    city: 'London',
+    landmark: 'Big Ben',
+    airport: 'HEATHROW',
+    wikiTitle: 'Big_Ben',
+  },
+  GRC: {
+    name: 'Greece',
+    city: 'Athens',
+    landmark: 'Parthenon',
+    airport: 'ELEFTHERIOS VENIZELOS',
+    wikiTitle: 'Parthenon',
+  },
+  HRV: {
+    name: 'Croatia',
+    city: 'Split',
+    landmark: "Diocletian's Palace",
+    airport: 'SPLIT',
+    wikiTitle: 'Diocletian%27s_Palace',
+  },
+  HUN: {
+    name: 'Hungary',
+    city: 'Budapest',
+    landmark: 'Hungarian Parliament',
+    airport: 'FERIHEGY',
+    wikiTitle: 'Hungarian_Parliament_Building',
+  },
+  IRL: {
+    name: 'Ireland',
+    city: 'Dublin',
+    landmark: 'Cliffs of Moher',
+    airport: 'DUBLIN',
+    wikiTitle: 'Cliffs_of_Moher',
+  },
+  ITA: {
+    name: 'Italy',
+    city: 'Rome',
+    landmark: 'Colosseum',
+    airport: 'FIUMICINO',
+    wikiTitle: 'Colosseum',
+  },
+  LIE: {
+    name: 'Liechtenstein',
+    city: 'Vaduz',
+    landmark: 'Vaduz Castle',
+    airport: 'VADUZ',
+    wikiTitle: 'Vaduz_Castle',
+  },
+  MCO: {
+    name: 'Monaco',
+    city: 'Monte Carlo',
+    landmark: 'Monte Carlo Casino',
+    airport: 'MONTE CARLO',
+    wikiTitle: 'Monte_Carlo_Casino',
+  },
+  MLT: {
+    name: 'Malta',
+    city: 'Valletta',
+    landmark: "St. John's Co-Cathedral",
+    airport: 'LUQA',
+    wikiTitle: 'St._John%27s_Co-Cathedral',
+  },
+  NLD: {
+    name: 'Netherlands',
+    city: 'Amsterdam',
+    landmark: 'Rijksmuseum',
+    airport: 'SCHIPHOL',
+    wikiTitle: 'Rijksmuseum',
+  },
+  NOR: {
+    name: 'Norway',
+    city: 'Bergen',
+    landmark: 'Bryggen',
+    airport: 'GARDERMOEN',
+    wikiTitle: 'Bryggen',
+  },
+  POL: {
+    name: 'Poland',
+    city: 'Krakow',
+    landmark: 'Wawel Castle',
+    airport: 'BALICE',
+    wikiTitle: 'Wawel_Castle',
+  },
+  PRT: {
+    name: 'Portugal',
+    city: 'Lisbon',
+    landmark: 'Belém Tower',
+    airport: 'PORTELA',
+    wikiTitle: 'Bel%C3%A9m_Tower',
+  },
+  ROU: {
+    name: 'Romania',
+    city: 'Bucharest',
+    landmark: 'Bran Castle',
+    airport: 'OTOPENI',
+    wikiTitle: 'Bran_Castle',
+  },
+  SMR: {
+    name: 'San Marino',
+    city: 'San Marino',
+    landmark: 'Guaita',
+    airport: 'SAN MARINO',
+    wikiTitle: 'Guaita',
+  },
+  SRB: {
+    name: 'Serbia',
+    city: 'Belgrade',
+    landmark: 'Belgrade Fortress',
+    airport: 'NIKOLA TESLA',
+    wikiTitle: 'Belgrade_Fortress',
+  },
+  SVK: {
+    name: 'Slovakia',
+    city: 'Bratislava',
+    landmark: 'Bratislava Castle',
+    airport: 'BRATISLAVA',
+    wikiTitle: 'Bratislava_Castle',
+  },
+  SVN: {
+    name: 'Slovenia',
+    city: 'Ljubljana',
+    landmark: 'Lake Bled',
+    airport: 'BRNIK',
+    wikiTitle: 'Lake_Bled',
+  },
+  SWE: {
+    name: 'Sweden',
+    city: 'Stockholm',
+    landmark: 'Stockholm Palace',
+    airport: 'ARLANDA',
+    wikiTitle: 'Stockholm_Palace',
+  },
+  TUR: {
+    name: 'Turkey',
+    city: 'Istanbul',
+    landmark: 'Hagia Sophia',
+    airport: 'ATATURK',
+    wikiTitle: 'Hagia_Sophia',
+  },
+  VAT: {
+    name: 'Vatican',
+    city: 'Vatican City',
+    landmark: "St. Peter's Basilica",
+    airport: 'VATICAN',
+    wikiTitle: 'St._Peter%27s_Basilica',
+  },
+};
+
+// List of country codes
+export const VISITED_COUNTRY_CODES = Object.keys(VISITED_COUNTRIES);
+
+// Get country count
+export const VISITED_COUNTRY_COUNT = VISITED_COUNTRY_CODES.length;
