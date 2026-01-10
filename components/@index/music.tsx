@@ -7,6 +7,52 @@ import Link from 'next/link';
 
 import type { TopArtist } from 'lib/spotify';
 
+// Skeleton for the poster while loading
+export const TopArtistsSkeleton = () => (
+  <div className="relative mx-auto w-full max-w-[340px] rotate-1">
+    {/* Tape Effect */}
+    <div className="absolute -top-3 left-1/2 h-8 w-24 -translate-x-1/2 rotate-[-2deg] bg-yellow-100/80 shadow-sm" />
+
+    {/* The Poster Container */}
+    <div
+      className="aspect-[3/4] overflow-hidden bg-[#EBEBE5] p-5 shadow-[2px_4px_16px_rgba(0,0,0,0.2)]"
+      style={{
+        clipPath:
+          'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 2% 50%, 0% 10%, 1% 0%)',
+      }}
+    >
+      <div className="flex h-full flex-col justify-between">
+        {/* Header */}
+        <div className="mb-4 border-b border-stone-900 pb-1">
+          <div className="flex w-full items-end justify-between">
+            <div className="h-8 w-24 animate-pulse rounded bg-stone-300" />
+            <div className="h-4 w-8 animate-pulse rounded bg-stone-200" />
+          </div>
+        </div>
+
+        {/* Skeleton lines for artists */}
+        <div className="flex-grow space-y-2">
+          <div className="h-7 w-full animate-pulse rounded bg-stone-300" />
+          <div className="h-7 w-5/6 animate-pulse rounded bg-stone-300" />
+          <div className="h-7 w-full animate-pulse rounded bg-stone-300" />
+          <div className="h-5 w-4/6 animate-pulse rounded bg-stone-200" />
+          <div className="h-5 w-5/6 animate-pulse rounded bg-stone-200" />
+          <div className="h-5 w-3/6 animate-pulse rounded bg-stone-200" />
+          <div className="h-5 w-4/6 animate-pulse rounded bg-stone-200" />
+          <div className="h-5 w-5/6 animate-pulse rounded bg-stone-200" />
+        </div>
+
+        {/* Footer */}
+        <div className="mt-4 flex items-center justify-between border-t border-stone-900 pt-2">
+          <div className="h-6 w-16 animate-pulse rounded bg-stone-200" />
+          <div className="h-6 w-6 animate-pulse rounded-full bg-stone-300" />
+          <div className="h-6 w-16 animate-pulse rounded bg-stone-200" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 // Concert data sorted by date (newest first)
 const concerts = [
   {
@@ -473,7 +519,7 @@ const PosterArtist = ({
   );
 };
 
-const TopArtists = ({ artists }: TopArtistsProps) => {
+export const TopArtists = ({ artists }: TopArtistsProps) => {
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
   const imagePreviewRef = useRef<HTMLDivElement>(null);
 
@@ -578,10 +624,10 @@ const TopArtists = ({ artists }: TopArtistsProps) => {
 };
 
 type MusicProps = {
-  topArtists: TopArtist[];
+  children: React.ReactNode;
 };
 
-export const Music = ({ topArtists }: MusicProps) => {
+export const Music = ({ children }: MusicProps) => {
   return (
     <section id="music" className="overflow-x-clip py-24">
       <div className="mb-4 flex items-baseline gap-3">
@@ -603,9 +649,7 @@ export const Music = ({ topArtists }: MusicProps) => {
         hand still.
       </p>
 
-      <div className="mb-16 flex justify-center py-8">
-        <TopArtists artists={topArtists} />
-      </div>
+      <div className="mb-16 flex justify-center py-8">{children}</div>
 
       <div>
         <h3

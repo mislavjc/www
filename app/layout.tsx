@@ -42,10 +42,49 @@ const craftworkGrotesk = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Mislav',
+  title: {
+    default: 'Mislav',
+    template: '%s | Mislav',
+  },
   description:
     'A love letter to music, photography, code, and the places in between.',
   metadataBase: new URL('https://mislavjc.com'),
+  keywords: [
+    'Mislav',
+    'software engineer',
+    'photography',
+    'travel',
+    'music',
+    'web development',
+  ],
+  authors: [{ name: 'Mislav', url: 'https://mislavjc.com' }],
+  creator: 'Mislav',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://mislavjc.com',
+    siteName: 'Mislav',
+    title: 'Mislav',
+    description:
+      'A love letter to music, photography, code, and the places in between.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mislav',
+    description:
+      'A love letter to music, photography, code, and the places in between.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
