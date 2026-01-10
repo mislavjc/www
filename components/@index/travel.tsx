@@ -160,58 +160,40 @@ function VisitedCountriesLayer() {
 // Deterministic rotation based on country code
 function getStampRotation(code: string): number {
   const hash = code.charCodeAt(0) + code.charCodeAt(1) * 2 + code.charCodeAt(2);
-  return ((hash % 20) - 10) * 1.2; // -12 to +12 degrees
+  return ((hash % 12) - 6) * 0.8; // subtle: -5 to +5 degrees
 }
 
-// Calculate optimal columns to fit stamps within aspect ratio 88:125
-function getColumnsForStampCount(stampCount: number): number {
-  // Page aspect ratio is 88:125 (w:h), so height = width * 1.42
-  // For N columns, each stamp is (1/N) of width, so stamp height is also (1/N) of width
-  // Rows that fit = floor(height / stampSize) = floor(1.42 * N)
-  // Capacity = N * floor(1.42 * N)
-  // Find smallest N where capacity >= stampCount
-  for (let cols = 3; cols <= 10; cols++) {
-    const rows = Math.floor((125 / 88) * cols);
-    if (cols * rows >= stampCount) return cols;
-  }
-  return 10;
-}
-
-function PassportPage({
-  countries,
-  columns,
-}: {
-  countries: string[];
-  columns: number;
-}) {
-  const stampWidthPercent = 115 / columns; // Slightly larger than container allows for overlap
-
+function PassportPage({ countries }: { countries: string[] }) {
   return (
-    <div
-      className="flex flex-wrap content-start bg-[#f5f1e8] p-[2%]"
-      style={{ aspectRatio: '88 / 125' }}
-    >
-      {countries.map((country, i) => (
-        <div
-          key={country}
-          style={{
-            width: `${stampWidthPercent}%`,
-            marginRight: `-${15 / columns}%`,
-            marginBottom: `-${12 / columns}%`,
-            transform: `rotate(${getStampRotation(country)}deg)`,
-            zIndex: i,
-          }}
-        >
-          <Image
-            src={`/api/stamp/${country.toLowerCase()}?width=90`}
-            alt={`${country} stamp`}
-            width={90}
-            height={90}
-            className="h-auto w-full"
-            unoptimized
-          />
-        </div>
-      ))}
+    <div className="relative flex-1 bg-[#f8f5ef] p-6">
+      {/* Subtle security pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 1px, transparent 10px)',
+        }}
+      />
+
+      {/* Stamps grid */}
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+        {countries.map((code) => (
+          <div
+            key={code}
+            className="relative"
+            style={{ transform: `rotate(${getStampRotation(code)}deg)` }}
+          >
+            <Image
+              src={`/api/stamp/${code.toLowerCase()}?width=100`}
+              alt={`${code} stamp`}
+              width={100}
+              height={100}
+              className="h-auto w-full"
+              unoptimized
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -221,16 +203,19 @@ function Passport() {
   const leftPage = VISITED_COUNTRY_CODES.slice(0, midPoint);
   const rightPage = VISITED_COUNTRY_CODES.slice(midPoint);
 
-  // Calculate columns based on the page with more stamps
-  const maxStampsPerPage = Math.max(leftPage.length, rightPage.length);
-  const columns = getColumnsForStampCount(maxStampsPerPage);
-
   return (
-    <div className="mt-10">
-      <div className="mx-auto max-w-3xl">
-        <div className="grid grid-cols-2">
-          <PassportPage countries={leftPage} columns={columns} />
-          <PassportPage countries={rightPage} columns={columns} />
+    <div className="mt-8">
+      {/* Passport spread */}
+      <div className="mx-auto max-w-3xl overflow-hidden rounded-sm shadow-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          {/* Left page */}
+          <div className="border-b border-stone-200 sm:border-b-0 sm:border-r">
+            <PassportPage countries={leftPage} />
+          </div>
+          {/* Right page - stretch to match left */}
+          <div className="flex">
+            <PassportPage countries={rightPage} />
+          </div>
         </div>
       </div>
     </div>
