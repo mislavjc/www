@@ -251,7 +251,6 @@ const Photo = ({
     }}
   >
     {src ? (
-      // eslint-disable-next-line @next/next/no-img-element
       <img
         src={src}
         alt=""
@@ -368,7 +367,6 @@ export default async function GET() {
       >
         {stamps.map((stamp, i) =>
           stamp ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               key={STAMP_COUNTRIES[i]}
               src={stamp}

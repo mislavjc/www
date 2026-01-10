@@ -1,12 +1,27 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
-
+import { cacheLife, cacheTag } from 'next/cache';
 import opentype from 'opentype.js';
+import { join } from 'path';
 import sharp from 'sharp';
 
 import { VISITED_COUNTRIES } from './countries';
+const WIKIPEDIA_REQUEST_DELAY_MS = 100; // Rate limit: ~10 requests/sec
 
-const CACHE_VERSION = 9;
+// Simple request queue for Wikipedia rate limiting
+let lastWikipediaRequest = 0;
+async function throttledFetch(
+  url: string,
+  options?: RequestInit,
+): Promise<Response> {
+  const now = Date.now();
+  const timeSinceLastRequest = now - lastWikipediaRequest;
+  if (timeSinceLastRequest < WIKIPEDIA_REQUEST_DELAY_MS) {
+    await new Promise((resolve) =>
+      setTimeout(resolve, WIKIPEDIA_REQUEST_DELAY_MS - timeSinceLastRequest),
+    );
+  }
+  lastWikipediaRequest = Date.now();
+  return fetch(url, options);
+}
 
 // Load font for text-to-path conversion
 let font: opentype.Font | null = null;
@@ -39,7 +54,6 @@ const textToPath = (
   return `<path d="${translatedPath.toPathData(2)}" fill="${color}"/>`;
 };
 
-const imageCache = new Map<string, string>();
 const COLORS = [
   '#1e3a5f',
   '#8B0000',
@@ -72,9 +86,12 @@ interface StampData {
 }
 
 // Helper functions
-const hash = (c: string) => c.charCodeAt(0) + c.charCodeAt(1) + c.charCodeAt(2);
+const hash = (c: string) =>
+  (c.charCodeAt(0) || 0) + (c.charCodeAt(1) || 0) + (c.charCodeAt(2) || 0);
 const hash2 = (c: string) =>
-  c.charCodeAt(0) + c.charCodeAt(1) * 2 + c.charCodeAt(2) * 3;
+  (c.charCodeAt(0) || 0) +
+  (c.charCodeAt(1) || 0) * 2 +
+  (c.charCodeAt(2) || 0) * 3;
 const getColor = (c: string) => COLORS[hash(c) % COLORS.length];
 const getVariation = (c: string) => hash2(c) % 10;
 const getDate = (c: string) => {
@@ -96,6 +113,7 @@ const imgEl = (
   `<g clip-path="url(#${id})" opacity="0.5"><image href="${img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/></g>`;
 
 // Text helper using path conversion
+
 const txt = (
   x: number,
   y: number,
@@ -305,10 +323,10 @@ const generators: Generator[] = [
   },
 ];
 
-// Image processing
+// Image processing with rate limiting
 async function fetchLandmarkImage(wikiTitle: string): Promise<Buffer | null> {
   try {
-    const res = await fetch(
+    const res = await throttledFetch(
       `https://en.wikipedia.org/api/rest_v1/page/summary/${wikiTitle}`,
       {
         headers: {
@@ -321,7 +339,7 @@ async function fetchLandmarkImage(wikiTitle: string): Promise<Buffer | null> {
     const data = await res.json();
     const url = data.thumbnail?.source?.replace(/\/\d+px-/, '/400px-');
     if (!url) return null;
-    const imgRes = await fetch(url, {
+    const imgRes = await throttledFetch(url, {
       headers: { Referer: 'https://en.wikipedia.org/' },
     });
     return imgRes.ok ? Buffer.from(await imgRes.arrayBuffer()) : null;
@@ -396,23 +414,24 @@ async function addWornEffect(buf: Buffer): Promise<Buffer> {
     .toBuffer();
 }
 
-export async function generateStamp(
+// Cached stamp generation - persists across deployments (1 week TTL)
+async function getCachedStamp(
   countryCode: string,
-  size = 80,
-): Promise<Buffer> {
+  size: number,
+): Promise<string> {
+  'use cache';
+  cacheLife('weeks');
+  cacheTag('stamps', `stamp-${countryCode}`);
+
   const country = VISITED_COUNTRIES[countryCode];
   if (!country) throw new Error(`Unknown country: ${countryCode}`);
 
   const color = getColor(countryCode);
-  const cacheKey = `v${CACHE_VERSION}-${countryCode}-${size}`;
+  let img: string | undefined;
 
-  let img = imageCache.get(cacheKey);
-  if (!img) {
-    const buf = await fetchLandmarkImage(country.wikiTitle);
-    if (buf) {
-      img = await processImage(buf, size, color);
-      imageCache.set(cacheKey, img);
-    }
+  const buf = await fetchLandmarkImage(country.wikiTitle);
+  if (buf) {
+    img = await processImage(buf, size, color);
   }
 
   const data: StampData = {
@@ -424,6 +443,15 @@ export async function generateStamp(
   };
   const svgStr = generators[getVariation(countryCode)](data, size);
   const rendered = await sharp(Buffer.from(svgStr)).png().toBuffer();
+  const withEffect = await addWornEffect(rendered);
 
-  return addWornEffect(rendered);
+  return withEffect.toString('base64');
+}
+
+export async function generateStamp(
+  countryCode: string,
+  size = 80,
+): Promise<Buffer> {
+  const base64 = await getCachedStamp(countryCode, size);
+  return Buffer.from(base64, 'base64');
 }

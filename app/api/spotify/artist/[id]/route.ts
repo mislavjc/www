@@ -34,6 +34,10 @@ const getAccessToken = async (): Promise<{ access_token: string }> => {
     }),
   });
 
+  if (!response.ok) {
+    throw new Error('Failed to refresh Spotify token');
+  }
+
   return response.json();
 };
 

@@ -1,7 +1,7 @@
-const { withPlausibleProxy } = require('next-plausible');
+import type { NextConfig } from 'next';
+import { withPlausibleProxy } from 'next-plausible';
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -14,6 +14,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    useCache: true,
+  },
 };
 
-module.exports = withPlausibleProxy()(nextConfig);
+export default withPlausibleProxy()(nextConfig);
