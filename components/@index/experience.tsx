@@ -259,88 +259,142 @@ const projects = [
   {
     name: 'stamped.today',
     description:
-      'Collect stamps of your favorite artists with their monthly listener count frozen in time. A love letter to music discovery.',
+      'Collect stamps of your favorite artists with their monthly listener count frozen in time.',
     url: 'https://stamped.today',
     favicon: '💿',
     highlight: true,
+    type: 'web' as const,
+  },
+  {
+    name: 'Constellator',
+    description:
+      'AI-powered CLI that transforms GitHub stars into organized Awesome lists.',
+    url: 'https://github.com/mislavjc/constellator',
+    favicon: '⭐',
+    type: 'cli' as const,
   },
   {
     name: 'Photography',
     description:
-      'Personal photography portfolio built with Next.js, Cloudflare R2, and Effect.',
+      'Personal photography portfolio. Next.js, Cloudflare R2, Effect.',
     url: 'https://photography.mislavjc.com',
     favicon: '📷',
+    type: 'web' as const,
   },
   {
-    name: 'Qwiz',
+    name: 'Cadro',
     description:
-      'Platform for creating and organizing pub quizzes. Like Pitch, but for trivia nights.',
-    url: 'https://github.com/qwiz-app/qwiz',
-    favicon: '🧠',
+      'Add clean borders to images with precise controls and live preview.',
+    url: 'https://cadro.us',
+    favicon: '🖼️',
+    type: 'web' as const,
   },
   {
-    name: 'SpotiStats',
-    description: 'Visualize your Spotify listening habits and statistics.',
-    url: 'https://github.com/mislavjc/spotistats',
-    favicon: '📊',
-    spotify: true,
-  },
-  {
-    name: 'SpotiChat',
+    name: 'ACJ AIMS',
     description:
-      'Chat interface for exploring your Spotify data using AI function calling.',
-    url: 'https://github.com/mislavjc/spotichat',
-    favicon: '💬',
-    spotify: true,
+      'Corporate website for consulting company. Next.js, Prismic CMS.',
+    url: 'https://www.acj-aims.hr/',
+    favicon: '💼',
+    type: 'web' as const,
   },
 ];
+
+// Terminal mockup for CLI projects
+const TerminalContent = ({ project }: { project: (typeof projects)[0] }) => (
+  <div className="flex h-full flex-col bg-[#1e1e1e] font-mono text-sm">
+    {/* Terminal header */}
+    <div className="flex items-center gap-2 border-b border-stone-700 bg-[#323232] px-4 py-2">
+      <div className="flex gap-1.5">
+        <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
+        <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+        <div className="h-3 w-3 rounded-full bg-[#27ca40]" />
+      </div>
+      <span className="ml-2 text-xs text-stone-400">zsh</span>
+    </div>
+
+    {/* Terminal content */}
+    <div className="flex-1 space-y-2 p-4 text-stone-300">
+      <div>
+        <span className="text-green-400">~</span>
+        <span className="text-stone-500"> $ </span>
+        <span>npx constellator</span>
+      </div>
+      <div className="text-stone-400">
+        <div className="mb-2">
+          <span className="text-yellow-400">⭐</span> Fetching your GitHub
+          stars...
+        </div>
+        <div className="mb-2">
+          <span className="text-blue-400">📦</span> Found 247 starred repos
+        </div>
+        <div className="mb-2">
+          <span className="text-purple-400">🤖</span> Categorizing with AI...
+        </div>
+        <div className="mb-2">
+          <span className="text-green-400">✓</span> Generated awesome-list.md
+        </div>
+      </div>
+      <div className="mt-4">
+        <span className="text-green-400">~</span>
+        <span className="text-stone-500"> $ </span>
+        <span className="animate-pulse">▌</span>
+      </div>
+    </div>
+  </div>
+);
 
 const BrowserWindow = () => {
   const [activeTab, setActiveTab] = useState(0);
   const activeProject = projects[activeTab];
-  const isGitHub = activeProject.url.includes('github.com');
 
   return (
     <div className="w-full overflow-hidden rounded-lg border border-stone-300/50 bg-[#dee1e6] shadow-xl">
       {/* Tab bar */}
-      <div className="flex items-end gap-0.5 bg-[#dee1e6] px-2 pt-2">
-        {projects.map((project, index) => (
-          <button
-            key={project.name}
-            type="button"
-            onClick={() => setActiveTab(index)}
-            className={`group relative flex shrink-0 items-center gap-2 rounded-t-lg px-3 py-2 text-xs transition-all sm:px-4 ${
-              activeTab === index
-                ? 'bg-white text-stone-700'
-                : 'text-stone-500 hover:bg-stone-200/50'
-            }`}
-          >
-            <span className="text-sm">{project.favicon}</span>
-            <span className="hidden max-w-[100px] truncate sm:inline">
-              {project.name}
-            </span>
-            <span
-              className={`ml-1 hidden rounded-full p-0.5 text-stone-400 transition-colors hover:bg-stone-200 hover:text-stone-600 sm:inline ${
+      <div className="relative">
+        <div className="flex items-end gap-0.5 overflow-x-auto bg-[#dee1e6] px-2 pt-2 hide-scrollbar">
+          {projects.map((project, index) => (
+            <button
+              key={project.name}
+              type="button"
+              onClick={() => setActiveTab(index)}
+              className={`group relative flex shrink-0 items-center gap-2 rounded-t-lg px-3 py-2 text-xs transition-all sm:px-4 ${
                 activeTab === index
-                  ? 'opacity-100'
-                  : 'opacity-0 group-hover:opacity-100'
+                  ? 'bg-white text-stone-700'
+                  : 'text-stone-500 hover:bg-stone-200/50'
               }`}
             >
-              <svg className="h-3 w-3" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  fill="currentColor"
-                  d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                />
-              </svg>
-            </span>
-          </button>
-        ))}
-        {/* New tab button */}
-        <div className="mb-2 ml-1 flex h-6 w-6 items-center justify-center rounded text-stone-400 transition-colors hover:bg-stone-300/50">
-          <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-          </svg>
+              <span className="text-sm">{project.favicon}</span>
+              <span className="hidden max-w-[100px] truncate sm:inline">
+                {project.name}
+              </span>
+              <span
+                className={`ml-1 hidden rounded-full p-0.5 text-stone-400 transition-colors hover:bg-stone-200 hover:text-stone-600 sm:inline ${
+                  activeTab === index
+                    ? 'opacity-100'
+                    : 'opacity-0 group-hover:opacity-100'
+                }`}
+              >
+                <svg className="h-3 w-3" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                  />
+                </svg>
+              </span>
+            </button>
+          ))}
+          {/* New tab button */}
+          <div className="mb-2 ml-1 flex h-6 w-6 shrink-0 items-center justify-center rounded text-stone-400 transition-colors hover:bg-stone-300/50">
+            <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+              />
+            </svg>
+          </div>
         </div>
+        {/* Scroll indicator gradient */}
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#dee1e6] to-transparent" />
       </div>
 
       {/* URL bar area */}
@@ -415,61 +469,38 @@ const BrowserWindow = () => {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="bg-white p-4 sm:p-6 md:p-8">
-        <div className="mx-auto min-h-[200px] max-w-lg sm:min-h-[180px]">
-          {/* Header */}
-          <div className="mb-4 flex items-start justify-between sm:mb-6">
-            <div>
-              <div className="mb-1 flex items-center gap-2">
-                <span className="text-xl sm:text-2xl">
-                  {activeProject.favicon}
-                </span>
-                <h3 className="text-lg font-semibold text-stone-900 sm:text-xl">
-                  {activeProject.name}
-                </h3>
-              </div>
-              <p className="text-xs text-stone-600">
-                {isGitHub ? 'GitHub Repository' : 'Website'}
-              </p>
-            </div>
-            {activeProject.highlight && (
-              <span className="rounded bg-stone-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-stone-700">
-                New
-              </span>
-            )}
-          </div>
-
-          {/* Description */}
-          <p className="mb-4 text-sm leading-relaxed text-stone-600 sm:mb-6 sm:text-base">
+      {/* Content - iframe for web, terminal for CLI */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
+        {activeProject.type === 'cli' ? (
+          <TerminalContent project={activeProject} />
+        ) : (
+          <iframe
+            key={activeProject.url}
+            src={activeProject.url}
+            title={activeProject.name}
+            className="h-[200%] w-[200%] origin-top-left scale-50 border-0"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin"
+          />
+        )}
+        {/* Overlay with info on hover */}
+        <Link
+          href={activeProject.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute inset-0 flex flex-col items-center justify-center bg-stone-900/0 opacity-0 transition-all hover:bg-stone-900/80 hover:opacity-100"
+        >
+          <span className="mb-2 text-lg font-medium text-white">
+            {activeProject.name}
+          </span>
+          <span className="max-w-xs text-center text-sm text-stone-300">
             {activeProject.description}
-          </p>
-
-          {/* Tags */}
-          <div className="mb-4 flex flex-wrap gap-2 sm:mb-6">
-            {activeProject.spotify && (
-              <span className="rounded bg-green-50 px-2 py-1 text-xs text-green-700">
-                Spotify API
-              </span>
-            )}
-            {isGitHub && (
-              <span className="rounded bg-stone-100 px-2 py-1 text-xs text-stone-600">
-                Open Source
-              </span>
-            )}
-          </div>
-
-          {/* Action */}
-          <Link
-            href={activeProject.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-stone-900 underline underline-offset-4 transition-colors hover:text-stone-600"
-          >
-            {isGitHub ? 'View on GitHub' : 'Visit website'}
+          </span>
+          <span className="mt-4 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-stone-900">
+            {activeProject.type === 'cli' ? 'View on GitHub' : 'Visit site'}{' '}
             <span>↗</span>
-          </Link>
-        </div>
+          </span>
+        </Link>
       </div>
     </div>
   );
