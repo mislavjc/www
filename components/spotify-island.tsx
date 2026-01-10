@@ -33,7 +33,10 @@ export const SpotifyIsland = () => {
       const response = await fetch('/api/spotify');
       const json = await response.json();
       setData(json);
-    } catch {
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to fetch Spotify data:', error);
+      }
       setData(null);
     } finally {
       setIsLoading(false);

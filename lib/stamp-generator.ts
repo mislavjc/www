@@ -6,21 +6,36 @@ import sharp from 'sharp';
 import { VISITED_COUNTRIES } from './countries';
 const WIKIPEDIA_REQUEST_DELAY_MS = 100; // Rate limit: ~10 requests/sec
 
-// Simple request queue for Wikipedia rate limiting
+// Use a promise chain to serialize requests
 let lastWikipediaRequest = 0;
+let requestQueue = Promise.resolve<Response>(new Response());
+
 async function throttledFetch(
   url: string,
   options?: RequestInit,
 ): Promise<Response> {
-  const now = Date.now();
-  const timeSinceLastRequest = now - lastWikipediaRequest;
-  if (timeSinceLastRequest < WIKIPEDIA_REQUEST_DELAY_MS) {
-    await new Promise((resolve) =>
-      setTimeout(resolve, WIKIPEDIA_REQUEST_DELAY_MS - timeSinceLastRequest),
-    );
-  }
-  lastWikipediaRequest = Date.now();
-  return fetch(url, options);
+  const execute = async () => {
+    const now = Date.now();
+    const timeSinceLastRequest = now - lastWikipediaRequest;
+    if (timeSinceLastRequest < WIKIPEDIA_REQUEST_DELAY_MS) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, WIKIPEDIA_REQUEST_DELAY_MS - timeSinceLastRequest),
+      );
+    }
+    lastWikipediaRequest = Date.now();
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  };
+
+  requestQueue = requestQueue.then(execute, execute);
+  return requestQueue;
 }
 
 // Load font for text-to-path conversion
@@ -343,7 +358,8 @@ async function fetchLandmarkImage(wikiTitle: string): Promise<Buffer | null> {
       headers: { Referer: 'https://en.wikipedia.org/' },
     });
     return imgRes.ok ? Buffer.from(await imgRes.arrayBuffer()) : null;
-  } catch {
+  } catch (error) {
+    console.warn(`Failed to fetch landmark image for ${wikiTitle}:`, error);
     return null;
   }
 }

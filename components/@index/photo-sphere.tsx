@@ -125,7 +125,10 @@ const PhotoPlane = React.memo(function PhotoPlane({
       const url = `/_next/image?url=${encodeURIComponent(r2Url)}&w=640&q=75`;
 
       fetch(url)
-        .then((res) => res.blob())
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.blob();
+        })
         .then((blob) => {
           if (cancelled) return;
           objectUrl = URL.createObjectURL(blob);
@@ -152,7 +155,11 @@ const PhotoPlane = React.memo(function PhotoPlane({
           };
           img.src = objectUrl;
         })
-        .catch(() => {});
+        .catch((err) => {
+          if (!cancelled) {
+            console.warn(`Failed to load texture ${photo.uuid}:`, err);
+          }
+        });
     }, delay);
 
     return () => {
@@ -168,6 +175,12 @@ const PhotoPlane = React.memo(function PhotoPlane({
   // Store original position/rotation as refs to avoid recreating objects
   const originalPos = useRef(new THREE.Vector3(...position));
   const originalRot = useRef(new THREE.Euler(...rotation));
+
+  // Update refs when props change (e.g., when photos array is reordered)
+  useEffect(() => {
+    originalPos.current.set(...position);
+    originalRot.current.set(...rotation);
+  }, [position, rotation]);
 
   // Target flip rotation - flip shows back (postcard)
   const targetFlipY = isSelected && isFlipped ? Math.PI : 0;
@@ -394,10 +407,16 @@ const Scene = ({
 
   // Set up fog
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
-    scene.fog = new THREE.Fog('#1c1917', 8, 35);
+    const fog = new THREE.Fog('#1c1917', 8, 35);
+    const background = new THREE.Color('#1c1917');
 
-    scene.background = new THREE.Color('#1c1917');
+    scene.fog = fog;
+    scene.background = background;
+
+    return () => {
+      scene.fog = null;
+      scene.background = null;
+    };
   }, [scene]);
 
   useEffect(() => {

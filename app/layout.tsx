@@ -102,17 +102,18 @@ export default function RootLayout({
       )}
     >
       <head>
-        <PlausibleProvider domain="mislavjc.com" trackOutboundLinks />
         {/* Preconnect to external image domains for faster loading */}
         <link rel="preconnect" href="https://i.scdn.co" />
         <link rel="preconnect" href="https://r2.photography.mislavjc.com" />
       </head>
-      <body className="bg-stone-50 font-sans text-stone-900 antialiased">
-        <Navigation />
-        {children}
-        <Footer />
-        <SpotifyIsland />
-      </body>
+      <PlausibleProvider domain="mislavjc.com" trackOutboundLinks>
+        <body className="bg-stone-50 font-sans text-stone-900 antialiased">
+          <Navigation />
+          {children}
+          <Footer />
+          <SpotifyIsland />
+        </body>
+      </PlausibleProvider>
     </html>
   );
 }

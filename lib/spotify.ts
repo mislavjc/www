@@ -84,7 +84,7 @@ export const FALLBACK_ARTISTS: TopArtist[] = [
   },
 ];
 
-const getAccessToken = async (): Promise<{ access_token: string }> => {
+export const getAccessToken = async (): Promise<{ access_token: string }> => {
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
     throw new Error('Missing Spotify credentials');
   }

@@ -1,4 +1,4 @@
-const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
+import { getAccessToken } from 'lib/spotify';
 
 type SpotifyArtist = {
   id: string;
@@ -7,38 +7,6 @@ type SpotifyArtist = {
   external_urls: {
     spotify: string;
   };
-};
-
-const getAccessToken = async (): Promise<{ access_token: string }> => {
-  const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-  const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-  const SPOTIFY_REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
-
-  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
-    throw new Error('Missing Spotify credentials in environment variables');
-  }
-
-  const basic = Buffer.from(
-    `${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`,
-  ).toString('base64');
-
-  const response = await fetch(TOKEN_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${basic}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token: SPOTIFY_REFRESH_TOKEN,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to refresh Spotify token');
-  }
-
-  return response.json();
 };
 
 export async function GET(
