@@ -300,7 +300,11 @@ const projects = [
 ];
 
 // Terminal mockup for CLI projects
-const TerminalContent = ({ project }: { project: (typeof projects)[0] }) => (
+const TerminalContent = ({
+  project: _project,
+}: {
+  project: (typeof projects)[0];
+}) => (
   <div className="flex h-full flex-col bg-[#1e1e1e] font-mono text-sm">
     {/* Terminal header */}
     <div className="flex items-center gap-2 border-b border-stone-700 bg-[#323232] px-4 py-2">

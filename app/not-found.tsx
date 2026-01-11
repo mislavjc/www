@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 
 // Random rotation for that stamped look
 function getRandomRotation() {
@@ -33,13 +33,13 @@ function getStampDate() {
 }
 
 export default function NotFound() {
-  const [rotation, setRotation] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const rotation = useMemo(() => getRandomRotation(), []);
 
-  useEffect(() => {
-    setRotation(getRandomRotation());
-    setMounted(true);
-  }, []);
+  // Trigger mount animation after initial render
+  if (!mounted) {
+    setTimeout(() => setMounted(true), 0);
+  }
 
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">

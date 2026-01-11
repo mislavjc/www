@@ -1,8 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import type { TopArtist } from 'lib/spotify';

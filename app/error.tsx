@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 
 // Random rotation for that stamped look
@@ -38,13 +38,13 @@ export default function ErrorPage({
   error: globalThis.Error & { digest?: string };
   reset: () => void;
 }) {
-  const [rotation, setRotation] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const rotation = useMemo(() => getRandomRotation(), []);
 
-  useEffect(() => {
-    setRotation(getRandomRotation());
-    setMounted(true);
-  }, []);
+  // Trigger mount animation after initial render
+  if (!mounted) {
+    setTimeout(() => setMounted(true), 0);
+  }
 
   useEffect(() => {
     // Log the error to an error reporting service

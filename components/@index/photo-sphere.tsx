@@ -410,8 +410,10 @@ const Scene = ({
     const fog = new THREE.Fog('#1c1917', 8, 35);
     const background = new THREE.Color('#1c1917');
 
+    /* eslint-disable react-hooks/immutability */
     scene.fog = fog;
     scene.background = background;
+    /* eslint-enable react-hooks/immutability */
 
     return () => {
       scene.fog = null;
