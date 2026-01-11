@@ -518,17 +518,20 @@ export const Experience = () => {
         <h2 className="font-serif text-3xl text-stone-900">Code</h2>
       </div>
 
-      <p className="mb-12 max-w-xl text-stone-600">
+      <p className="mb-4 max-w-xl text-stone-600">
         It started during lockdown. First HTML & CSS class on Microsoft Teams,
         and something just clicked. I spent days locked in my room watching
         Udemy courses, building barebones CRUD apps with Express and EJS. Two
         people I owe my career to: my professor who introduced me to it, and
-        Colt Steele whose course got me through those early days. Now coding is
-        my craft, my safe place. Half my side projects are Spotify-based.
-        I&apos;m not a musician but making things with music is what I love.
-        stamped.today is the current one: you collect stamps of artists you
-        love, frozen with their monthly listener count at that moment. Proof you
-        were a day 1 before they blew up.
+        Colt Steele whose course got me through those early days.
+      </p>
+
+      <p className="mb-12 max-w-xl text-stone-600">
+        Now coding is my craft, my safe place. Half my side projects are
+        Spotify-based. I&apos;m not a musician but making things with music is
+        what I love. stamped.today is the current one: you collect stamps of
+        artists you love, frozen with their monthly listener count at that
+        moment. Proof you were a day 1 before they blew up.
       </p>
 
       <div className="mb-16">

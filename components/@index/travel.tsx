@@ -230,25 +230,32 @@ export const Travel = () => {
         <h2 className="font-serif text-3xl text-stone-900">Travel</h2>
       </div>
 
-      <p className="mb-8 max-w-xl text-stone-600">
+      <p className="mb-4 max-w-xl text-stone-600">
         I don&apos;t know what it is but there&apos;s something freeing about
         being somewhere new. Doesn&apos;t have to be far either, even just
         crossing to Ljubljana does it. I just like wandering around with no
         plan, getting lost in neighborhoods. And this is weird but I love
         checking out stores in foreign countries. You learn so much about a
         place from them. The Spätis in Berlin where you grab a euro beer and sit
-        by the river, bodegas in NYC, meal deals in the UK. Berlin is probably
-        my favorite place in Europe. It&apos;s rough compared to somewhere like
-        Hamburg, but every neighborhood feels like its own world. Kreuzberg,
-        Prenzlauer Berg, completely different vibes. I keep going back partly
-        for the city but honestly mostly for Heimweh. My friends are so tired of
-        hearing about it but the kumpir there is unreal. The portion is massive,
-        you need to show up starving and even then you might not finish it. Last
-        time I went I was staying in Hamburg but took a Flixtrain just for a day
-        trip. I&apos;d been at the bunker club until 5am, train was at 7, felt
-        like a zombie until I got there. But that kumpir was the mission and it
-        delivered. Trying to finish all 45 European countries by end of next
-        year. 15 left, god bless Ryanair.
+        by the river, bodegas in NYC, meal deals in the UK.
+      </p>
+
+      <p className="mb-4 max-w-xl text-stone-600">
+        Berlin is probably my favorite place in Europe. It&apos;s rough compared
+        to somewhere like Hamburg, but every neighborhood feels like its own
+        world. Kreuzberg, Prenzlauer Berg, completely different vibes. I keep
+        going back partly for the city but honestly mostly for Heimweh. My
+        friends are so tired of hearing about it but the kumpir there is unreal.
+        The portion is massive, you need to show up starving and even then you
+        might not finish it.
+      </p>
+
+      <p className="mb-8 max-w-xl text-stone-600">
+        Last time I went I was staying in Hamburg but took a Flixtrain just for
+        a day trip. I&apos;d been at the bunker club until 5am, train was at 7,
+        felt like a zombie until I got there. But that kumpir was the mission
+        and it delivered. Trying to finish all 45 European countries by end of
+        next year. 15 left, god bless Ryanair.
       </p>
 
       <div className="relative mb-4 h-[400px] w-full overflow-hidden rounded-2xl border border-stone-200">

@@ -10,10 +10,10 @@ const FAVORITE_PHOTO_UUID = '00000000-0000-761f-bbe1-9603a1134c4e';
 
 const gear = [
   { name: 'Fuji X100VI', type: 'camera', acquired: '07/24' },
+  { name: 'TTArtisan 50mm f/1.2', type: 'lens', acquired: '11/24' },
+  { name: 'Voigtlander 35mm f/1.2', type: 'lens', acquired: '12/24' },
+  { name: 'Sigma 12mm f/1.4', type: 'lens', acquired: '12/24' },
   { name: 'Fuji X-E5', type: 'camera', acquired: '11/25' },
-  { name: 'Voigtlander 35mm f/1.2', type: 'lens', acquired: '11/25' },
-  { name: 'Sigma 12mm f/1.4', type: 'lens', acquired: '12/25' },
-  { name: 'TTArtisan 50mm f/1.2', type: 'lens', acquired: '12/25' },
 ];
 
 // Pre-generated barcode heights to avoid hydration mismatch
@@ -195,7 +195,7 @@ export const Photography = () => {
     <section id="photography" className="py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">2</span>
-        <h2 className="font-serif text-3xl text-stone-900">Lens</h2>
+        <h2 className="font-serif text-3xl text-stone-900">Photography</h2>
       </div>
 
       <p className="mb-8 max-w-xl text-stone-600">
