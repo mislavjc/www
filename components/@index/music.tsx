@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -478,13 +478,9 @@ type TopArtistsProps = {
 const PosterArtist = ({
   artist,
   index,
-  onHover,
-  onLeave,
 }: {
   artist: TopArtist;
   index: number;
-  onHover: (url: string) => void;
-  onLeave: () => void;
 }) => {
   // Alternate fonts for that eclectic poster feel
   const isHeadliner = index < 3;
@@ -503,8 +499,6 @@ const PosterArtist = ({
         href={artist.spotifyUrl}
         target="_blank"
         className={`group relative inline-flex items-baseline text-stone-900 transition-colors hover:text-[#FF3300] ${fontClass} ${sizeClass}`}
-        onMouseEnter={() => onHover(artist.imageUrl)}
-        onMouseLeave={onLeave}
       >
         <span>{artist.name}</span>
         {/* Superscript Metadata */}
@@ -520,24 +514,6 @@ const PosterArtist = ({
 };
 
 export const TopArtists = ({ artists }: TopArtistsProps) => {
-  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
-  const imagePreviewRef = useRef<HTMLDivElement>(null);
-
-  const handleHover = useCallback((url: string) => setHoveredImage(url), []);
-  const handleLeave = useCallback(() => setHoveredImage(null), []);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // Update position via DOM directly to avoid re-renders
-      if (imagePreviewRef.current) {
-        imagePreviewRef.current.style.left = `${e.clientX}px`;
-        imagePreviewRef.current.style.top = `${e.clientY}px`;
-      }
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   if (artists.length === 0) return null;
 
   return (
@@ -579,13 +555,7 @@ export const TopArtists = ({ artists }: TopArtistsProps) => {
           {/* The Wall of Text */}
           <div className="flex-grow content-start text-justify leading-tight">
             {artists.map((artist, i) => (
-              <PosterArtist
-                key={artist.id}
-                artist={artist}
-                index={i}
-                onHover={handleHover}
-                onLeave={handleLeave}
-              />
+              <PosterArtist key={artist.id} artist={artist} index={i} />
             ))}
           </div>
 
@@ -603,22 +573,6 @@ export const TopArtists = ({ artists }: TopArtistsProps) => {
           </div>
         </div>
       </div>
-
-      {/* Floating Image Preview */}
-      {hoveredImage && (
-        <div
-          ref={imagePreviewRef}
-          className="pointer-events-none fixed z-50 h-48 w-48 -translate-x-1/2 -translate-y-1/2 overflow-hidden border-4 border-white bg-stone-100 shadow-2xl"
-        >
-          <Image
-            src={hoveredImage}
-            alt=""
-            fill
-            sizes="192px"
-            className="object-cover contrast-125 grayscale"
-          />
-        </div>
-      )}
     </div>
   );
 };
