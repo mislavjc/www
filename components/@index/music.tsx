@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
+import { concerts } from 'lib/data';
 import type { TopArtist } from 'lib/spotify';
 
 // Skeleton for the poster while loading
@@ -50,88 +51,6 @@ export const TopArtistsSkeleton = () => (
     </div>
   </div>
 );
-
-// Concert data sorted by date (newest first)
-const concerts = [
-  {
-    date: '2025-12-07',
-    artist: 'Bladee',
-    location: 'Vienna',
-    spotifyUrl: 'https://open.spotify.com/artist/2xvtxDNInKDV4AvGmjw6d1',
-  },
-  {
-    date: '2025-12-01',
-    artist: 'Snow Strippers',
-    location: 'Brussels',
-    spotifyUrl: 'https://open.spotify.com/artist/6TsAG8Ve1icEC8ydeHm3C8',
-  },
-  {
-    date: '2025-08-05',
-    artist: 'Röyksopp',
-    location: 'Šibenik',
-    spotifyUrl: 'https://open.spotify.com/artist/5nPOO9iTcrs9k6yFffPxjH',
-  },
-  {
-    date: '2025-08-03',
-    artist: 'The Hellp',
-    location: 'Katowice',
-    spotifyUrl: 'https://open.spotify.com/artist/5DslL3PUa3BcRlCCEP64A4',
-  },
-  {
-    date: '2025-08-02',
-    artist: 'Ecco2k / Have a Nice Life / Panchiko',
-    location: 'Katowice',
-    spotifyUrl: 'https://open.spotify.com/artist/6hG0VsXXlD10l60TqiIHIX',
-  },
-  {
-    date: '2025-08-01',
-    artist: 'Kraftwerk',
-    location: 'Katowice',
-    spotifyUrl: 'https://open.spotify.com/artist/0dmPX6ovclgOy8WWJaFEUU',
-  },
-  {
-    date: '2025-05-22',
-    artist: '2hollis',
-    location: 'Dublin',
-    spotifyUrl: 'https://open.spotify.com/artist/72NhFAGG5Pt91VbheJeEPG',
-  },
-  {
-    date: '2025-01-25',
-    artist: 'Röyksopp',
-    location: 'Milano',
-    spotifyUrl: 'https://open.spotify.com/artist/5nPOO9iTcrs9k6yFffPxjH',
-  },
-  {
-    date: '2025-01-22',
-    artist: 'JPEGMAFIA',
-    location: 'Milano',
-    spotifyUrl: 'https://open.spotify.com/artist/6yJ6QQ3Y5l0s0tn7b0arrO',
-  },
-  {
-    date: '2024-11-12',
-    artist: 'Snow Strippers',
-    location: 'Amsterdam',
-    spotifyUrl: 'https://open.spotify.com/artist/6TsAG8Ve1icEC8ydeHm3C8',
-  },
-  {
-    date: '2024-10-21',
-    artist: 'The Voidz',
-    location: 'NYC',
-    spotifyUrl: 'https://open.spotify.com/artist/4nUBBtLtzqZGpdiynTJbYJ',
-  },
-  {
-    date: '2024-10-17',
-    artist: 'Bladee',
-    location: 'NYC',
-    spotifyUrl: 'https://open.spotify.com/artist/2xvtxDNInKDV4AvGmjw6d1',
-  },
-  {
-    date: '2024-10-15',
-    artist: 'Xiu Xiu',
-    location: 'NYC',
-    spotifyUrl: 'https://open.spotify.com/artist/5JLqvjW3Nyom2OsRUyFsS9',
-  },
-];
 
 // Parse date string as local date (not UTC) to avoid timezone shift issues
 const parseLocalDate = (dateStr: string): Date => {

@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
+import { projects } from 'lib/data';
+
 // Parse date string as local date (not UTC) to avoid timezone shift issues
 const parseLocalDate = (dateStr: string): Date => {
   const [year, month, day] = dateStr.split('-').map(Number);
@@ -254,50 +256,6 @@ const ExperienceGraph = () => {
     </div>
   );
 };
-
-const projects = [
-  {
-    name: 'stamped.today',
-    description:
-      'Collect stamps of your favorite artists with their monthly listener count frozen in time.',
-    url: 'https://stamped.today',
-    favicon: '💿',
-    highlight: true,
-    type: 'web' as const,
-  },
-  {
-    name: 'Constellator',
-    description:
-      'AI-powered CLI that transforms GitHub stars into organized Awesome lists.',
-    url: 'https://github.com/mislavjc/constellator',
-    favicon: '⭐',
-    type: 'cli' as const,
-  },
-  {
-    name: 'Photography',
-    description:
-      'Personal photography portfolio. Next.js, Cloudflare R2, Effect.',
-    url: 'https://photography.mislavjc.com',
-    favicon: '📷',
-    type: 'web' as const,
-  },
-  {
-    name: 'Cadro',
-    description:
-      'Add clean borders to images with precise controls and live preview.',
-    url: 'https://cadro.us',
-    favicon: '🖼️',
-    type: 'web' as const,
-  },
-  {
-    name: 'ACJ AIMS',
-    description:
-      'Corporate website for consulting company. Next.js, Prismic CMS.',
-    url: 'https://www.acj-aims.hr/',
-    favicon: '💼',
-    type: 'web' as const,
-  },
-];
 
 // Terminal mockup for CLI projects
 const TerminalContent = ({
