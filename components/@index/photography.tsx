@@ -111,7 +111,7 @@ const GearReceipt = () => {
             TOKYO, JAPAN
           </div>
           <div className="mt-2 text-[10px] text-stone-600">
-            TEL: 03-XXXX-XXXX
+            TEL: 03-5765-4321
           </div>
         </div>
 
