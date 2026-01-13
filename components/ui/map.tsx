@@ -89,8 +89,8 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const mapStyle =
-      resolvedTheme === 'dark' ? mapStyles.dark : mapStyles.light;
+    const theme = resolvedTheme ?? 'light';
+    const mapStyle = theme === 'dark' ? mapStyles.dark : mapStyles.light;
 
     const mapInstance = new MapLibreGL.Map({
       container: containerRef.current,

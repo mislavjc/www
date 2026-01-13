@@ -108,7 +108,8 @@ export async function GET() {
     }
 
     return Response.json(track);
-  } catch {
+  } catch (error) {
+    console.error('Spotify API error:', error);
     return Response.json({ isPlaying: false }, { status: 200 });
   }
 }

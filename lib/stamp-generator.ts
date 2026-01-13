@@ -8,7 +8,7 @@ const WIKIPEDIA_REQUEST_DELAY_MS = 100; // Rate limit: ~10 requests/sec
 
 // Use a promise chain to serialize requests
 let lastWikipediaRequest = 0;
-let requestQueue = Promise.resolve<Response>(new Response());
+let requestQueue: Promise<unknown> = Promise.resolve();
 
 async function throttledFetch(
   url: string,
@@ -35,7 +35,7 @@ async function throttledFetch(
   };
 
   requestQueue = requestQueue.then(execute, execute);
-  return requestQueue;
+  return requestQueue as Promise<Response>;
 }
 
 // Load font for text-to-path conversion

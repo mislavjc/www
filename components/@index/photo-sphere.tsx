@@ -119,12 +119,13 @@ const PhotoPlane = React.memo(function PhotoPlane({
     const delay = index * 50; // Reduced delay for faster loading
     let objectUrl: string | null = null;
     let cancelled = false;
+    const controller = new AbortController();
 
     const timer = setTimeout(() => {
       const r2Url = `https://r2.photography.mislavjc.com/variants/grid/jpeg/640/${photo.uuid}.jpeg`;
       const url = `/_next/image?url=${encodeURIComponent(r2Url)}&w=640&q=75`;
 
-      fetch(url)
+      fetch(url, { signal: controller.signal })
         .then((res) => {
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return res.blob();
@@ -165,6 +166,7 @@ const PhotoPlane = React.memo(function PhotoPlane({
     return () => {
       cancelled = true;
       clearTimeout(timer);
+      controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
       if (textureRef.current) {
         textureRef.current.dispose();
@@ -319,12 +321,12 @@ const PhotoPlane = React.memo(function PhotoPlane({
                     Photo Data
                   </div>
                   {photo.exif.camera && (
-                    <div className="text-stone-700 text-sm mb-1">
+                    <div className="mb-1 text-sm text-stone-700">
                       {photo.exif.camera}
                     </div>
                   )}
                   {photo.exif.lens && (
-                    <div className="text-stone-600 text-sm mb-3">
+                    <div className="mb-3 text-sm text-stone-600">
                       {photo.exif.lens}
                     </div>
                   )}
@@ -513,7 +515,7 @@ export const PhotoSphere = ({ photos }: PhotoSphereProps) => {
     setHasError(true);
   });
 
-  // Attach/detach listener when canvasRef changes (runs on every render to catch when canvas is set)
+  // Attach/detach listener when canvasRef changes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -521,7 +523,7 @@ export const PhotoSphere = ({ photos }: PhotoSphereProps) => {
     const handler = handleContextLostRef.current;
     canvas.addEventListener('webglcontextlost', handler);
     return () => canvas.removeEventListener('webglcontextlost', handler);
-  });
+  }, []);
 
   if (hasError) {
     return <PhotoGrid photos={photos} />;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
@@ -36,10 +36,9 @@ export default function NotFound() {
   const [mounted, setMounted] = useState(false);
   const rotation = useMemo(() => getRandomRotation(), []);
 
-  // Trigger mount animation after initial render
-  if (!mounted) {
-    setTimeout(() => setMounted(true), 0);
-  }
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">

@@ -82,7 +82,9 @@ export const SpotifyIsland = () => {
   }
 
   const progress =
-    data.progress && data.duration ? (data.progress / data.duration) * 100 : 0;
+    data.progress && data.duration && data.duration > 0
+      ? (data.progress / data.duration) * 100
+      : 0;
 
   return (
     <div className="fixed left-1/2 top-4 z-50 -translate-x-1/2 md:bottom-6 md:left-6 md:top-auto md:translate-x-0">

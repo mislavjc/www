@@ -143,6 +143,7 @@ function VisitedCountriesLayer() {
 
     return () => {
       map.off('mousemove', handleMouseMove);
+      map.off('styledata', addCountryLayers);
     };
   }, [map, isLoaded, addCountryLayers]);
 

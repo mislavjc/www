@@ -41,10 +41,9 @@ export default function ErrorPage({
   const [mounted, setMounted] = useState(false);
   const rotation = useMemo(() => getRandomRotation(), []);
 
-  // Trigger mount animation after initial render
-  if (!mounted) {
-    setTimeout(() => setMounted(true), 0);
-  }
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Log the error to an error reporting service
