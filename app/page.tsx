@@ -9,7 +9,7 @@ import { Travel } from 'components/@index/travel';
 
 const HomePage = () => {
   return (
-    <main className="mx-auto max-w-3xl overflow-x-hidden px-6">
+    <main className="mx-auto max-w-xl overflow-x-hidden px-6">
       <Hero />
       <Music>
         <Suspense fallback={<TopArtistsSkeleton />}>

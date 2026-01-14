@@ -207,7 +207,7 @@ function Passport() {
   return (
     <div className="mt-8">
       {/* Passport spread */}
-      <div className="mx-auto max-w-3xl overflow-hidden rounded-sm shadow-lg">
+      <div className="overflow-hidden rounded-sm shadow-lg">
         <div className="grid grid-cols-1 sm:grid-cols-2">
           {/* Left page */}
           <div className="border-b border-stone-200 sm:border-b-0 sm:border-r">

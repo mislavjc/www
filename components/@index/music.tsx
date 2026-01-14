@@ -188,39 +188,39 @@ const PinnedTicket = ({
       <div className="relative flex overflow-hidden rounded-sm">
         {/* Ticket "Stub" (Left Side) - Colored */}
         <div
-          className={`relative flex w-16 shrink-0 flex-col items-center justify-center border-r-2 border-dashed ${stubColor} ${stubTextColor} py-2 text-center md:w-20 md:py-3`}
+          className={`relative flex w-16 shrink-0 flex-col items-center justify-center border-r-2 border-dashed ${stubColor} ${stubTextColor} py-2 text-center md:w-14 md:py-2`}
           style={{ borderColor: 'rgba(0,0,0,0.15)' }}
         >
           {/* Hole Punch Effect */}
-          <div className="absolute left-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-stone-900/20 shadow-inner md:left-1.5 md:h-2.5 md:w-2.5" />
+          <div className="absolute left-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-stone-900/20 shadow-inner md:left-1 md:h-2 md:w-2" />
 
-          <span className="font-grotesk text-lg font-black opacity-90 md:text-xl">
+          <span className="font-grotesk text-lg font-black opacity-90 md:text-lg">
             {formattedDate.split('.')[0]}
           </span>
-          <span className="font-mono text-[0.55rem] font-bold uppercase opacity-80 md:text-[0.65rem]">
+          <span className="font-mono text-[0.55rem] font-bold uppercase opacity-80 md:text-[0.55rem]">
             {date.toLocaleString('en-US', { month: 'short' })}
           </span>
-          <span className="mt-0.5 font-mono text-[0.45rem] opacity-60 md:text-[0.5rem]">
+          <span className="mt-0.5 font-mono text-[0.45rem] opacity-60 md:text-[0.45rem]">
             {formattedDate.split('.')[2]}
           </span>
 
           {/* Semi-circle cutout for stub effect */}
-          <div className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#F5F5F0] shadow-inner" />
+          <div className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-[#F5F5F0] shadow-inner md:-right-1.5 md:h-2.5 md:w-2.5" />
         </div>
 
         {/* Ticket Body (Right Side) */}
-        <div className="relative flex flex-grow flex-col justify-between bg-[#F5F5F0] p-2 pl-4 md:p-3 md:pl-5">
+        <div className="relative flex flex-grow flex-col justify-between bg-[#F5F5F0] p-2 pl-4 md:p-2 md:pl-4">
           <div className="flex items-start justify-between">
-            <div className="flex flex-col pr-2">
-              <span className="font-grotesk text-sm font-black uppercase leading-tight tracking-tight text-stone-900 md:text-base">
+            <div className="flex flex-col pr-2 md:pr-1">
+              <span className="font-grotesk text-sm font-black uppercase leading-tight tracking-tight text-stone-900 md:text-sm">
                 {concert.artist}
               </span>
-              <span className="mt-0.5 font-serif text-[0.65rem] italic text-stone-600 md:text-xs">
+              <span className="mt-0.5 font-serif text-[0.65rem] italic text-stone-600 md:text-[0.65rem]">
                 {concert.location}
               </span>
             </div>
             {/* Vertical Barcode Strip */}
-            <div className="hidden h-6 w-8 shrink-0 opacity-80 mix-blend-multiply md:block">
+            <div className="hidden h-5 w-6 shrink-0 opacity-80 mix-blend-multiply md:block">
               <div
                 className="h-full w-full"
                 style={{
@@ -236,7 +236,7 @@ const PinnedTicket = ({
             </div>
           </div>
 
-          <div className="mt-1.5 flex items-center justify-between border-t border-stone-200 pt-1 font-mono text-[0.45rem] uppercase tracking-widest text-stone-600 md:mt-2 md:pt-1.5 md:text-[0.5rem]">
+          <div className="mt-1.5 flex items-center justify-between border-t border-stone-200 pt-1 font-mono text-[0.45rem] uppercase tracking-widest text-stone-600 md:mt-1.5 md:pt-1 md:text-[0.45rem]">
             <span className="font-bold text-stone-700">Admit One</span>
             <span className="hidden sm:inline">
               Sec {String.fromCharCode(65 + (index % 5))} / Row {index + 1}
@@ -278,7 +278,7 @@ const PinnedTicket = ({
         zIndex: 50,
         transition: { type: 'spring', damping: 20, stiffness: 300 },
       }}
-      className="absolute w-[280px] md:w-[320px]"
+      className="absolute w-[300px] md:w-[270px]"
       style={{
         left: style.left,
         top: style.top,
@@ -304,21 +304,21 @@ const ConcertPinboard = () => {
       // Single column, centered
       const rotation = ((index * 7) % 6) - 3;
       return {
-        left: 'calc(50% - 140px)', // half of ticket width (280px)
-        top: index * 100 + 20,
+        left: 'calc(50% - 150px)', // half of ticket width (300px)
+        top: index * 90 + 20,
         rotate: rotation,
         zIndex: concerts.length - index,
       };
     }
 
-    // Desktop: 2 columns with proper spacing
+    // Desktop: 2 columns
     const col = index % 2;
     const row = Math.floor(index / 2);
     const rotation = ((index * 7) % 10) - 5;
 
     return {
-      left: col === 0 ? '5%' : '52%',
-      top: row * 110 + 20,
+      left: col === 0 ? '2%' : '50%',
+      top: row * 80 + 20,
       rotate: rotation,
       zIndex: concerts.length - index,
     };
@@ -328,18 +328,18 @@ const ConcertPinboard = () => {
   const desktopRows = Math.ceil(concerts.length / 2);
 
   return (
-    <div className="relative mx-auto w-full max-w-3xl">
+    <div className="relative mx-auto w-full">
       {/* Pinboard */}
       <div className="relative mx-auto w-full overflow-hidden rounded-lg bg-stone-200">
         {/* Mobile height */}
         <div
           className="block md:hidden"
-          style={{ height: mobileRows * 100 + 50 }}
+          style={{ height: mobileRows * 90 + 50 }}
         />
         {/* Desktop height */}
         <div
           className="hidden md:block"
-          style={{ height: desktopRows * 110 + 50 }}
+          style={{ height: desktopRows * 80 + 50 }}
         />
 
         {/* Simple dot pattern */}
