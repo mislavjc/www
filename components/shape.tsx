@@ -9,7 +9,7 @@ export const Shape = ({ shape }: ShapeProps) => {
     <span className="inline-flex">
       <Image
         src={`/images/shapes/${shape}.png`}
-        alt="shape"
+        alt=""
         width={64}
         height={64}
         className="size-10 lg:size-16"

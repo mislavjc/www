@@ -44,7 +44,7 @@ export const Navigation = () => {
               <li key={item.number}>
                 <Link
                   href={item.href}
-                  className={`group flex items-center gap-3 rounded-full px-3 py-2 text-sm transition-all hover:bg-stone-200 hover:pl-4 ${
+                  className={`group flex items-center gap-3 rounded-full px-3 py-2 text-sm transition-[background-color,color,padding] outline-none focus-visible:ring-2 focus-visible:ring-stone-400 hover:bg-stone-200 hover:pl-4 ${
                     isActive ? 'bg-stone-200' : 'bg-stone-100/80'
                   }`}
                 >
@@ -78,7 +78,7 @@ export const Navigation = () => {
               <li key={item.number}>
                 <Link
                   href={item.href}
-                  className="group relative flex min-h-[44px] min-w-[44px] items-center justify-end pr-4"
+                  className="group relative flex min-h-[44px] min-w-[44px] items-center justify-end pr-4 outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:rounded-full"
                   aria-label={item.label}
                 >
                   {/* Label on hover/tap */}

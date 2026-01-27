@@ -17,7 +17,7 @@ export const Footer = () => {
             <p className="mt-1 text-sm text-stone-600">
               <a
                 href="mailto:mislavjc@gmail.com"
-                className="hover:text-stone-900"
+                className="rounded-sm outline-none hover:text-stone-900 focus-visible:ring-2 focus-visible:ring-stone-400"
               >
                 mislavjc@gmail.com
               </a>
@@ -31,7 +31,7 @@ export const Footer = () => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-stone-600 hover:text-stone-900"
+                    className="rounded-sm text-sm text-stone-600 outline-none hover:text-stone-900 focus-visible:ring-2 focus-visible:ring-stone-400"
                   >
                     {link.label}
                   </Link>
