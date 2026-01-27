@@ -28,12 +28,22 @@
 }
 
 @layer base {
+  html {
+    color-scheme: light;
+  }
+
   * {
     @apply border-stone-200;
   }
 
   body {
     @apply bg-stone-50 text-stone-900;
+  }
+
+  a,
+  button,
+  [role="button"] {
+    touch-action: manipulation;
   }
 
   h1,
@@ -83,4 +93,16 @@
 
 .will-change-transform {
   will-change: transform;
+}
+
+/* Respect reduced motion preferences for CSS animations/transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

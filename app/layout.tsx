@@ -5,6 +5,7 @@ import PlausibleProvider from 'next-plausible';
 
 import { Footer } from 'components/footer';
 import { Navigation } from 'components/navigation';
+import { Providers } from 'components/providers';
 import { SpotifyIsland } from 'components/spotify-island';
 
 import { cn } from 'lib/utils';
@@ -105,13 +106,22 @@ export default function RootLayout({
         {/* Preconnect to external image domains for faster loading */}
         <link rel="preconnect" href="https://i.scdn.co" />
         <link rel="preconnect" href="https://r2.photography.mislavjc.com" />
+        <meta name="theme-color" content="#fafaf9" />
       </head>
       <PlausibleProvider domain="mislavjc.com" trackOutboundLinks>
         <body className="bg-stone-50 font-sans text-stone-900 antialiased">
-          <Navigation />
-          {children}
-          <Footer />
-          <SpotifyIsland />
+          <Providers>
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+            >
+              Skip to content
+            </a>
+            <Navigation />
+            {children}
+            <Footer />
+            <SpotifyIsland />
+          </Providers>
         </body>
       </PlausibleProvider>
     </html>
