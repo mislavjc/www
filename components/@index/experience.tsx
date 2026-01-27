@@ -217,7 +217,7 @@ const ExperienceGraph = () => {
                 return (
                   <div
                     key={week.weekStart.toISOString()}
-                    className={`h-2.5 flex-1 rounded-[2px] sm:h-4 sm:rounded-sm ${isFuture ? 'bg-stone-100' : companyColor} transition-all ${!isFuture && 'hover:ring-1 hover:ring-stone-400'}`}
+                    className={`h-2.5 flex-1 rounded-[2px] sm:h-4 sm:rounded-sm ${isFuture ? 'bg-stone-100' : companyColor} transition-shadow ${!isFuture && 'hover:ring-1 hover:ring-stone-400'}`}
                     title={
                       isFuture
                         ? undefined
@@ -258,11 +258,7 @@ const ExperienceGraph = () => {
 };
 
 // Terminal mockup for CLI projects
-const TerminalContent = ({
-  project: _project,
-}: {
-  project: (typeof projects)[0];
-}) => (
+const TerminalContent = () => (
   <div className="flex h-full flex-col bg-[#1e1e1e] font-mono text-sm">
     {/* Terminal header */}
     <div className="flex items-center gap-2 border-b border-stone-700 bg-[#323232] px-4 py-2">
@@ -319,7 +315,7 @@ const BrowserWindow = () => {
               key={project.name}
               type="button"
               onClick={() => setActiveTab(index)}
-              className={`group relative flex shrink-0 items-center gap-2 rounded-t-lg px-3 py-2 text-xs transition-all sm:px-4 ${
+              className={`group relative flex shrink-0 items-center gap-2 rounded-t-lg px-3 py-2 text-xs transition-colors outline-none focus-visible:ring-2 focus-visible:ring-stone-400 sm:px-4 ${
                 activeTab === index
                   ? 'bg-white text-stone-700'
                   : 'text-stone-500 hover:bg-stone-200/50'
@@ -365,6 +361,7 @@ const BrowserWindow = () => {
         <div className="hidden items-center gap-1 text-stone-400 sm:flex">
           <button
             type="button"
+            aria-label="Go back"
             className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
@@ -376,6 +373,7 @@ const BrowserWindow = () => {
           </button>
           <button
             type="button"
+            aria-label="Go forward"
             className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
@@ -387,6 +385,7 @@ const BrowserWindow = () => {
           </button>
           <button
             type="button"
+            aria-label="Refresh"
             className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
@@ -419,6 +418,7 @@ const BrowserWindow = () => {
         <div className="hidden items-center gap-1 text-stone-400 sm:flex">
           <button
             type="button"
+            aria-label="More options"
             className="rounded-full p-1.5 transition-colors hover:bg-stone-100"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
@@ -434,7 +434,7 @@ const BrowserWindow = () => {
       {/* Content - iframe for web, terminal for CLI */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
         {activeProject.type === 'cli' ? (
-          <TerminalContent project={activeProject} />
+          <TerminalContent />
         ) : (
           <iframe
             key={activeProject.url}
@@ -470,10 +470,10 @@ const BrowserWindow = () => {
 
 export const Experience = () => {
   return (
-    <section id="code" className="py-24">
+    <section id="code" className="scroll-mt-24 py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">3</span>
-        <h2 className="font-serif text-3xl text-stone-900">Code</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">Code</h2>
       </div>
 
       <p className="mb-4 max-w-xl text-stone-600">
