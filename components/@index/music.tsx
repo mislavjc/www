@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
@@ -299,19 +300,27 @@ const PinnedTicket = ({
 };
 
 const ConcertPinboard = () => {
-  const getTicketStyle = (index: number, isMobile: boolean) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 768px)');
+    setIsMobile(!mql.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(!e.matches);
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
+  const getTicketStyle = (index: number) => {
     if (isMobile) {
-      // Single column, centered
       const rotation = ((index * 7) % 6) - 3;
       return {
-        left: 'calc(50% - 150px)', // half of ticket width (300px)
+        left: 'calc(50% - 150px)',
         top: index * 90 + 20,
         rotate: rotation,
         zIndex: concerts.length - index,
       };
     }
 
-    // Desktop: 2 columns
     const col = index % 2;
     const row = Math.floor(index / 2);
     const rotation = ((index * 7) % 10) - 5;
@@ -324,24 +333,16 @@ const ConcertPinboard = () => {
     };
   };
 
-  const mobileRows = concerts.length;
-  const desktopRows = Math.ceil(concerts.length / 2);
+  const rows = isMobile ? concerts.length : Math.ceil(concerts.length / 2);
+  const rowHeight = isMobile ? 90 : 80;
 
   return (
     <div className="relative mx-auto w-full">
       {/* Pinboard */}
-      <div className="relative mx-auto w-full overflow-hidden rounded-lg bg-stone-200">
-        {/* Mobile height */}
-        <div
-          className="block md:hidden"
-          style={{ height: mobileRows * 90 + 50 }}
-        />
-        {/* Desktop height */}
-        <div
-          className="hidden md:block"
-          style={{ height: desktopRows * 80 + 50 }}
-        />
-
+      <div
+        className="relative mx-auto w-full overflow-hidden rounded-lg bg-stone-200"
+        style={{ height: rows * rowHeight + 50 }}
+      >
         {/* Simple dot pattern */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.15]"
@@ -352,37 +353,18 @@ const ConcertPinboard = () => {
           }}
         />
 
-        {/* Mobile layout */}
-        <div className="absolute inset-0 md:hidden">
-          {concerts.map((concert, index) => {
-            const style = getTicketStyle(index, true);
-            return (
-              <PinnedTicket
-                key={`mobile-${concert.artist}-${concert.date}`}
-                concert={concert}
-                index={index}
-                style={style}
-                spotifyUrl={concert.spotifyUrl}
-              />
-            );
-          })}
-        </div>
-
-        {/* Desktop layout */}
-        <div className="absolute inset-0 hidden md:block">
-          {concerts.map((concert, index) => {
-            const style = getTicketStyle(index, false);
-            return (
-              <PinnedTicket
-                key={`desktop-${concert.artist}-${concert.date}`}
-                concert={concert}
-                index={index}
-                style={style}
-                spotifyUrl={concert.spotifyUrl}
-              />
-            );
-          })}
-        </div>
+        {concerts.map((concert, index) => {
+          const style = getTicketStyle(index);
+          return (
+            <PinnedTicket
+              key={`${concert.artist}-${concert.date}`}
+              concert={concert}
+              index={index}
+              style={style}
+              spotifyUrl={concert.spotifyUrl}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -434,7 +416,7 @@ export const TopArtists = ({ artists }: TopArtistsProps) => {
   if (artists.length === 0) return null;
 
   return (
-    <div className="relative isolate mx-auto w-full max-w-[340px] rotate-1 scale-100 transform-gpu backface-hidden transition-transform duration-300 will-change-transform hover:rotate-0 hover:scale-105">
+    <div className="relative isolate mx-auto w-full max-w-[340px] rotate-1 scale-100 transform-gpu backface-hidden transition-transform duration-300 hover:rotate-0 hover:scale-105">
       {/* Tape Effect */}
       <div className="absolute -top-3 left-1/2 h-8 w-24 -translate-x-1/2 rotate-[-2deg] bg-yellow-100/80 shadow-sm"></div>
 

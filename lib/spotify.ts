@@ -84,7 +84,13 @@ export const FALLBACK_ARTISTS: TopArtist[] = [
   },
 ];
 
+let cachedToken: { access_token: string; expires_at: number } | null = null;
+
 export const getAccessToken = async (): Promise<{ access_token: string }> => {
+  if (cachedToken && Date.now() < cachedToken.expires_at) {
+    return { access_token: cachedToken.access_token };
+  }
+
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
     throw new Error('Missing Spotify credentials');
   }
@@ -109,7 +115,14 @@ export const getAccessToken = async (): Promise<{ access_token: string }> => {
     throw new Error('Failed to refresh Spotify token');
   }
 
-  return response.json();
+  const data = await response.json();
+
+  cachedToken = {
+    access_token: data.access_token,
+    expires_at: Date.now() + 3540000, // 59 min (tokens last 1 hour)
+  };
+
+  return data;
 };
 
 export const getTopArtists = async (): Promise<TopArtist[]> => {

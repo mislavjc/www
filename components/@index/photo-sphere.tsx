@@ -19,11 +19,6 @@ interface PhotoExif {
   aperture: string | null;
   shutterSpeed: string | null;
   iso: string | null;
-  location: {
-    latitude: number;
-    longitude: number;
-    altitude?: number;
-  } | null;
   dateTime: string | null;
 }
 

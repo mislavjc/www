@@ -45,7 +45,17 @@ async function getPhotoSphereData() {
         uuid: p.uuid,
         w: p.w,
         h: p.h,
-        exif: p.exif,
+        exif: p.exif
+          ? {
+              camera: p.exif.camera,
+              lens: p.exif.lens,
+              focalLength: p.exif.focalLength,
+              aperture: p.exif.aperture,
+              shutterSpeed: p.exif.shutterSpeed,
+              iso: p.exif.iso,
+              dateTime: p.exif.dateTime,
+            }
+          : undefined,
       }));
   } catch {
     return null;

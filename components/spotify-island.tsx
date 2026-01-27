@@ -90,7 +90,7 @@ export const SpotifyIsland = () => {
     <div className="fixed left-1/2 top-4 z-50 -translate-x-1/2 md:bottom-6 md:left-6 md:top-auto md:translate-x-0">
       <motion.button
         layout
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => setIsExpanded((prev) => !prev)}
         className="flex items-start gap-3 bg-stone-900 text-stone-50 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2"
         style={{
           borderRadius: 22,
