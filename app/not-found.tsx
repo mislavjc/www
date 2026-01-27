@@ -11,25 +11,13 @@ function getRandomRotation() {
 
 // Format current date as passport stamp date
 function getStampDate() {
-  const now = new Date();
-  const day = now.getDate().toString().padStart(2, '0');
-  const months = [
-    'JAN',
-    'FEB',
-    'MAR',
-    'APR',
-    'MAY',
-    'JUN',
-    'JUL',
-    'AUG',
-    'SEP',
-    'OCT',
-    'NOV',
-    'DEC',
-  ];
-  const month = months[now.getMonth()];
-  const year = now.getFullYear();
-  return `${day} ${month} ${year}`;
+  return new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+    .format(new Date())
+    .toUpperCase();
 }
 
 export default function NotFound() {
@@ -99,7 +87,7 @@ export default function NotFound() {
 
             {/* Date */}
             <div className="mt-2 text-center">
-              <div className="font-mono text-sm font-bold tracking-wider text-red-700 sm:text-base">
+              <div className="font-mono text-sm font-bold tracking-wider text-red-700 sm:text-base" suppressHydrationWarning>
                 {getStampDate()}
               </div>
             </div>
@@ -134,7 +122,7 @@ export default function NotFound() {
       >
         <Link
           href="/"
-          className="group inline-flex items-center gap-2 text-stone-600 transition-colors hover:text-stone-900"
+          className="group inline-flex items-center gap-2 rounded-sm text-stone-600 outline-none transition-colors hover:text-stone-900 focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2"
         >
           <span className="transition-transform group-hover:-translate-x-1">
             &larr;
