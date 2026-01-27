@@ -24,7 +24,7 @@ const barcodeHeights = [
 
 const PhotoSphereLoading = () => (
   <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-900 md:aspect-[4/3]">
-    <div className="font-mono text-xs text-stone-400">Loading sphere...</div>
+    <div className="font-mono text-xs text-stone-400">Loading sphere…</div>
   </div>
 );
 
@@ -192,10 +192,10 @@ const GearReceipt = () => {
 
 export const Photography = () => {
   return (
-    <section id="photography" className="py-24">
+    <section id="photography" className="scroll-mt-24 py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">2</span>
-        <h2 className="font-serif text-3xl text-stone-900">Photography</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">Photography</h2>
       </div>
 
       <p className="mb-8 max-w-xl text-stone-600">

@@ -500,10 +500,10 @@ type MusicProps = {
 
 export const Music = ({ children }: MusicProps) => {
   return (
-    <section id="music" className="overflow-x-clip py-24">
+    <section id="music" className="scroll-mt-24 overflow-x-clip py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">1</span>
-        <h2 className="font-serif text-3xl text-stone-900">Music</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">Music</h2>
       </div>
 
       <p className="mb-12 max-w-xl text-stone-600">

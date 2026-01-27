@@ -26,7 +26,7 @@ interface PhotoData {
 
 const PhotoSphereLoading = () => (
   <div className="flex aspect-square w-full items-center justify-center rounded-2xl bg-stone-900 md:aspect-[4/3]">
-    <div className="font-mono text-xs text-stone-400">Loading sphere...</div>
+    <div className="font-mono text-xs text-stone-400">Loading sphere…</div>
   </div>
 );
 

@@ -8,7 +8,7 @@ export const Hero = () => {
 
   return (
     <section className="flex h-screen flex-col items-center justify-center text-center">
-      <h1 className="font-serif text-4xl leading-tight text-stone-900 md:text-5xl lg:text-6xl">
+      <h1 className="text-balance font-serif text-4xl leading-tight text-stone-900 md:text-5xl lg:text-6xl">
         Building. Shooting. Moving.
       </h1>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-stone-600">
