@@ -104,7 +104,6 @@ export default function RootLayout({
         craftworkSans.variable,
         craftworkGrotesk.variable,
       )}
-      suppressHydrationWarning
     >
       <PlausibleProvider domain="mislavjc.com" trackOutboundLinks>
         <body className="bg-stone-50 font-sans text-stone-900 antialiased">

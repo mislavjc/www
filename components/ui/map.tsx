@@ -17,7 +17,6 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { Loader2, Locate, Maximize, Minus, Plus, X } from 'lucide-react';
 import MapLibreGL, { type MarkerOptions, type PopupOptions } from 'maplibre-gl';
-import { useTheme } from 'next-themes';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -39,7 +38,6 @@ function useMap() {
 }
 
 const defaultStyles = {
-  dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
 };
 
@@ -47,10 +45,9 @@ type MapStyleOption = string | MapLibreGL.StyleSpecification;
 
 type MapProps = {
   children?: ReactNode;
-  /** Custom map styles for light and dark themes. Overrides the default Carto styles. */
+  /** Custom map style. Overrides the default Carto style. */
   styles?: {
     light?: MapStyleOption;
-    dark?: MapStyleOption;
   };
 } & Omit<MapLibreGL.MapOptions, 'container' | 'style'>;
 
@@ -74,23 +71,13 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
   const [mapInstance, setMapInstance] = useState<MapLibreGL.Map | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isStyleLoaded, setIsStyleLoaded] = useState(false);
-  const { resolvedTheme } = useTheme();
 
-  const mapStyles = useMemo(
-    () => ({
-      dark: styles?.dark ?? defaultStyles.dark,
-      light: styles?.light ?? defaultStyles.light,
-    }),
-    [styles],
-  );
+  const mapStyle = styles?.light ?? defaultStyles.light;
 
   useImperativeHandle(ref, () => mapInstance as MapLibreGL.Map, [mapInstance]);
 
   useEffect(() => {
     if (!containerRef.current) return;
-
-    const theme = resolvedTheme ?? 'light';
-    const mapStyle = theme === 'dark' ? mapStyles.dark : mapStyles.light;
 
     const mapInstance = new MapLibreGL.Map({
       container: containerRef.current,
@@ -119,20 +106,6 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!mapInstance) return;
-
-    const rafId = requestAnimationFrame(() => {
-      setIsStyleLoaded(false);
-      mapInstance.setStyle(
-        resolvedTheme === 'dark' ? mapStyles.dark : mapStyles.light,
-        { diff: true },
-      );
-    });
-
-    return () => cancelAnimationFrame(rafId);
-  }, [mapInstance, resolvedTheme, mapStyles]);
 
   const isLoading = !isLoaded || !isStyleLoaded;
 
