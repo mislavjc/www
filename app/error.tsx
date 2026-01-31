@@ -3,21 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 
-// Random rotation for that stamped look
-function getRandomRotation() {
-  return Math.random() * 16 - 8; // -8 to 8 degrees
-}
-
-// Format current date as passport stamp date
-function getStampDate() {
-  return new Intl.DateTimeFormat('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  })
-    .format(new Date())
-    .toUpperCase();
-}
+import { getRandomRotation, getStampDate } from 'lib/stamp';
 
 export default function ErrorPage({
   error,
@@ -97,7 +83,10 @@ export default function ErrorPage({
 
             {/* Date */}
             <div className="mt-2 text-center">
-              <div className="font-mono text-sm font-bold tracking-wider text-amber-700 sm:text-base" suppressHydrationWarning>
+              <div
+                className="font-mono text-sm font-bold tracking-wider text-amber-700 sm:text-base"
+                suppressHydrationWarning
+              >
                 {getStampDate()}
               </div>
             </div>

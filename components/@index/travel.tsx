@@ -144,6 +144,7 @@ function VisitedCountriesLayer() {
     return () => {
       map.off('mousemove', handleMouseMove);
       map.off('styledata', addCountryLayers);
+      layersAddedRef.current = false;
     };
   }, [map, isLoaded, addCountryLayers]);
 
@@ -228,7 +229,9 @@ export const Travel = () => {
     <section id="travel" className="scroll-mt-24 py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">4</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">Travel</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">
+          Travel
+        </h2>
       </div>
 
       <p className="mb-4 max-w-xl text-stone-600">

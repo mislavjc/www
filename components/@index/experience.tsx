@@ -1,10 +1,6 @@
 import { BrowserWindow } from './browser-window';
 
-// Parse date string as local date (not UTC) to avoid timezone shift issues
-const parseLocalDate = (dateStr: string): Date => {
-  const [year, month, day] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1, day);
-};
+import { parseLocalDate } from 'lib/date';
 
 type Experience = {
   role: string;
@@ -67,12 +63,12 @@ const experiences: Experience[] = [
   },
 ];
 
-const COMPANY_COLORS: Record<string, { bg: string; text: string }> = {
-  preview: { bg: 'bg-violet-400', text: 'text-violet-400' },
-  steel: { bg: 'bg-sky-400', text: 'text-sky-400' },
-  rubric: { bg: 'bg-rose-400', text: 'text-rose-400' },
-  coreline: { bg: 'bg-amber-400', text: 'text-amber-400' },
-  glassnode: { bg: 'bg-emerald-400', text: 'text-emerald-400' },
+const COMPANY_COLORS: Record<string, { bg: string }> = {
+  preview: { bg: 'bg-violet-400' },
+  steel: { bg: 'bg-sky-400' },
+  rubric: { bg: 'bg-rose-400' },
+  coreline: { bg: 'bg-amber-400' },
+  glassnode: { bg: 'bg-emerald-400' },
 };
 
 const MONTH_NAMES = [
@@ -103,7 +99,6 @@ const getCompanyAtDate = (date: Date): string | null => {
 type WeekData = {
   weekStart: Date;
   companyId: string | null;
-  hasMultiple: boolean;
 };
 
 const ExperienceGraph = () => {
@@ -130,7 +125,7 @@ const ExperienceGraph = () => {
       const isFuture = weekStart > currentDate;
 
       if (isFuture) {
-        weeks.push({ weekStart, companyId: null, hasMultiple: false });
+        weeks.push({ weekStart, companyId: null });
       } else {
         // Check all 7 days of the week for companies
         const companiesThisWeek = new Set<string>();
@@ -147,7 +142,6 @@ const ExperienceGraph = () => {
         weeks.push({
           weekStart,
           companyId: companyArray[0] || null,
-          hasMultiple: companyArray.length > 1,
         });
       }
 
@@ -257,7 +251,9 @@ export const Experience = () => {
     <section id="code" className="scroll-mt-24 py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">3</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">Code</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">
+          Code
+        </h2>
       </div>
 
       <p className="mb-4 max-w-xl text-stone-600">

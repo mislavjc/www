@@ -135,7 +135,9 @@ export const currentLocation = 'Zagreb';
 // Helper to get the most recent past concert
 export function getLastConcert() {
   const now = new Date();
-  const pastConcerts = concerts.filter((c) => new Date(c.date) <= now);
+  const pastConcerts = concerts
+    .filter((c) => new Date(c.date) <= now)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   return pastConcerts[0] || concerts[concerts.length - 1];
 }
 

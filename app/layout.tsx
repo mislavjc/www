@@ -86,6 +86,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  other: {
+    'theme-color': '#fafaf9',
+  },
 };
 
 export default function RootLayout({
@@ -102,12 +105,6 @@ export default function RootLayout({
         craftworkGrotesk.variable,
       )}
     >
-      <head>
-        {/* Preconnect to external image domains for faster loading */}
-        <link rel="preconnect" href="https://i.scdn.co" />
-        <link rel="preconnect" href="https://r2.photography.mislavjc.com" />
-        <meta name="theme-color" content="#fafaf9" />
-      </head>
       <PlausibleProvider domain="mislavjc.com" trackOutboundLinks>
         <body className="bg-stone-50 font-sans text-stone-900 antialiased">
           <Providers>

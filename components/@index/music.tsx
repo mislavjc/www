@@ -53,11 +53,7 @@ export const TopArtistsSkeleton = () => (
   </div>
 );
 
-// Parse date string as local date (not UTC) to avoid timezone shift issues
-const parseLocalDate = (dateStr: string): Date => {
-  const [year, month, day] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1, day);
-};
+import { parseLocalDate } from 'lib/date';
 
 // Vibrant, distinct colors for the stubs
 const TICKET_COLORS = [
@@ -485,7 +481,9 @@ export const Music = ({ children }: MusicProps) => {
     <section id="music" className="scroll-mt-24 overflow-x-clip py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">1</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">Music</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">
+          Music
+        </h2>
       </div>
 
       <p className="mb-12 max-w-xl text-stone-600">
