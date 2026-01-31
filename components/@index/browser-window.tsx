@@ -187,6 +187,7 @@ export const BrowserWindow = () => {
             key={activeProject.url}
             src={activeProject.url}
             title={activeProject.name}
+            name={`project-frame-${activeTab}`}
             className="h-[200%] w-[200%] origin-top-left scale-50 border-0"
             loading="lazy"
             sandbox="allow-scripts allow-same-origin"

@@ -1,3 +1,5 @@
+import { cacheLife } from 'next/cache';
+
 const R2_URL = 'https://r2.photography.mislavjc.com';
 
 export const GRID_WIDTHS = [160, 240, 320, 360, 480, 640, 800, 960] as const;
@@ -36,17 +38,29 @@ export interface Photo extends ManifestEntry {
   uuid: string;
 }
 
+// Cache the processed (smaller) result instead of the raw 5MB manifest
 export async function getPhotos(): Promise<Photo[]> {
-  const res = await fetch(`${R2_URL}/variants/r2-manifest.json`, {
-    next: { revalidate: 3600 },
-  });
+  'use cache';
+  cacheLife('hours');
+
+  const res = await fetch(`${R2_URL}/variants/r2-manifest.json`);
   if (!res.ok) throw new Error(`Failed to fetch manifest: ${res.status}`);
 
   const manifest: Manifest = await res.json();
-  return Object.entries(manifest).map(([filename, data]) => ({
+  const photos = Object.entries(manifest).map(([filename, data]) => ({
     uuid: filename.replace('.jpg', ''),
     ...data,
   }));
+
+  // Sort by date and return only recent photos to keep cache small
+  return photos
+    .filter((p) => p.exif.dateTime)
+    .sort(
+      (a, b) =>
+        new Date(b.exif.dateTime!).getTime() -
+        new Date(a.exif.dateTime!).getTime(),
+    )
+    .slice(0, 100);
 }
 
 export function getPhotoUrl(
