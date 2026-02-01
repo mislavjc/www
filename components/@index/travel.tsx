@@ -186,10 +186,10 @@ function PassportPage({ countries }: { countries: string[] }) {
             style={{ transform: `rotate(${getStampRotation(code)}deg)` }}
           >
             <Image
-              src={`/api/stamp/${code.toLowerCase()}?width=100`}
+              src={`/api/stamp/${code.toLowerCase()}?width=200`}
               alt={`${code} stamp`}
-              width={100}
-              height={100}
+              width={200}
+              height={200}
               className="h-auto w-full"
               unoptimized
             />
