@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-craftwork-sans)'],
+        sans: ['var(--font-sans)'],
         grotesk: ['var(--font-craftwork-grotesk)'],
       },
       animation: {

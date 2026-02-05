@@ -109,9 +109,9 @@ export const Marquee = () => {
             target="_blank"
             rel="noopener noreferrer"
             key={logo.name + '-' + index}
-            className="mr-16 inline-block h-8 w-12"
+            className="mr-16 inline-block h-8 w-12 outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:rounded-sm"
           >
-            <Image src={logo.img} alt={logo.name} height={32} />
+            <Image src={logo.img} alt={logo.name} width={48} height={32} />
           </a>
         ))}
       </div>
