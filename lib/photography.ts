@@ -1,4 +1,4 @@
-import { cacheLife } from 'next/cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 const R2_URL = 'https://r2.photography.mislavjc.com';
 
@@ -42,6 +42,7 @@ export interface Photo extends ManifestEntry {
 export async function getPhotos(): Promise<Photo[]> {
   'use cache';
   cacheLife('hours');
+  cacheTag('photos', 'photo-manifest');
 
   const res = await fetch(`${R2_URL}/variants/r2-manifest.json`);
   if (!res.ok) throw new Error(`Failed to fetch manifest: ${res.status}`);

@@ -1,3 +1,5 @@
+import { cacheLife, cacheTag } from 'next/cache';
+
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
@@ -126,6 +128,10 @@ export const getAccessToken = async (): Promise<{ access_token: string }> => {
 };
 
 export const getTopArtists = async (): Promise<TopArtist[]> => {
+  'use cache';
+  cacheLife('days');
+  cacheTag('spotify', 'top-artists');
+
   try {
     const { access_token } = await getAccessToken();
 
@@ -133,7 +139,6 @@ export const getTopArtists = async (): Promise<TopArtist[]> => {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
-      next: { revalidate: 86400 }, // Cache for 24 hours
     });
 
     if (response.status !== 200) {
