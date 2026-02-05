@@ -37,9 +37,18 @@ const eslintConfig = defineConfig([
         },
       ],
       'simple-import-sort/exports': 'error',
+      // React Hooks rules (plugin provided by eslint-config-next)
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      // Next.js rules (plugin provided by eslint-config-next)
       '@next/next/no-html-link-for-pages': 'error',
       '@next/next/no-img-element': 'warn',
       '@next/next/no-sync-scripts': 'warn',
+      // Allow unused vars prefixed with underscore
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
   // Override default ignores of eslint-config-next.
