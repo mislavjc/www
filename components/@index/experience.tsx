@@ -1,6 +1,6 @@
-import { BrowserWindow } from './browser-window';
-
 import { parseLocalDate } from 'lib/date';
+
+import { BrowserWindow } from './browser-window';
 
 type Experience = {
   role: string;

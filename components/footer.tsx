@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 
 const links = [
   { href: 'https://github.com/mislavjc', label: 'GitHub', icon: 'GH' },

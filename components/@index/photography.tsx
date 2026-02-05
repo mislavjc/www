@@ -205,7 +205,9 @@ export const Photography = () => {
     <section id="photography" className="scroll-mt-24 py-24">
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">2</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">Photography</h2>
+        <h2 className="text-balance font-serif text-3xl text-stone-900">
+          Photography
+        </h2>
       </div>
 
       <p className="mb-8 max-w-xl text-stone-600">
