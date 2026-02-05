@@ -1,18 +1,20 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
 import { getRandomRotation, getStampDate } from 'lib/stamp';
 
-export default function NotFound() {
-  const [mounted, setMounted] = useState(false);
-  const rotation = useMemo(() => getRandomRotation(), []);
+const emptySubscribe = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export default function NotFound() {
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+  const rotation = useMemo(() => getRandomRotation(), []);
 
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">

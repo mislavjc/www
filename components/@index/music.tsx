@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
@@ -295,16 +295,20 @@ const PinnedTicket = ({
   );
 };
 
-const ConcertPinboard = () => {
-  const [isMobile, setIsMobile] = useState(false);
+const subscribeToMediaQuery = (callback: () => void) => {
+  const mql = window.matchMedia('(min-width: 768px)');
+  mql.addEventListener('change', callback);
+  return () => mql.removeEventListener('change', callback);
+};
 
-  useEffect(() => {
-    const mql = window.matchMedia('(min-width: 768px)');
-    setIsMobile(!mql.matches);
-    const onChange = (e: MediaQueryListEvent) => setIsMobile(!e.matches);
-    mql.addEventListener('change', onChange);
-    return () => mql.removeEventListener('change', onChange);
-  }, []);
+const getIsMobile = () => !window.matchMedia('(min-width: 768px)').matches;
+
+const ConcertPinboard = () => {
+  const isMobile = useSyncExternalStore(
+    subscribeToMediaQuery,
+    getIsMobile,
+    () => false, // SSR: assume desktop
+  );
 
   const getTicketStyle = (index: number) => {
     if (isMobile) {

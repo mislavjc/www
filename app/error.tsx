@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import { motion } from 'motion/react';
 
 import { getRandomRotation, getStampDate } from 'lib/stamp';
+
+const emptySubscribe = () => () => {};
 
 export default function ErrorPage({
   error,
@@ -12,12 +14,12 @@ export default function ErrorPage({
   error: globalThis.Error & { digest?: string };
   reset: () => void;
 }) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
   const rotation = useMemo(() => getRandomRotation(), []);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     // Log the error to an error reporting service
