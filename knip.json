@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.ts"],
+  "project": ["**/*.{ts,tsx}"],
+  "ignore": ["scripts/**", "**/*.d.ts"],
+  "ignoreDependencies": ["@types/*", "tw-animate-css", "husky"]
+}
