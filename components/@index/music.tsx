@@ -1,7 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import Link from 'next/link';
 
 import { concerts } from 'lib/data';
@@ -255,7 +255,7 @@ const PinnedTicket = ({
   );
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, scale: 0.5, y: -50 }}
       animate={{
         opacity: 1,
@@ -291,7 +291,7 @@ const PinnedTicket = ({
       ) : (
         TicketContent
       )}
-    </motion.div>
+    </m.div>
   );
 };
 

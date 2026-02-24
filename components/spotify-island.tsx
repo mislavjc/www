@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import Image from 'next/image';
 
 type SpotifyData = {
@@ -88,7 +88,7 @@ export const SpotifyIsland = () => {
 
   return (
     <div className="fixed left-1/2 top-4 z-50 -translate-x-1/2 md:bottom-6 md:left-6 md:top-auto md:translate-x-0">
-      <motion.button
+      <m.button
         layout
         onClick={() => setIsExpanded((prev) => !prev)}
         className="flex items-start gap-3 bg-stone-900 text-stone-50 shadow-lg outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2"
@@ -106,7 +106,7 @@ export const SpotifyIsland = () => {
         }}
       >
         {/* Album art */}
-        <motion.div
+        <m.div
           layout
           className="relative shrink-0 overflow-hidden"
           style={{
@@ -131,10 +131,10 @@ export const SpotifyIsland = () => {
               className="object-cover"
             />
           )}
-        </motion.div>
+        </m.div>
 
         {/* Content */}
-        <motion.div
+        <m.div
           layout
           className="flex min-w-0 flex-col items-start py-0.5 text-left"
           transition={{
@@ -145,15 +145,15 @@ export const SpotifyIsland = () => {
             },
           }}
         >
-          <motion.span
+          <m.span
             layout="position"
             className="text-[10px] uppercase tracking-wider text-stone-400"
           >
             {data.isPlaying ? 'Now playing' : 'Last played'}
-          </motion.span>
+          </m.span>
 
           {isExpanded ? (
-            <motion.div
+            <m.div
               layout
               className="flex w-full flex-col gap-0.5 pr-2"
               style={{ width: 220 }}
@@ -175,7 +175,7 @@ export const SpotifyIsland = () => {
               {data.duration && (
                 <div className="mt-2 w-full">
                   <div className="h-1 w-full overflow-hidden rounded-full bg-stone-700">
-                    <motion.div
+                    <m.div
                       className="h-full bg-green-500"
                       initial={{ width: 0 }}
                       animate={{ width: `${progress}%` }}
@@ -202,17 +202,17 @@ export const SpotifyIsland = () => {
                   Open in Spotify
                 </a>
               )}
-            </motion.div>
+            </m.div>
           ) : (
-            <motion.span
+            <m.span
               layout="position"
               className="max-w-[180px] truncate text-sm leading-tight"
             >
               {data.title} - {data.artist}
-            </motion.span>
+            </m.span>
           )}
-        </motion.div>
-      </motion.button>
+        </m.div>
+      </m.button>
     </div>
   );
 };

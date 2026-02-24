@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import Link from 'next/link';
 
 const links = [
@@ -29,7 +29,7 @@ const SocialStamp = ({
   const rotation = ((index * 13) % 20) - 10;
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, scale: 0.8, rotate: rotation - 10 }}
       whileInView={{
         opacity: 1,
@@ -92,15 +92,15 @@ const SocialStamp = ({
             style={{ backgroundColor: isHovered ? color : '#d6d3d1' }}
           />
         </div>
-        <motion.span
+        <m.span
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 5 }}
           className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-stone-900 px-2 py-0.5 text-xs text-stone-100"
         >
           {link.label}
-        </motion.span>
+        </m.span>
       </Link>
-    </motion.div>
+    </m.div>
   );
 };
 

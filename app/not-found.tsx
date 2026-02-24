@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useSyncExternalStore } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import Link from 'next/link';
 
 import { getRandomRotation, getStampDate } from 'lib/stamp';
@@ -18,7 +18,7 @@ export default function NotFound() {
 
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">
-      <motion.div
+      <m.div
         initial={{ scale: 0, rotate: -20, opacity: 0 }}
         animate={{
           scale: mounted ? 1 : 0,
@@ -102,10 +102,10 @@ export default function NotFound() {
         <div className="absolute -right-2 top-1/4 h-1 w-1 rounded-full bg-red-700/30" />
         <div className="absolute -left-1 top-1/3 h-0.5 w-0.5 rounded-full bg-red-700/20" />
         <div className="absolute bottom-1/4 right-1/4 h-0.5 w-0.5 rounded-full bg-red-700/25" />
-      </motion.div>
+      </m.div>
 
       {/* Return home link */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.4 }}
@@ -120,7 +120,7 @@ export default function NotFound() {
           </span>
           <span className="font-serif text-lg">Return to valid territory</span>
         </Link>
-      </motion.div>
+      </m.div>
     </main>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 
 import { getRandomRotation, getStampDate } from 'lib/stamp';
 
@@ -28,7 +28,7 @@ export default function ErrorPage({
 
   return (
     <main className="flex min-h-[80vh] flex-col items-center justify-center px-6">
-      <motion.div
+      <m.div
         initial={{ scale: 0, rotate: -20, opacity: 0 }}
         animate={{
           scale: mounted ? 1 : 0,
@@ -112,10 +112,10 @@ export default function ErrorPage({
         <div className="absolute -right-2 top-1/4 h-1 w-1 rounded-full bg-amber-700/30" />
         <div className="absolute -left-1 top-1/3 h-0.5 w-0.5 rounded-full bg-amber-700/20" />
         <div className="absolute bottom-1/4 right-1/4 h-0.5 w-0.5 rounded-full bg-amber-700/25" />
-      </motion.div>
+      </m.div>
 
       {/* Try again button */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.4 }}
@@ -131,7 +131,7 @@ export default function ErrorPage({
           </span>
           <span className="font-serif text-lg">Request new visa</span>
         </button>
-      </motion.div>
+      </m.div>
     </main>
   );
 }

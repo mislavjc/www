@@ -1,7 +1,11 @@
 'use client';
 
-import { MotionConfig } from 'motion/react';
+import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return (
+    <LazyMotion features={domAnimation}>
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    </LazyMotion>
+  );
 }
