@@ -317,10 +317,26 @@ export const VISITED_COUNTRIES: Record<
     airport: 'TAN SON NHAT',
     wikiTitle: 'H%E1%BA%A1_Long_Bay',
   },
+  CHN: {
+    name: 'China',
+    city: 'Beijing',
+    landmark: 'Great Wall',
+    airport: 'BEIJING CAPITAL',
+    wikiTitle: 'Great_Wall_of_China',
+  },
 };
 
-// List of country codes
-export const VISITED_COUNTRY_CODES = Object.keys(VISITED_COUNTRIES);
+// Codes with stamp data (used for passport rendering)
+export const VISITED_STAMP_CODES = Object.keys(VISITED_COUNTRIES);
 
-// Get country count
-export const VISITED_COUNTRY_COUNT = VISITED_COUNTRY_CODES.length;
+// Territory codes that belong to an existing country (for map highlighting only)
+const TERRITORY_ALIASES = ['HKG', 'TWN', 'MAC'];
+
+// All codes for map highlighting (includes territories)
+export const VISITED_COUNTRY_CODES = [
+  ...VISITED_STAMP_CODES,
+  ...TERRITORY_ALIASES,
+];
+
+// Count only distinct countries
+export const VISITED_COUNTRY_COUNT = VISITED_STAMP_CODES.length;

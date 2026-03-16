@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { VISITED_COUNTRIES, VISITED_COUNTRY_CODES } from 'lib/countries';
+import { VISITED_COUNTRIES, VISITED_STAMP_CODES } from 'lib/countries';
 import { generateStamp } from 'lib/stamp-generator';
 
 export async function GET(
@@ -15,7 +15,7 @@ export async function GET(
     return NextResponse.json(
       {
         error: 'Country not supported',
-        supported: VISITED_COUNTRY_CODES,
+        supported: VISITED_STAMP_CODES,
       },
       { status: 400 },
     );

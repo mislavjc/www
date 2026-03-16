@@ -6,7 +6,11 @@ import Image from 'next/image';
 
 import { useMap } from 'components/ui/map';
 
-import { VISITED_COUNTRY_CODES, VISITED_COUNTRY_COUNT } from 'lib/countries';
+import {
+  VISITED_COUNTRY_CODES,
+  VISITED_COUNTRY_COUNT,
+  VISITED_STAMP_CODES,
+} from 'lib/countries';
 
 // Loading placeholder for map
 const MapLoading = () => (
@@ -201,9 +205,9 @@ function PassportPage({ countries }: { countries: string[] }) {
 }
 
 function Passport() {
-  const midPoint = Math.ceil(VISITED_COUNTRY_CODES.length / 2);
-  const leftPage = VISITED_COUNTRY_CODES.slice(0, midPoint);
-  const rightPage = VISITED_COUNTRY_CODES.slice(midPoint);
+  const midPoint = Math.ceil(VISITED_STAMP_CODES.length / 2);
+  const leftPage = VISITED_STAMP_CODES.slice(0, midPoint);
+  const rightPage = VISITED_STAMP_CODES.slice(midPoint);
 
   return (
     <div className="mt-8">
