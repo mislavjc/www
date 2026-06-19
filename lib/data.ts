@@ -2,6 +2,12 @@
 
 export const concerts = [
   {
+    date: '2026-04-16',
+    artist: 'STRFKR',
+    location: 'Berkeley',
+    spotifyUrl: 'https://open.spotify.com/artist/2tVpGVzVLALSAANdFG1u4F',
+  },
+  {
     date: '2025-12-07',
     artist: 'Bladee',
     location: 'Vienna',
