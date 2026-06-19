@@ -32,7 +32,9 @@ export async function GET(
 
     const stampBuffer = await generateStamp(countryCode, width);
 
-    return new NextResponse(stampBuffer, {
+    // NextResponse's BodyInit no longer accepts Node's Buffer type directly;
+    // a plain Uint8Array view satisfies it (and is correct for the web Response API).
+    return new NextResponse(new Uint8Array(stampBuffer), {
       headers: {
         'Content-Type': 'image/png',
         'Cache-Control': 'public, max-age=86400, s-maxage=604800',
