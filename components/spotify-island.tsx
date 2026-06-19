@@ -44,6 +44,9 @@ export const SpotifyIsland = () => {
   }, []);
 
   useEffect(() => {
+    // fetchSpotify is async and only calls setState after `await fetch(...)`,
+    // so no state updates run synchronously here — no cascading-render risk.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSpotify();
 
     const startPolling = () => {

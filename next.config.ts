@@ -19,4 +19,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPlausibleProxy()(nextConfig);
+export default withPlausibleProxy({
+  src: 'https://plausible.io/js/pa-rQLYFqZpljnfroAtP9FyS.js',
+})(nextConfig);

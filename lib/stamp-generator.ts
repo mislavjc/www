@@ -1,5 +1,6 @@
+import { readFileSync } from 'fs';
 import { cacheLife, cacheTag } from 'next/cache';
-import opentype from 'opentype.js';
+import { type Font, parse } from 'opentype.js';
 import { join } from 'path';
 import sharp from 'sharp';
 
@@ -39,14 +40,15 @@ async function throttledFetch(
 }
 
 // Load font for text-to-path conversion
-let font: opentype.Font | null = null;
+let font: Font | null = null;
 const getFont = () => {
   if (!font) {
     const fontPath = join(
       process.cwd(),
       'public/fonts/CraftworkGrotesk-Medium.ttf',
     );
-    font = opentype.loadSync(fontPath);
+    // opentype v2 deprecated loadSync (returns undefined); parse a read buffer instead.
+    font = parse(readFileSync(fontPath));
   }
   return font;
 };

@@ -105,7 +105,7 @@ export default function RootLayout({
         craftworkGrotesk.variable,
       )}
     >
-      <PlausibleProvider domain="mislavjc.com" trackOutboundLinks>
+      <PlausibleProvider>
         <body className="bg-stone-50 font-sans text-stone-900 antialiased">
           <Providers>
             <a
