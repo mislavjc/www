@@ -98,6 +98,18 @@ export const projects = [
     type: 'web' as const,
   },
   {
+    name: 'Doseg',
+    description:
+      'Interactive transit reachability map for Zagreb. Next.js, Rust, OpenTripPlanner.',
+    url: 'https://doseg.hr',
+    favicon: '🚊',
+    highlight: false as const,
+    type: 'web' as const,
+    // doseg.hr sends X-Frame-Options: DENY / frame-ancestors 'none', so it
+    // can't be embedded in an iframe — fall back to a static screenshot.
+    preview: '/doseg.png' as const,
+  },
+  {
     name: 'Constellator',
     description:
       'AI-powered CLI that transforms GitHub stars into organized Awesome lists.',
