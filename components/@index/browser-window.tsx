@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { projects } from 'lib/data';
@@ -178,10 +179,19 @@ export const BrowserWindow = () => {
         </div>
       </div>
 
-      {/* Content - iframe for web, terminal for CLI */}
+      {/* Content - iframe for web, screenshot for unframeable sites, terminal for CLI */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-white">
         {activeProject.type === 'cli' ? (
           <TerminalContent />
+        ) : activeProject.preview ? (
+          <Image
+            key={activeProject.url}
+            src={activeProject.preview}
+            alt={activeProject.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover object-top"
+          />
         ) : (
           <iframe
             key={activeProject.url}
