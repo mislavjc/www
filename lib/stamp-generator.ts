@@ -5,7 +5,11 @@ import { join } from 'path';
 import sharp from 'sharp';
 
 import { VISITED_COUNTRIES } from './countries';
-const WIKIPEDIA_REQUEST_DELAY_MS = 100; // Rate limit: ~10 requests/sec
+const WIKIPEDIA_REQUEST_DELAY_MS = 300; // Wikimedia 429s at higher rates
+// Wikimedia blocks generic/fake browser UAs (T400119) and asks for a
+// descriptive one with contact info: https://w.wiki/4wJS
+const WIKIPEDIA_USER_AGENT =
+  'mislav.co-passport-stamps/1.0 (https://mislav.co; mislavjc@gmail.com)';
 
 // Use a promise chain to serialize requests
 let lastWikipediaRequest = 0;
@@ -25,14 +29,25 @@ async function throttledFetch(
     }
     lastWikipediaRequest = Date.now();
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const doFetch = async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    };
 
-    try {
-      return await fetch(url, { ...options, signal: controller.signal });
-    } finally {
-      clearTimeout(timeoutId);
+    let res = await doFetch();
+    if (res.status === 429) {
+      const retryAfter = Number(res.headers.get('retry-after')) || 2;
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.min(retryAfter, 10) * 1000),
+      );
+      res = await doFetch();
     }
+    return res;
   };
 
   requestQueue = requestQueue.then(execute, execute);
@@ -347,19 +362,32 @@ async function fetchLandmarkImage(wikiTitle: string): Promise<Buffer | null> {
       `https://en.wikipedia.org/api/rest_v1/page/summary/${wikiTitle}`,
       {
         headers: {
-          'User-Agent': 'Mozilla/5.0',
+          'User-Agent': WIKIPEDIA_USER_AGENT,
           Referer: 'https://en.wikipedia.org/',
         },
       },
     );
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`Wikipedia summary failed for ${wikiTitle}: ${res.status}`);
+      return null;
+    }
     const data = await res.json();
-    const url = data.thumbnail?.source?.replace(/\/\d+px-/, '/400px-');
+    // Use the thumbnail URL as-is: Wikimedia only serves an allowlist of
+    // thumbnail sizes (rewriting to e.g. 400px returns a 400 error), and the
+    // default ~330px is larger than the biggest size we composite anyway.
+    const url = data.thumbnail?.source;
     if (!url) return null;
     const imgRes = await throttledFetch(url, {
-      headers: { Referer: 'https://en.wikipedia.org/' },
+      headers: {
+        'User-Agent': WIKIPEDIA_USER_AGENT,
+        Referer: 'https://en.wikipedia.org/',
+      },
     });
-    return imgRes.ok ? Buffer.from(await imgRes.arrayBuffer()) : null;
+    if (!imgRes.ok) {
+      console.warn(`Landmark image failed for ${wikiTitle}: ${imgRes.status}`);
+      return null;
+    }
+    return Buffer.from(await imgRes.arrayBuffer());
   } catch (error) {
     console.warn(`Failed to fetch landmark image for ${wikiTitle}:`, error);
     return null;
