@@ -4,9 +4,18 @@ import { useMemo, useSyncExternalStore } from 'react';
 import { m } from 'motion/react';
 import Link from 'next/link';
 
+import { SITE_PAGES } from 'lib/site';
 import { getRandomRotation, getStampDate } from 'lib/stamp';
 
 const emptySubscribe = () => () => {};
+
+// The HTML mirror of lib/markdown.ts's 404 body. Both derive their page list
+// from SITE_PAGES, so adding a page updates the two representations together.
+const RECOVERY_LINKS = [
+  ...SITE_PAGES.map((page) => ({ href: page.path, label: page.label })),
+  { href: '/llms.txt', label: 'llms.txt' },
+  { href: '/sitemap.xml', label: 'Sitemap' },
+];
 
 export default function NotFound() {
   const mounted = useSyncExternalStore(
@@ -121,6 +130,27 @@ export default function NotFound() {
           <span className="font-serif text-lg">Return to valid territory</span>
         </Link>
       </m.div>
+
+      {/* Recovery links, so an agent that lands here without JS still gets a
+          route out. */}
+      <nav
+        aria-label="Where to go next"
+        className="mt-10 max-w-md text-center text-sm text-stone-600"
+      >
+        <p className="mb-3">Every page on this site is listed below.</p>
+        <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          {RECOVERY_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="rounded-sm underline underline-offset-4 outline-none transition-colors hover:text-stone-900 focus-visible:ring-2 focus-visible:ring-stone-400"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </main>
   );
 }

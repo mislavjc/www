@@ -8,6 +8,14 @@ import { Navigation } from 'components/navigation';
 import { Providers } from 'components/providers';
 import { SpotifyIsland } from 'components/spotify-island';
 
+import { personJsonLd } from 'lib/json-ld';
+import {
+  absoluteUrl,
+  markdownUrl,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from 'lib/site';
 import { cn } from 'lib/utils';
 
 import './globals.css';
@@ -44,12 +52,15 @@ const craftworkGrotesk = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mislav',
-    template: '%s | Mislav',
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    'A love letter to music, photography, code, and the places in between.',
-  metadataBase: new URL('https://mislavjc.com'),
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: absoluteUrl('/'),
+    types: { 'text/markdown': markdownUrl('/') },
+  },
   keywords: [
     'Mislav',
     'software engineer',
@@ -58,22 +69,20 @@ export const metadata: Metadata = {
     'music',
     'web development',
   ],
-  authors: [{ name: 'Mislav', url: 'https://mislavjc.com' }],
-  creator: 'Mislav',
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://mislavjc.com',
-    siteName: 'Mislav',
-    title: 'Mislav',
-    description:
-      'A love letter to music, photography, code, and the places in between.',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mislav',
-    description:
-      'A love letter to music, photography, code, and the places in between.',
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
   robots: {
     index: true,
@@ -114,6 +123,11 @@ export default function RootLayout({
             >
               Skip to content
             </a>
+            <script
+              type="application/ld+json"
+              // Static, build-time JSON from lib/json-ld.ts — no user input.
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+            />
             <Navigation />
             {children}
             <Footer />

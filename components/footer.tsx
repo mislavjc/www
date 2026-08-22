@@ -4,16 +4,9 @@ import { useState } from 'react';
 import { m } from 'motion/react';
 import Link from 'next/link';
 
-const links = [
-  { href: 'https://github.com/mislavjc', label: 'GitHub', icon: 'GH' },
-  {
-    href: 'https://www.linkedin.com/in/mislavjc/',
-    label: 'LinkedIn',
-    icon: 'LI',
-  },
-  { href: 'https://x.com/mislavjc', label: 'X', icon: 'X' },
-  { href: 'https://instagram.com/mislavjc', label: 'Instagram', icon: 'IG' },
-];
+import { SITE_EMAIL, SITE_SOCIALS } from 'lib/site';
+
+const links = SITE_SOCIALS;
 
 const STAMP_COLORS = ['#FF4D4D', '#4D79FF', '#FFB347', '#80CBC4'];
 
@@ -52,7 +45,7 @@ const SocialStamp = ({
       onHoverEnd={() => setIsHovered(false)}
     >
       <Link
-        href={link.href}
+        href={link.url}
         target="_blank"
         rel="noopener noreferrer"
         className="group relative block rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-stone-400"
@@ -111,16 +104,16 @@ export const Footer = () => {
         <div className="flex flex-col items-center gap-10">
           {/* Email button */}
           <a
-            href="mailto:m@mislavjc.com"
+            href={`mailto:${SITE_EMAIL}`}
             className="rounded-full bg-stone-900 px-6 py-3 text-sm text-stone-100 transition-all hover:bg-[#FF3300] hover:scale-[1.02] active:scale-[0.98]"
           >
-            m@mislavjc.com
+            {SITE_EMAIL}
           </a>
 
           {/* Social stamps */}
           <div className="flex flex-wrap justify-center gap-4">
             {links.map((link, index) => (
-              <SocialStamp key={link.href} link={link} index={index} />
+              <SocialStamp key={link.url} link={link} index={index} />
             ))}
           </div>
         </div>

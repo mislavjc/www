@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { getPhotos } from 'lib/photography';
+import { photographyContent } from 'lib/site-content';
 
 import { PhotoSphereWrapper } from './photo-sphere-wrapper';
 
@@ -206,22 +207,14 @@ export const Photography = () => {
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">2</span>
         <h2 className="text-balance font-serif text-3xl text-stone-900">
-          Photography
+          {photographyContent.heading}
         </h2>
       </div>
 
-      <p className="mb-8 max-w-xl text-stone-600">
-        I was going to a conference in SF so I stopped over in NYC for 8 days.
-        Ended up way more excited about the stopover than the actual trip. First
-        time with my camera, running around Central Park like a kid. I
-        don&apos;t plan shots, I just shoot. Framing something good brings
-        instant dopamine. Headphones in, music on, just walking and looking.
-      </p>
+      <p className="mb-8 max-w-xl text-stone-600">{photographyContent.intro}</p>
 
       <p className="mb-12 max-w-xl text-stone-600">
-        I mostly shoot architecture and street. People stress me out. It&apos;s
-        the pressure of getting it right, you know? I&apos;d love to get into
-        portraits eventually but not there yet.
+        {photographyContent.subjects}
       </p>
 
       {/* Favorite photo with story */}
@@ -238,14 +231,9 @@ export const Photography = () => {
         </div>
         <div className="flex-1">
           <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
-            Favorite shot
+            {photographyContent.favoriteShotLabel}
           </p>
-          <p className="text-stone-600">
-            Rio, January 2025. I only stayed one night because I was scared of
-            being there alone. My friend stayed in Paraguay and I flew back
-            solo. Immediately regretted it. Turned out Rio is amazing and I
-            should&apos;ve stayed longer. Would love to go back.
-          </p>
+          <p className="text-stone-600">{photographyContent.favoriteShot}</p>
         </div>
       </div>
 
@@ -256,7 +244,7 @@ export const Photography = () => {
         </Suspense>
         <div className="mt-4 text-center">
           <Link
-            href="https://photography.mislavjc.com"
+            href={photographyContent.galleryUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="font-mono text-xs text-stone-600 underline underline-offset-4 hover:text-stone-700"
@@ -269,13 +257,9 @@ export const Photography = () => {
       {/* Process note - styled like film canister label */}
       <div className="mb-12 border border-stone-200 bg-stone-50 p-4">
         <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
-          Process Notes
+          {photographyContent.processLabel}
         </div>
-        <p className="text-sm text-stone-600">
-          SOOC (straight out of camera) using Fuji film simulation recipes.
-          Started with Portra 160, now mostly shooting Portra do Sol. Committing
-          to the image in-camera, no post-processing.
-        </p>
+        <p className="text-sm text-stone-600">{photographyContent.process}</p>
       </div>
 
       {/* Gear */}

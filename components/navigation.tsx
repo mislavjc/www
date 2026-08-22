@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const navItems = [
-  { number: '1', label: 'Music', href: '#music' },
-  { number: '2', label: 'Photography', href: '#photography' },
-  { number: '3', label: 'Code', href: '#code' },
-  { number: '4', label: 'Travel', href: '#travel' },
+  { number: '1', label: 'Music', id: 'music' },
+  { number: '2', label: 'Photography', id: 'photography' },
+  { number: '3', label: 'Code', id: 'code' },
+  { number: '4', label: 'Travel', id: 'travel' },
 ];
+
+// Root-relative so the nav also works from /about, /contact, and /privacy.
+const hrefFor = (id: string) => `/#${id}`;
 
 export const Navigation = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -26,7 +29,7 @@ export const Navigation = () => {
     );
 
     navItems.forEach((item) => {
-      const element = document.querySelector(item.href);
+      const element = document.getElementById(item.id);
       if (element) observer.observe(element);
     });
 
@@ -39,11 +42,11 @@ export const Navigation = () => {
       <nav className="fixed left-6 top-1/2 z-50 hidden -translate-y-1/2 lg:block">
         <ul className="flex flex-col gap-2">
           {navItems.map((item) => {
-            const isActive = activeSection === item.href.slice(1);
+            const isActive = activeSection === item.id;
             return (
               <li key={item.number}>
                 <Link
-                  href={item.href}
+                  href={hrefFor(item.id)}
                   className={`group flex items-center gap-3 rounded-full px-3 py-2 text-sm transition-[background-color,color,padding] outline-none focus-visible:ring-2 focus-visible:ring-stone-400 hover:bg-stone-200 hover:pl-4 ${
                     isActive ? 'bg-stone-200' : 'bg-stone-100/80'
                   }`}
@@ -73,11 +76,11 @@ export const Navigation = () => {
       <nav className="fixed right-0 top-1/2 z-50 -translate-y-1/2 lg:hidden">
         <ul className="flex flex-col">
           {navItems.map((item) => {
-            const isActive = activeSection === item.href.slice(1);
+            const isActive = activeSection === item.id;
             return (
               <li key={item.number}>
                 <Link
-                  href={item.href}
+                  href={hrefFor(item.id)}
                   className="group relative flex min-h-[44px] min-w-[44px] items-center justify-end pr-4 outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:rounded-full"
                   aria-label={item.label}
                 >

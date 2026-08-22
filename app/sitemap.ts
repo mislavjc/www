@@ -1,14 +1,14 @@
 import type { MetadataRoute } from 'next';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://mislavjc.com';
+import { absoluteUrl, MARKDOWN_ROUTES } from 'lib/site';
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-  ];
+export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date();
+
+  return MARKDOWN_ROUTES.map((route) => ({
+    url: absoluteUrl(route),
+    lastModified,
+    changeFrequency: route === '/' ? ('weekly' as const) : ('monthly' as const),
+    priority: route === '/' ? 1 : 0.6,
+  }));
 }
