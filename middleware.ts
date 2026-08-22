@@ -57,6 +57,13 @@ export function middleware(request: NextRequest) {
     });
   }
 
+  // Rendered pages cannot carry `Vary: Accept`: Next's setVaryHeader replaces
+  // the header after middleware runs, and a next.config headers() rule does
+  // not survive it either (verified against production). It is not a
+  // correctness problem — a Markdown request is rewritten to /api/markdown
+  // before the cache is consulted, so the two representations occupy separate
+  // CDN entries and cannot be served in place of one another. The Markdown
+  // responses, which are route handlers, do set `Vary: Accept`.
   const response = NextResponse.next();
   appendVaryAccept(response.headers);
 
