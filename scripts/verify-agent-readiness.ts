@@ -41,6 +41,16 @@ const varyIncludesAccept = (response: Response) =>
     .map((token) => token.trim().toLowerCase())
     .includes('accept');
 
+/** Headings in document order — what a crawler that does not run JS sees. */
+const headingsOf = (html: string) =>
+  [...html.matchAll(/<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/g)].map((match) => ({
+    level: Number(match[1]),
+    text: match[2]
+      .replace(/<[^>]+>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim(),
+  }));
+
 const textOf = (html: string) =>
   html
     .replace(/<script[\s\S]*?<\/script>/g, '')
@@ -79,10 +89,30 @@ async function main() {
       'og:image',
     );
     record(`${path} has og:type`, /property="og:type"/.test(html), 'og:type');
+    const headings = headingsOf(html);
+
     record(
       `${path} has exactly one H1`,
-      (html.match(/<h1[\s>]/g) ?? []).length === 1,
-      `${(html.match(/<h1[\s>]/g) ?? []).length} H1`,
+      headings.filter((heading) => heading.level === 1).length === 1,
+      `${headings.filter((heading) => heading.level === 1).length} H1`,
+    );
+    record(
+      `${path} opens with the H1`,
+      headings[0]?.level === 1,
+      headings[0] ? `h${headings[0].level} "${headings[0].text}"` : '(none)',
+    );
+    record(
+      `${path} heading outline has no skipped levels`,
+      headings.every(
+        (heading, index) =>
+          index === 0 || heading.level <= headings[index - 1].level + 1,
+      ),
+      headings.map((heading) => `h${heading.level}`).join(' '),
+    );
+    record(
+      `${path} heading outline is nested, not flat`,
+      new Set(headings.map((heading) => heading.level)).size >= 2,
+      `${new Set(headings.map((heading) => heading.level)).size} levels, ${headings.length} headings`,
     );
     record(
       `${path} has 500+ chars of text without JS`,
@@ -100,21 +130,36 @@ async function main() {
   const home = await (await get('/', 'text/html')).text();
   const jsonLd =
     /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(home)?.[1];
-  let parsed: { '@type'?: string; name?: string; url?: string } | null = null;
+
+  let graph: Array<Record<string, unknown>> = [];
   try {
-    parsed = jsonLd ? JSON.parse(jsonLd) : null;
+    const parsed = jsonLd ? JSON.parse(jsonLd) : null;
+    graph = parsed?.['@graph'] ?? (parsed ? [parsed] : []);
   } catch {
-    parsed = null;
+    graph = [];
   }
+  const node = (type: string) =>
+    graph.find((entry) => entry['@type'] === type) ?? null;
+
   record(
     'homepage has parseable JSON-LD',
-    parsed !== null,
-    jsonLd ? 'parsed' : '(missing)',
+    graph.length > 0,
+    jsonLd ? `${graph.length} nodes` : '(missing)',
   );
   record(
     'JSON-LD declares an identity type with name, description, url',
-    Boolean(parsed?.['@type'] && parsed?.name && parsed?.url),
-    parsed?.['@type'] ?? '(none)',
+    Boolean(node('Person')?.name && node('Person')?.url),
+    graph.map((entry) => entry['@type']).join(', ') || '(none)',
+  );
+  record(
+    'JSON-LD links a WebSite to the Person entity',
+    Boolean(node('WebSite')?.publisher),
+    node('WebSite') ? 'WebSite -> Person' : '(no WebSite node)',
+  );
+  record(
+    'homepage emits rel=me identity links',
+    (home.match(/rel="me"/g) ?? []).length >= 4,
+    `${(home.match(/rel="me"/g) ?? []).length} links`,
   );
 
   // 3. Markdown content negotiation.
