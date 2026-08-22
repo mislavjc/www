@@ -23,6 +23,13 @@ export const VISITED_COUNTRIES: Record<
     airport: 'ZAVENTEM',
     wikiTitle: 'Grand-Place',
   },
+  BGR: {
+    name: 'Bulgaria',
+    city: 'Sofia',
+    landmark: 'Alexander Nevsky Cathedral',
+    airport: 'SOFIA',
+    wikiTitle: 'Alexander_Nevsky_Cathedral%2C_Sofia',
+  },
   BIH: {
     name: 'Bosnia',
     city: 'Sarajevo',
@@ -71,6 +78,13 @@ export const VISITED_COUNTRIES: Record<
     landmark: 'Sagrada Familia',
     airport: 'EL PRAT',
     wikiTitle: 'Sagrada_Fam%C3%ADlia',
+  },
+  FIN: {
+    name: 'Finland',
+    city: 'Helsinki',
+    landmark: 'Helsinki Cathedral',
+    airport: 'HELSINKI-VANTAA',
+    wikiTitle: 'Helsinki_Cathedral',
   },
   FRA: {
     name: 'France',

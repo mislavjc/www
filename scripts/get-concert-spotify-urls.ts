@@ -28,6 +28,11 @@ const concerts = [
   { artist: 'JPEGMAFIA', location: 'Milano' },
   { artist: 'The Voidz', location: 'NYC' },
   { artist: 'Xiu Xiu', location: 'NYC' },
+  { artist: 'Black Country, New Road', location: 'Katowice' },
+  { artist: 'Yung Lean', location: 'Katowice' },
+  { artist: 'Sega Bodega', location: 'Katowice' },
+  { artist: 'Ninajirachi', location: 'Katowice' },
+  { artist: 'LSD and the Search for God', location: 'Katowice' },
 ];
 
 async function getAccessToken(): Promise<string> {

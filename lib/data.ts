@@ -2,6 +2,36 @@
 
 export const concerts = [
   {
+    date: '2026-08-09',
+    artist: 'Ninajirachi',
+    location: 'Katowice',
+    spotifyUrl: 'https://open.spotify.com/artist/3MekbRujJg5VZThubOlrkR',
+  },
+  {
+    date: '2026-08-09',
+    artist: 'LSD and the Search for God',
+    location: 'Katowice',
+    spotifyUrl: 'https://open.spotify.com/artist/2feOOr1Yjovo67byuxvjZv',
+  },
+  {
+    date: '2026-08-08',
+    artist: 'Yung Lean & Bladee',
+    location: 'Katowice',
+    spotifyUrl: 'https://open.spotify.com/artist/67lytN32YpUxiSeWlKfHJ3',
+  },
+  {
+    date: '2026-08-08',
+    artist: 'Sega Bodega',
+    location: 'Katowice',
+    spotifyUrl: 'https://open.spotify.com/artist/1ZvF4Sgnre3Rk2CpiNy077',
+  },
+  {
+    date: '2026-08-07',
+    artist: 'Black Country, New Road',
+    location: 'Katowice',
+    spotifyUrl: 'https://open.spotify.com/artist/3PP6ghmOlDl2jaKaH0avUN',
+  },
+  {
     date: '2026-04-16',
     artist: 'STRFKR',
     location: 'Berkeley',
