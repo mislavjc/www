@@ -249,10 +249,17 @@ const ExperienceGraph = () => {
 
 export const Experience = () => {
   return (
-    <section id="code" className="scroll-mt-24 py-24">
+    <section
+      id="code"
+      aria-labelledby="code-heading"
+      className="scroll-mt-24 py-24"
+    >
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">3</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">
+        <h2
+          id="code-heading"
+          className="text-balance font-serif text-3xl text-stone-900"
+        >
           {codeContent.heading}
         </h2>
       </div>

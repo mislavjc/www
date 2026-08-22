@@ -8,7 +8,7 @@ export const Hero = () => {
   const currentProject = getCurrentProject();
 
   return (
-    <section className="flex h-screen flex-col items-center justify-center text-center">
+    <header className="flex h-screen flex-col items-center justify-center text-center">
       <h1 className="text-balance font-serif text-4xl leading-tight text-stone-900 md:text-5xl lg:text-6xl">
         {heroContent.headline}
       </h1>
@@ -34,6 +34,6 @@ export const Hero = () => {
           in {lastConcert.location}
         </p>
       </div>
-    </section>
+    </header>
   );
 };

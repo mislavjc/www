@@ -203,10 +203,17 @@ const GearReceipt = () => {
 
 export const Photography = () => {
   return (
-    <section id="photography" className="scroll-mt-24 py-24">
+    <section
+      id="photography"
+      aria-labelledby="photography-heading"
+      className="scroll-mt-24 py-24"
+    >
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">2</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">
+        <h2
+          id="photography-heading"
+          className="text-balance font-serif text-3xl text-stone-900"
+        >
           {photographyContent.heading}
         </h2>
       </div>
@@ -230,9 +237,9 @@ export const Photography = () => {
           />
         </div>
         <div className="flex-1">
-          <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
+          <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
             {photographyContent.favoriteShotLabel}
-          </p>
+          </h3>
           <p className="text-stone-600">{photographyContent.favoriteShot}</p>
         </div>
       </div>
@@ -256,9 +263,9 @@ export const Photography = () => {
 
       {/* Process note - styled like film canister label */}
       <div className="mb-12 border border-stone-200 bg-stone-50 p-4">
-        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
+        <h3 className="mb-2 font-mono text-[10px] uppercase tracking-widest text-stone-600">
           {photographyContent.processLabel}
-        </div>
+        </h3>
         <p className="text-sm text-stone-600">{photographyContent.process}</p>
       </div>
 

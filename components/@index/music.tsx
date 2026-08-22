@@ -444,12 +444,12 @@ export const TopArtists = ({ artists }: TopArtistsProps) => {
         <div className="relative z-0 flex h-full flex-col justify-between mix-blend-multiply">
           {/* Header */}
           <div className="mb-4 border-b border-stone-900 pb-1">
-            <h3 className="flex w-full items-end justify-between font-grotesk text-3xl font-black uppercase leading-none tracking-tighter">
+            <div className="flex w-full items-end justify-between font-grotesk text-3xl font-black uppercase leading-none tracking-tighter">
               <span>Lineup</span>
               <span className="font-serif text-sm italic tracking-normal text-[#FF3300]">
                 &apos;{new Date().getFullYear().toString().slice(-2)}
               </span>
-            </h3>
+            </div>
           </div>
 
           {/* The Wall of Text */}
@@ -483,10 +483,17 @@ type MusicProps = {
 
 export const Music = ({ children }: MusicProps) => {
   return (
-    <section id="music" className="scroll-mt-24 overflow-x-clip py-24">
+    <section
+      id="music"
+      aria-labelledby="music-heading"
+      className="scroll-mt-24 overflow-x-clip py-24"
+    >
       <div className="mb-4 flex items-baseline gap-3">
         <span className="font-serif text-sm text-stone-600">1</span>
-        <h2 className="text-balance font-serif text-3xl text-stone-900">
+        <h2
+          id="music-heading"
+          className="text-balance font-serif text-3xl text-stone-900"
+        >
           {musicContent.heading}
         </h2>
       </div>
