@@ -8,7 +8,7 @@ import { Navigation } from 'components/navigation';
 import { Providers } from 'components/providers';
 import { SpotifyIsland } from 'components/spotify-island';
 
-import { personJsonLd } from 'lib/json-ld';
+import { SAME_AS, siteJsonLd } from 'lib/json-ld';
 import {
   absoluteUrl,
   markdownUrl,
@@ -126,8 +126,13 @@ export default function RootLayout({
             <script
               type="application/ld+json"
               // Static, build-time JSON from lib/json-ld.ts — no user input.
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
             />
+            {/* rel=me ties this domain to the same identity on each profile,
+                the machine-readable half of a consistent-NAP claim. */}
+            {SAME_AS.map((url) => (
+              <link key={url} rel="me" href={url} />
+            ))}
             <Navigation />
             {children}
             <Footer />
