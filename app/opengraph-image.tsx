@@ -1,6 +1,8 @@
+import { readFile } from 'fs/promises';
 import { ImageResponse } from 'next/og';
+import { join } from 'path';
 
-export const runtime = 'edge';
+import { generateStamp } from 'lib/stamp-generator';
 
 // Fetch image and convert to base64 data URL
 async function fetchImageAsBase64(url: string): Promise<string | null> {
@@ -305,15 +307,14 @@ const Terminal = () => (
 );
 
 export default async function GET() {
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.NEXT_PUBLIC_SITE_URL || 'https://mislavjc.com';
-
   const [stamps, photos, craftworkGrotesk] = await Promise.all([
     Promise.all(
-      STAMP_COUNTRIES.map((country) =>
-        fetchImageAsBase64(`${baseUrl}/api/stamp/${country}?width=200`),
-      ),
+      // Generate stamps in-process rather than fetching this deployment's own
+      // /api/stamp routes, which aren't listening while the page prerenders.
+      STAMP_COUNTRIES.map(async (country) => {
+        const png = await generateStamp(country.toUpperCase(), 200);
+        return `data:image/png;base64,${png.toString('base64')}`;
+      }),
     ),
     Promise.all(
       PHOTO_UUIDS.map((uuid) =>
@@ -322,9 +323,9 @@ export default async function GET() {
         ),
       ),
     ),
-    fetch(
-      new URL('../public/fonts/CraftworkGrotesk-Medium.ttf', import.meta.url),
-    ).then((res) => res.arrayBuffer()),
+    // Read from disk rather than fetch(): outside the edge bundler, the
+    // import.meta.url form resolves to a file: URL that undici won't fetch.
+    readFile(join(process.cwd(), 'public/fonts/CraftworkGrotesk-Medium.ttf')),
   ]);
 
   return new ImageResponse(
