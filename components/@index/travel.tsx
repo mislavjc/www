@@ -280,16 +280,19 @@ export const Travel = () => {
 
       <div className="flex items-center gap-4 text-sm text-stone-600">
         <div className="flex items-center gap-2">
-          <div className="h-3 w-3 rounded-sm bg-stone-500/40 ring-1 ring-stone-600" />
+          {/* A border, not a ring: an outset 1px ring drops its left edge here,
+              leaving the swatch looking clipped. A border paints all four sides.
+              14px keeps the same outer size the ring produced. */}
+          <div className="h-3.5 w-3.5 shrink-0 rounded-sm border border-stone-600 bg-stone-500/40" />
           <span>Visited ({VISITED_COUNTRY_COUNT} countries)</span>
         </div>
       </div>
 
       <div className="mt-16">
-        <h3 className="font-serif text-xl text-stone-900">Passport</h3>
-        <p className="mt-2 text-stone-600">
-          My passport is a mess but here&apos;s a cleaner version.
-        </p>
+        <h3 className="font-serif text-xl text-stone-900">
+          {travelContent.passportHeading}
+        </h3>
+        <p className="mt-2 text-stone-600">{travelContent.passportIntro}</p>
       </div>
 
       <Passport />
