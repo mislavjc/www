@@ -17,11 +17,18 @@ import {
 import { createPortal } from 'react-dom';
 import type * as GeoJSON from 'geojson';
 import { Loader2, Locate, Maximize, Minus, Plus, X } from 'lucide-react';
-import MapLibreGL, { type MarkerOptions, type PopupOptions } from 'maplibre-gl';
+import type { MarkerOptions, PopupOptions } from 'maplibre-gl';
+import * as MapLibreGL from 'maplibre-gl';
 
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { cn } from '*/lib/utils';
+
+// maplibre derives the worker URL from its own chunk URL, which misses the
+// hashed file the bundler emits, so the map renders blank without this.
+MapLibreGL.setWorkerUrl(
+  new URL('maplibre-gl/dist/maplibre-gl-worker.mjs', import.meta.url).href,
+);
 
 type MapContextValue = {
   map: MapLibreGL.Map | null;
