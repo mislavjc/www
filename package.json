@@ -20,7 +20,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^1.63.0",
     "maplibre-gl": "^5.24.0",
-    "motion": "^13.1.1",
+    "motion": "^14.7.1",
     "next": "16.4.3",
     "next-plausible": "^4.0.0",
     "opentype.js": "^2.0.0",
