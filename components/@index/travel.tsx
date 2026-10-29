@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { MapEventType } from 'maplibre-gl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
@@ -125,7 +126,7 @@ function VisitedCountriesLayer() {
       map.once('styledata', addCountryLayers);
     }
 
-    const handleMouseMove = (e: maplibregl.MapMouseEvent) => {
+    const handleMouseMove = (e: MapEventType['mousemove']) => {
       if (!layersAddedRef.current) return;
 
       const features = map.queryRenderedFeatures(e.point, {
