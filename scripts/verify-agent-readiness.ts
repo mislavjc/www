@@ -3,11 +3,11 @@
  * site exposes to agents.
  *
  * Run against a local production build:
- *   pnpm build && pnpm start &
- *   npx tsx scripts/verify-agent-readiness.ts http://localhost:3000
+ *   bun run build && bun start &
+ *   bun scripts/verify-agent-readiness.ts http://localhost:3000
  *
  * Or against production:
- *   npx tsx scripts/verify-agent-readiness.ts https://mislavjc.com
+ *   bun scripts/verify-agent-readiness.ts https://mislavjc.com
  */
 
 import { MARKDOWN_ROUTES, markdownPath } from '../lib/site';

@@ -25,11 +25,11 @@ Go to the project directory
 Install dependencies
 
 ```bash
-  pnpm install
+  bun install
 ```
 
 Start the dev server
 
 ```bash
-  npm run dev
+  bun dev
 ```
