@@ -46,8 +46,8 @@ export const SpotifyIsland = () => {
   useEffect(() => {
     // fetchSpotify is async and only calls setState after `await fetch(...)`,
     // so no state updates run synchronously here — no cascading-render risk.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchSpotify();
+    // oxlint-disable-next-line react-hooks/set-state-in-effect
+    void fetchSpotify();
 
     const startPolling = () => {
       if (!intervalRef.current) {
@@ -66,7 +66,7 @@ export const SpotifyIsland = () => {
       if (document.hidden) {
         stopPolling();
       } else {
-        fetchSpotify(); // Fetch immediately when becoming visible
+        void fetchSpotify(); // Fetch immediately when becoming visible
         startPolling();
       }
     };

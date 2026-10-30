@@ -20,9 +20,9 @@ import { Loader2, Locate, Maximize, Minus, Plus, X } from 'lucide-react';
 import type { MarkerOptions, PopupOptions } from 'maplibre-gl';
 import * as MapLibreGL from 'maplibre-gl';
 
-import 'maplibre-gl/dist/maplibre-gl.css';
-
 import { cn } from '*/lib/utils';
+
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 // maplibre derives the worker URL from its own chunk URL, which misses the
 // hashed file the bundler emits, so the map renders blank without this.
@@ -112,7 +112,7 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       setIsStyleLoaded(false);
       setMapInstance(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isLoading = !isLoaded || !isStyleLoaded;
@@ -214,7 +214,7 @@ function MapMarker({
       draggable,
     }).setLngLat([longitude, latitude]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Wire up event listeners; handlers read the latest callbacks via the ref
@@ -267,7 +267,7 @@ function MapMarker({
       marker.remove();
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   // Sync marker properties with props
@@ -375,7 +375,7 @@ function MarkerPopup({
       .setDOMContent(container);
 
     return popupInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -387,7 +387,7 @@ function MarkerPopup({
     return () => {
       marker.setPopup(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   useEffect(() => {
@@ -455,7 +455,7 @@ function MarkerTooltip({
     }).setMaxWidth('none');
 
     return tooltipInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -476,7 +476,7 @@ function MarkerTooltip({
       marker.getElement()?.removeEventListener('mouseleave', handleMouseLeave);
       tooltip.remove();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   useEffect(() => {
@@ -651,9 +651,9 @@ function MapControls({
     const container = map?.getContainer();
     if (!container) return;
     if (document.fullscreenElement) {
-      document.exitFullscreen();
+      void document.exitFullscreen();
     } else {
-      container.requestFullscreen();
+      void container.requestFullscreen();
     }
   }, [map]);
 
@@ -788,7 +788,7 @@ function MapPopup({
       .setLngLat([longitude, latitude]);
 
     return popupInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -806,7 +806,7 @@ function MapPopup({
         popup.remove();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   useEffect(() => {
@@ -929,7 +929,7 @@ function MapRoute({
         // ignore
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, map]);
 
   // When coordinates change, update the source data
@@ -938,7 +938,7 @@ function MapRoute({
 
     const source = map.getSource(sourceId) as MapLibreGL.GeoJSONSource;
     if (source) {
-      source.setData({
+      void source.setData({
         type: 'Feature',
         properties: {},
         geometry: { type: 'LineString', coordinates },
@@ -1129,7 +1129,7 @@ function MapClusterLayer<
         // ignore
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, map, sourceId]);
 
   // Update source data when data prop changes (only for non-URL data)
@@ -1138,7 +1138,7 @@ function MapClusterLayer<
 
     const source = map.getSource(sourceId) as MapLibreGL.GeoJSONSource;
     if (source) {
-      source.setData(data);
+      void source.setData(data);
     }
   }, [isLoaded, map, data, sourceId]);
 

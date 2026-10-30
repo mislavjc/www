@@ -6,12 +6,13 @@
     "dev": "portless www next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
+    "lint": "vp lint",
+    "lint:fix": "vp lint --fix",
     "knip": "knip",
-    "prepare": "husky",
-    "test": "npx --yes tsx --test tests/*.test.ts",
-    "verify:agents": "npx --yes tsx scripts/verify-agent-readiness.ts"
+    "prepare": "vp config --no-agent",
+    "test": "vp test",
+    "verify:agents": "vpx scripts/verify-agent-readiness.ts",
+    "check": "vp check"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
@@ -40,17 +41,10 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/three": "^0.186.0",
-    "@typescript-eslint/eslint-plugin": "^8.72.1",
-    "@typescript-eslint/parser": "^8.72.1",
-    "eslint": "^10.13.0",
-    "eslint-config-next": "16.4.3",
-    "eslint-plugin-prettier": "^5.5.7",
-    "eslint-plugin-simple-import-sort": "^14.0.0",
-    "husky": "^9.1.7",
     "knip": "^6.43.0",
     "postcss": "^8.5.32",
-    "prettier": "^3.9.10",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite-plus": "catalog:"
   }
 }
