@@ -104,8 +104,9 @@ type WeekData = {
 
 const ExperienceGraph = () => {
   const startYear = 2021;
-  const endYear = new Date().getFullYear();
+  // oxlint-disable-next-line react-hooks/purity
   const currentDate = new Date();
+  const endYear = currentDate.getFullYear();
 
   // Build data: for each year, all weeks from Jan 1 to Dec 31
   const yearData: { year: number; weeks: WeekData[] }[] = [];

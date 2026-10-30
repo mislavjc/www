@@ -447,6 +447,7 @@ export const TopArtists = ({ artists }: TopArtistsProps) => {
             <div className="flex w-full items-end justify-between font-grotesk text-3xl font-black uppercase leading-none tracking-tighter">
               <span>Lineup</span>
               <span className="font-serif text-sm italic tracking-normal text-[#FF3300]">
+                {/* oxlint-disable-next-line react-hooks/purity */}
                 &apos;{new Date().getFullYear().toString().slice(-2)}
               </span>
             </div>

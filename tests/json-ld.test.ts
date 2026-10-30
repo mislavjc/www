@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, it } from 'vite-plus/test';
 
 import { SAME_AS, siteJsonLd } from 'lib/json-ld';
 import { SITE_HANDLE, SITE_NAME, SITE_SOCIALS, SITE_URL } from 'lib/site';

@@ -42,7 +42,7 @@
 
   a,
   button,
-  [role="button"] {
+  [role='button'] {
     touch-action: manipulation;
   }
 

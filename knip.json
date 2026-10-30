@@ -3,5 +3,6 @@
   "entry": ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.ts"],
   "project": ["**/*.{ts,tsx}"],
   "ignore": ["scripts/**", "**/*.d.ts"],
-  "ignoreDependencies": ["@types/*", "tw-animate-css", "husky"]
+  "ignoreDependencies": ["@types/*", "tw-animate-css", "@commitlint/cli"],
+  "ignoreBinaries": ["portless"]
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import PlausibleProvider from 'next-plausible';
 import { Instrument_Serif } from 'next/font/google';
 import localFont from 'next/font/local';
-import PlausibleProvider from 'next-plausible';
 
 import { Footer } from 'components/footer';
 import { Navigation } from 'components/navigation';
