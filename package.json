@@ -44,7 +44,7 @@
     "knip": "^6.43.0",
     "postcss": "^8.5.32",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vite-plus": "catalog:"
   }
 }
