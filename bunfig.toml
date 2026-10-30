@@ -1,0 +1,3 @@
+[install]
+# Hold new releases for a day, matching pnpm's default.
+minimumReleaseAge = 86400
