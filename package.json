@@ -2,6 +2,9 @@
   "name": "www",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "26.x"
+  },
   "scripts": {
     "dev": "portless www next dev",
     "build": "next build",
