@@ -113,7 +113,6 @@ const PhotoPlane = React.memo(function PhotoPlane({
   useEffect(() => {
     const delay = index * 50; // Reduced delay for faster loading
     let objectUrl: string | null = null;
-    let cancelled = false;
     const controller = new AbortController();
 
     const timer = setTimeout(() => {
@@ -126,11 +125,11 @@ const PhotoPlane = React.memo(function PhotoPlane({
           return res.blob();
         })
         .then((blob) => {
-          if (cancelled) return;
+          if (controller.signal.aborted) return;
           objectUrl = URL.createObjectURL(blob);
           const img = new window.Image();
           img.onload = () => {
-            if (cancelled) {
+            if (controller.signal.aborted) {
               if (objectUrl) URL.revokeObjectURL(objectUrl);
               return;
             }
@@ -152,14 +151,13 @@ const PhotoPlane = React.memo(function PhotoPlane({
           img.src = objectUrl;
         })
         .catch((err) => {
-          if (!cancelled) {
+          if (!controller.signal.aborted) {
             console.warn(`Failed to load texture ${photo.uuid}:`, err);
           }
         });
     }, delay);
 
     return () => {
-      cancelled = true;
       clearTimeout(timer);
       controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
